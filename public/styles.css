@@ -202,8 +202,12 @@ a {
 
 .portrait-photo {
   display: block;
-  width: min(78%, 340px);
-  height: auto;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 135%;
+  max-width: none;
   filter: drop-shadow(0 14px 28px rgba(122, 82, 0, 0.35));
 }
 
