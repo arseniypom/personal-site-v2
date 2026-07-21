@@ -164,7 +164,6 @@ export default async function ChannelPage() {
       <RandomPost metas={metas} clusters={map.clusters} />
 
       <footer className="site-footer">
-        <div className="footer-line">Made by me &copy;2026</div>
         {map.updatedAt && (
           <div className="footer-line">Обновлено {formatDate(map.updatedAt)}</div>
         )}

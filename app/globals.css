@@ -369,7 +369,7 @@ a {
 
 .channel-intro {
   padding: clamp(28px, 4.5vw, 52px);
-  background-image: linear-gradient(115deg, #1b171a 0%, #201c1d 55%, #2f281c 100%);
+  background: linear-gradient(160deg, #ff9a3d 0%, #f97316 55%, #ea580c 100%);
 }
 
 .channel-heading {
@@ -393,6 +393,7 @@ a {
   border-radius: 50%;
   object-fit: cover;
   flex-shrink: 0;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.4);
 }
 
 .channel-title-link {
@@ -404,7 +405,7 @@ a {
 }
 
 .channel-title-link:hover {
-  color: #ffd94d;
+  color: rgba(255, 255, 255, 0.78);
 }
 
 .channel-title-icon {
@@ -417,7 +418,7 @@ a {
   margin: 18px 0 0;
   font-size: 18px;
   line-height: 1.65;
-  color: #a29a9e;
+  color: #ffe8d6;
   max-width: 38em;
   text-wrap: pretty;
 }
