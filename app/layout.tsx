@@ -8,10 +8,21 @@ const hanken = Hanken_Grotesk({
   display: 'swap',
 });
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL
+  ? process.env.NEXT_PUBLIC_SITE_URL
+  : process.env.VERCEL_PROJECT_PRODUCTION_URL
+    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+    : 'http://localhost:3000';
+
 export const metadata: Metadata = {
-  title: 'Arsenii — Software Engineer',
-  description:
-    'Arsenii — software engineer in London, building products and writing about engineering and AI.',
+  metadataBase: new URL(siteUrl),
+  title: 'Arsenii Pomazkov',
+  description: 'Senior software engineer · London · products & AI.',
+  openGraph: {
+    title: 'Arsenii Pomazkov',
+    description: 'Senior software engineer · London · products & AI.',
+    type: 'website',
+  },
 };
 
 export default function RootLayout({

@@ -4,8 +4,13 @@ import { loadMap, loadPosts, makePreview } from '@/lib/data';
 import ChannelExplorer, { type PreviewMap } from '@/components/ChannelExplorer';
 
 export const metadata: Metadata = {
-  title: 'Telegram channel — search & topic map',
-  description: 'Semantic search and a topic map over my Telegram channel posts.',
+  title: 'pomazkov.js — поиск по каналу',
+  description: 'Семантический поиск и карта тем по постам Telegram-канала pomazkov.js.',
+  openGraph: {
+    title: 'pomazkov.js — поиск по каналу',
+    description: 'Семантический поиск и карта тем по постам Telegram-канала pomazkov.js.',
+    type: 'website',
+  },
 };
 
 export default async function ChannelPage() {
