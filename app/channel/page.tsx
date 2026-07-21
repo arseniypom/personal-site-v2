@@ -9,6 +9,7 @@ import {
   type ChannelStats,
 } from '@/components/ChannelInsights';
 import StoryArcs from '@/components/StoryArcs';
+import RandomPost from '@/components/RandomPost';
 
 export const metadata: Metadata = {
   title: 'pomazkov.js',
@@ -160,6 +161,8 @@ export default async function ChannelPage() {
       <TopicsOverTime metas={metas} clusters={map.clusters} />
 
       <ChannelSearch />
+
+      <RandomPost metas={metas} clusters={map.clusters} />
 
       <footer className="site-footer">
         <div className="footer-line">Made by me &copy;2026</div>

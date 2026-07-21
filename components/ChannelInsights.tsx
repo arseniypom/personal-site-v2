@@ -245,7 +245,6 @@ export function ActivityRhythm({
 }) {
   const [selectedMonth, setSelectedMonth] = useState<string | null>(null);
   const labelOf = useMemo(() => new Map(clusters.map((c) => [c.id, c.label])), [clusters]);
-  const [randomPost, setRandomPost] = useState<PostMeta | null>(null);
 
   const { yearRows, maxMonth } = useMemo(() => {
     const byMonth = new Map<string, number>();
@@ -358,20 +357,6 @@ export function ActivityRhythm({
         </div>
       )}
 
-      <div className="random-post">
-        <button
-          type="button"
-          className="search-button"
-          onClick={() => setRandomPost(metas[Math.floor(Math.random() * metas.length)])}
-        >
-          {randomPost ? 'Ещё один' : 'Случайный пост'}
-        </button>
-        {randomPost && (
-          <ul className="post-list">
-            <PostItem post={randomPost} clusterLabel={labelOf.get(randomPost.cluster)} />
-          </ul>
-        )}
-      </div>
     </section>
   );
 }
