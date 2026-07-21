@@ -781,14 +781,26 @@ a {
   margin: 6px 0 0;
   padding: 0 0 0 6px;
   list-style: none;
-  display: flex;
-  flex-direction: column;
+}
+
+@media (min-width: 760px) {
+  .timeline {
+    columns: 2;
+    column-gap: 48px;
+  }
+}
+
+@media (min-width: 1080px) {
+  .timeline {
+    columns: 3;
+  }
 }
 
 .timeline-item {
   position: relative;
   padding: 0 0 22px 26px;
   border-left: 2px solid rgba(255, 255, 255, 0.1);
+  break-inside: avoid;
 }
 
 .timeline-item:last-child {

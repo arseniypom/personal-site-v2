@@ -58,8 +58,9 @@ export default async function ChannelPage() {
   const topIds = new Set(
     [...metas].sort((a, b) => b.rx - a.rx).slice(0, 15).map((m) => m.id),
   );
+  const underratedExclude = new Set(curated.underratedExclude ?? []);
   const underratedIds = posts
-    .filter((p) => p.text.length >= 600 && !topIds.has(p.id))
+    .filter((p) => p.text.length >= 600 && !topIds.has(p.id) && !underratedExclude.has(p.id))
     .map((p) => {
       const median = medianRxByYear.get(p.date.slice(0, 4)) || 1;
       return { id: p.id, score: rxOf(p.id) / median };
