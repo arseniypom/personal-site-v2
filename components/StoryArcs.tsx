@@ -24,9 +24,9 @@ export default function StoryArcs({
       <p className="channel-map-hint">От банка в Москве до финтеха в Лондоне — в постах.</p>
 
       <ol className="timeline">
-        {timeline.map(({ id, label, post }) => (
+        {timeline.map(({ id, label, post }, i) => (
           <li key={id} className="timeline-item">
-            <span className="timeline-dot" />
+            <span className="timeline-dot">{i + 1}</span>
             <div className="timeline-body">
               <span className="timeline-date">{post!.date}</span>
               {post!.link ? (
