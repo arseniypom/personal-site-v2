@@ -41,10 +41,10 @@ export default function Home() {
             </div>
           </div>
           <h1 className="hero-heading">
-            Engineering fintech at scale, shipping my own products on the side.
+            Engineering fintech at scale, shipping my own products.
           </h1>
           <p className="hero-copy">
-            London · UK Global Talent visa. I write about engineering and AI.
+            London · UK Global Talent. I write about engineering and AI.
           </p>
         </section>
 
@@ -64,7 +64,7 @@ export default function Home() {
               Senior Software Engineer at{' '}
               <a
                 className="wise-pill"
-                href="https://wise.com"
+                href="https://www.linkedin.com/in/arseniy-pomazkov"
                 target="_blank"
                 rel="noopener noreferrer"
               >
