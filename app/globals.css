@@ -13,6 +13,7 @@ html {
 html, body {
   margin: 0;
   padding: 0;
+  overflow-x: clip;
 }
 
 body {
@@ -898,8 +899,7 @@ a.series-part:hover {
   color: #e6e0e3;
   white-space: nowrap;
   pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.12s ease;
+  display: none;
   z-index: 3;
 }
 
@@ -907,7 +907,7 @@ a.series-part:hover {
 .topics-seg:focus-visible .viz-tooltip,
 .heatmap-cell:hover .viz-tooltip,
 .heatmap-cell:focus-visible .viz-tooltip {
-  opacity: 1;
+  display: block;
 }
 
 .viz-legend {
