@@ -48,46 +48,23 @@ function plural(n: number, one: string, few: string, many: string): string {
 
 const postsWord = (n: number) => plural(n, 'пост', 'поста', 'постов');
 
-export default function ChannelInsights({
+/* ---------- Top posts by reactions ---------- */
+
+export function TopPosts({
   metas,
   clusters,
   underratedIds,
-  stats,
 }: {
   metas: PostMeta[];
   clusters: Cluster[];
   underratedIds: number[];
-  stats: ChannelStats;
-}) {
-  const byId = useMemo(() => new Map(metas.map((m) => [m.id, m])), [metas]);
-  const labelOf = useMemo(
-    () => new Map(clusters.map((c) => [c.id, c.label])),
-    [clusters],
-  );
-
-  return (
-    <>
-      <TopPosts metas={metas} clusters={clusters} labelOf={labelOf} underrated={underratedIds.map((id) => byId.get(id)!).filter(Boolean)} />
-      <TopicsOverTime metas={metas} clusters={clusters} labelOf={labelOf} />
-      <ActivityRhythm metas={metas} labelOf={labelOf} stats={stats} />
-    </>
-  );
-}
-
-/* ---------- Top posts by reactions ---------- */
-
-function TopPosts({
-  metas,
-  clusters,
-  labelOf,
-  underrated,
-}: {
-  metas: PostMeta[];
-  clusters: Cluster[];
-  labelOf: Map<number, string>;
-  underrated: PostMeta[];
 }) {
   const [topic, setTopic] = useState<number | null>(null);
+  const labelOf = useMemo(() => new Map(clusters.map((c) => [c.id, c.label])), [clusters]);
+  const underrated = useMemo(() => {
+    const byId = new Map(metas.map((m) => [m.id, m]));
+    return underratedIds.map((id) => byId.get(id)).filter(Boolean) as PostMeta[];
+  }, [metas, underratedIds]);
 
   const shown = useMemo(() => {
     const pool = topic === null ? metas : metas.filter((m) => m.cluster === topic);
@@ -150,16 +127,15 @@ function TopPosts({
 
 /* ---------- Topics over the years (stacked columns) ---------- */
 
-function TopicsOverTime({
+export function TopicsOverTime({
   metas,
   clusters,
-  labelOf,
 }: {
   metas: PostMeta[];
   clusters: Cluster[];
-  labelOf: Map<number, string>;
 }) {
   const [selected, setSelected] = useState<{ year: string; cluster: number } | null>(null);
+  const labelOf = useMemo(() => new Map(clusters.map((c) => [c.id, c.label])), [clusters]);
 
   const years = useMemo(() => {
     const byYear = new Map<string, Map<number, number>>();
@@ -258,16 +234,17 @@ function TopicsOverTime({
 
 /* ---------- Posting rhythm: calendar heatmap + fun stats + random post ---------- */
 
-function ActivityRhythm({
+export function ActivityRhythm({
   metas,
-  labelOf,
+  clusters,
   stats,
 }: {
   metas: PostMeta[];
-  labelOf: Map<number, string>;
+  clusters: Cluster[];
   stats: ChannelStats;
 }) {
   const [selectedMonth, setSelectedMonth] = useState<string | null>(null);
+  const labelOf = useMemo(() => new Map(clusters.map((c) => [c.id, c.label])), [clusters]);
   const [randomPost, setRandomPost] = useState<PostMeta | null>(null);
 
   const { yearRows, maxMonth } = useMemo(() => {

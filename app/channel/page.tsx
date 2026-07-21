@@ -1,8 +1,14 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { loadCurated, loadMap, loadPosts, makePreview, toMeta } from '@/lib/data';
-import ChannelExplorer, { type PreviewMap } from '@/components/ChannelExplorer';
-import ChannelInsights, { type ChannelStats } from '@/components/ChannelInsights';
+import ChannelSearch from '@/components/ChannelSearch';
+import TopicMap, { type PreviewMap } from '@/components/TopicMap';
+import {
+  ActivityRhythm,
+  TopPosts,
+  TopicsOverTime,
+  type ChannelStats,
+} from '@/components/ChannelInsights';
 import StoryArcs from '@/components/StoryArcs';
 
 export const metadata: Metadata = {
@@ -123,16 +129,17 @@ export default async function ChannelPage() {
         )}
       </section>
 
-      <ChannelExplorer clusters={map.clusters} points={map.points} previews={previews} />
+      <ActivityRhythm metas={metas} clusters={map.clusters} stats={stats} />
+
+      <TopicMap clusters={map.clusters} points={map.points} previews={previews} />
 
       <StoryArcs curated={curated} byId={byId} />
 
-      <ChannelInsights
-        metas={metas}
-        clusters={map.clusters}
-        underratedIds={underratedIds}
-        stats={stats}
-      />
+      <TopPosts metas={metas} clusters={map.clusters} underratedIds={underratedIds} />
+
+      <TopicsOverTime metas={metas} clusters={map.clusters} />
+
+      <ChannelSearch />
 
       <footer className="site-footer">
         <div className="footer-line">Made by me &copy;2026</div>
