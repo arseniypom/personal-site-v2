@@ -35,8 +35,7 @@ export default function Home() {
             Software engineer in London, building products and writing about engineering and AI.
           </h1>
           <p className="hero-copy">
-            I build software by day, work on my own products on the side, and share what I learn
-            along the way.
+            I build software by day, work on my own products on the side, and share my experience.
           </p>
         </section>
 
@@ -52,17 +51,15 @@ export default function Home() {
           <div className="currently-blob currently-blob-2"></div>
           <h2 className="currently-heading">Currently</h2>
           <ul className="currently-list">
-            <li>Software engineering, day to day.</li>
+            <li>Senior Software Engineer at Wise</li>
             <li>Building a few independent products on the side.</li>
-            <li>Writing and teaching about AI.</li>
           </ul>
         </section>
 
         <section id="contact" className="card contact">
           <h2 className="contact-heading">Contact me</h2>
-          <p className="contact-copy">Reach me by email.</p>
           <a className="contact-link" href="mailto:arseniy.pomazkov@gmail.com">
-            @ arseniy.pomazkov@gmail.com
+            arsenii@pomazkov.com
           </a>
         </section>
       </div>
