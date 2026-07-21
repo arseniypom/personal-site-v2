@@ -46,9 +46,9 @@ export default async function Image() {
               letterSpacing: '-3px',
             }}
           >
-            A. Pomazkov
+            Arsenii
           </div>
-          <div style={{ marginTop: 22, fontSize: 34, color: '#8a8286' }}>
+          <div style={{ marginTop: 24, fontSize: 42, color: '#8a8286' }}>
             Software engineer
           </div>
         </div>

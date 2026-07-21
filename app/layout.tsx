@@ -16,10 +16,10 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: 'A. Pomazkov',
+  title: 'Arsenii Pomazkov',
   description: 'Senior software engineer · London · products & AI.',
   openGraph: {
-    title: 'A. Pomazkov',
+    title: 'Arsenii Pomazkov',
     description: 'Senior software engineer · London · products & AI.',
     type: 'website',
   },
