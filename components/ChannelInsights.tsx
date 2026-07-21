@@ -53,74 +53,39 @@ const postsWord = (n: number) => plural(n, 'пост', 'поста', 'посто
 export function TopPosts({
   metas,
   clusters,
-  underratedIds,
 }: {
   metas: PostMeta[];
   clusters: Cluster[];
-  underratedIds: number[];
 }) {
-  const [topic, setTopic] = useState<number | null>(null);
+  const [topic, setTopic] = useState<number | 'all'>('all');
   const labelOf = useMemo(() => new Map(clusters.map((c) => [c.id, c.label])), [clusters]);
-  const underrated = useMemo(() => {
-    const byId = new Map(metas.map((m) => [m.id, m]));
-    return underratedIds.map((id) => byId.get(id)).filter(Boolean) as PostMeta[];
-  }, [metas, underratedIds]);
 
   const shown = useMemo(() => {
-    const pool = topic === null ? metas : metas.filter((m) => m.cluster === topic);
-    return [...pool].sort((a, b) => b.rx - a.rx).slice(0, topic === null ? 10 : 5);
+    const pool = topic === 'all' ? metas : metas.filter((m) => m.cluster === topic);
+    return [...pool].sort((a, b) => b.rx - a.rx).slice(0, 7);
   }, [metas, topic]);
 
   return (
     <section className="card channel-panel">
       <h2 className="channel-section-heading">Лучшие посты</h2>
-      <div className="map-legend">
-        <button
-          type="button"
-          className={
-            'map-legend-chip' +
-            (topic === null ? ' is-active' : '') +
-            (topic !== null ? ' is-dimmed' : '')
-          }
-          style={{ borderColor: 'rgba(255,255,255,0.35)' }}
-          onClick={() => setTopic(null)}
-        >
-          Все темы
-        </button>
+      <select
+        className="topic-select"
+        value={topic}
+        onChange={(e) => setTopic(e.target.value === 'all' ? 'all' : Number(e.target.value))}
+        aria-label="Фильтр по теме"
+      >
+        <option value="all">Все темы</option>
         {clusters.map((c) => (
-          <button
-            key={c.id}
-            type="button"
-            className={
-              'map-legend-chip' +
-              (topic === c.id ? ' is-active' : '') +
-              (topic !== null && topic !== c.id ? ' is-dimmed' : '')
-            }
-            style={{ borderColor: colorOf(c.id) }}
-            onClick={() => setTopic(topic === c.id ? null : c.id)}
-          >
-            <span className="map-legend-dot" style={{ background: colorOf(c.id) }} />
+          <option key={c.id} value={c.id}>
             {c.label}
-          </button>
+          </option>
         ))}
-      </div>
+      </select>
       <ul className="post-list">
         {shown.map((m) => (
           <PostItem key={m.id} post={m} clusterLabel={labelOf.get(m.cluster)} />
         ))}
       </ul>
-
-      {underrated.length > 0 && (
-        <>
-          <h3 className="channel-subheading">Недооценённые</h3>
-          <p className="channel-map-hint">Хорошие лонгриды, которым досталось мало реакций.</p>
-          <ul className="post-list">
-            {underrated.map((m) => (
-              <PostItem key={m.id} post={m} clusterLabel={labelOf.get(m.cluster)} />
-            ))}
-          </ul>
-        </>
-      )}
     </section>
   );
 }

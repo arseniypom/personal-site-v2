@@ -41,19 +41,17 @@ OPENAI_API_KEY=... npm run prepare-data -- --export data/raw/messages.html --cha
 - `data/vectors.json` — base64 Float32 эмбеддинги для поиска.
 - `data/curated.json` — **ручная курация, пайплайн её НЕ трогает**:
   - `series` — серии постов (title, description, ids по порядку);
-  - `timeline` — вехи истории канала (id поста + label);
-  - `underratedExclude` — id постов, скрытых из «Недооценённых» (устаревшие и т.п.).
+  - `timeline` — вехи истории канала (id поста + label).
 
 ## /channel page structure
 
 `app/channel/page.tsx` — серверный оркестратор: собирает `PostMeta[]` (`toMeta` в `lib/data.ts`),
-считает статистику и «недооценённые» (длина ≥600, реакции < 0.8 медианы своего года, не топ-15,
-не в exclude), задаёт порядок секций:
+считает статистику и задаёт порядок секций:
 
 1. `ActivityRhythm` (ChannelInsights.tsx) — плитки статистики + хитмэп по месяцам
 2. `TopicMap` — карта тем (SVG, tooltips)
 3. `StoryArcs` — таймлайн с номерами + серии (пилюли Ч1…Чn → ссылки в TG)
-4. `TopPosts` (ChannelInsights.tsx) — топ по реакциям + «Недооценённые»
+4. `TopPosts` (ChannelInsights.tsx) — топ-7 по реакциям, фильтр-селект по темам
 5. `TopicsOverTime` (ChannelInsights.tsx) — stacked-столбцы по годам, drill-down по клику
 6. `ChannelSearch` — векторный поиск (API `/api/search`)
 7. `RandomPost` — кнопка внизу, открывает модалку (превью + «Ещё один»)

@@ -43,33 +43,6 @@ export default async function ChannelPage() {
     .sort((a, b) => a.date.localeCompare(b.date));
   const byId = new Map(metas.map((m) => [m.id, m]));
 
-  // Hidden gems: long, substantial posts that got fewer reactions than the
-  // typical post of their year (early posts naturally have fewer reactions,
-  // so we normalize per year).
-  const rxOf = (id: number) => byId.get(id)!.rx;
-  const medianRxByYear = new Map<string, number>();
-  for (const year of new Set(metas.map((m) => m.date.slice(0, 4)))) {
-    const sorted = metas
-      .filter((m) => m.date.slice(0, 4) === year)
-      .map((m) => m.rx)
-      .sort((a, b) => a - b);
-    medianRxByYear.set(year, sorted[Math.floor(sorted.length / 2)] ?? 0);
-  }
-  const topIds = new Set(
-    [...metas].sort((a, b) => b.rx - a.rx).slice(0, 15).map((m) => m.id),
-  );
-  const underratedExclude = new Set(curated.underratedExclude ?? []);
-  const underratedIds = posts
-    .filter((p) => p.text.length >= 600 && !topIds.has(p.id) && !underratedExclude.has(p.id))
-    .map((p) => {
-      const median = medianRxByYear.get(p.date.slice(0, 4)) || 1;
-      return { id: p.id, score: rxOf(p.id) / median };
-    })
-    .filter((c) => c.score < 0.8)
-    .sort((a, b) => a.score - b.score)
-    .slice(0, 5)
-    .map((c) => c.id);
-
   // Posting-rhythm stats
   const sortedDates = posts.map((p) => p.date).sort();
   let longestGapDays = 0;
@@ -155,7 +128,7 @@ export default async function ChannelPage() {
 
       <StoryArcs curated={curated} byId={byId} />
 
-      <TopPosts metas={metas} clusters={map.clusters} underratedIds={underratedIds} />
+      <TopPosts metas={metas} clusters={map.clusters} />
 
       <TopicsOverTime metas={metas} clusters={map.clusters} />
 

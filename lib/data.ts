@@ -28,7 +28,6 @@ export type CuratedTimelineItem = { id: number; label: string };
 export type Curated = {
   series: CuratedSeries[];
   timeline: CuratedTimelineItem[];
-  underratedExclude?: number[];
 };
 
 export type MapCluster = { id: number; label: string };
