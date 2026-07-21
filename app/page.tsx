@@ -58,7 +58,7 @@ export default function Home() {
 
         <section id="contact" className="card contact">
           <h2 className="contact-heading">Contact me</h2>
-          <a className="contact-link" href="mailto:arseniy.pomazkov@gmail.com">
+          <a className="contact-link" href="mailto:arsenii@pomazkov.com">
             arsenii@pomazkov.com
           </a>
         </section>
