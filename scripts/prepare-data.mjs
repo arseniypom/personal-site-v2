@@ -314,6 +314,50 @@ function labelClusters(posts, assignment, k) {
   return labels;
 }
 
+// ---------- cluster labels (LLM naming, falls back to tf-idf) ----------
+
+async function labelClustersLLM(posts, assignment, k, fallbackLabels, apiKey) {
+  const clusters = [];
+  for (let c = 0; c < k; c++) {
+    const samples = [];
+    for (let i = 0; i < posts.length && samples.length < 8; i++) {
+      if (assignment[i] === c) samples.push(posts[i].text.slice(0, 300));
+    }
+    clusters.push({ cluster: c, samples });
+  }
+  try {
+    const res = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
+        model: 'gpt-4o-mini',
+        response_format: { type: 'json_object' },
+        messages: [
+          {
+            role: 'system',
+            content:
+              'Ты придумываешь короткие названия тем для кластеров постов Telegram-канала про разработку и карьеру в IT. ' +
+              `Верни JSON вида {"labels": ["...", ...]} — ровно ${k} названий, по одному на кластер, в том же порядке. ` +
+              'Название: 1–3 слова на русском, ёмкое, без кавычек и точек. Названия не должны повторяться.',
+          },
+          { role: 'user', content: JSON.stringify(clusters) },
+        ],
+      }),
+    });
+    if (!res.ok) throw new Error(`chat completions: ${res.status}`);
+    const json = await res.json();
+    const labels = JSON.parse(json.choices[0].message.content).labels;
+    if (Array.isArray(labels) && labels.length === k) return labels.map(String);
+    throw new Error('unexpected labels shape');
+  } catch (err) {
+    console.warn(`LLM labeling failed (${err.message}), keeping tf-idf labels.`);
+    return fallbackLabels;
+  }
+}
+
 // ---------- main ----------
 
 async function main() {
@@ -364,7 +408,14 @@ async function main() {
   console.log(`Clustering into ${k} topics…`);
   const rng = mulberry32(42);
   const assignment = kmeans(vectors, k, rng);
-  const labels = labelClusters(posts, assignment, k);
+  console.log('Naming topics…');
+  const labels = await labelClustersLLM(
+    posts,
+    assignment,
+    k,
+    labelClusters(posts, assignment, k),
+    apiKey,
+  );
 
   console.log('Projecting to 2D with UMAP…');
   const umap = new UMAP({
