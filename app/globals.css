@@ -1093,12 +1093,16 @@ a.series-part:hover {
   color: #eee7ff;
 }
 
-.stat-tile.is-orange {
-  background: linear-gradient(160deg, #ff9a3d 0%, #ea580c 100%);
+.stat-tile.is-green {
+  background: linear-gradient(150deg, #b9f28b 0%, #9fe870 55%, #7fd94f 100%);
 }
 
-.stat-tile.is-orange .stat-tile-label {
-  color: #ffe8d6;
+.stat-tile.is-green .stat-tile-value {
+  color: #163300;
+}
+
+.stat-tile.is-green .stat-tile-label {
+  color: rgba(22, 51, 0, 0.68);
 }
 
 .heatmap {

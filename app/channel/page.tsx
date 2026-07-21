@@ -139,7 +139,7 @@ export default async function ChannelPage() {
           </h1>
         </div>
         <p className="channel-copy">
-          Собрал интересную статистику по каналу и прикрутил векторный поиск по постам — enjoy!
+          Занимательная статистика по каналу и векторный поиск по постам
         </p>
         {map.sample && (
           <p className="channel-notice">

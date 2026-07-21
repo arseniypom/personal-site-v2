@@ -285,13 +285,13 @@ export function ActivityRhythm({
             {plural(stats.totalReactions, 'реакция', 'реакции', 'реакций')}
           </div>
         </div>
-        <div className="stat-tile is-orange">
+        <div className="stat-tile">
           <div className="stat-tile-value">
             {stats.longestGapDays} {plural(stats.longestGapDays, 'день', 'дня', 'дней')}
           </div>
           <div className="stat-tile-label">самая долгая пауза</div>
         </div>
-        <div className="stat-tile">
+        <div className="stat-tile is-green">
           <div className="stat-tile-value">
             {stats.busiestCount} {postsWord(stats.busiestCount)}
           </div>
