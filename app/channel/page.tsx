@@ -4,11 +4,11 @@ import { loadMap, loadPosts, makePreview } from '@/lib/data';
 import ChannelExplorer, { type PreviewMap } from '@/components/ChannelExplorer';
 
 export const metadata: Metadata = {
-  title: 'pomazkov.js — поиск по каналу',
-  description: 'Семантический поиск и карта тем по постам Telegram-канала pomazkov.js.',
+  title: 'pomazkov.js',
+  description: 'Поиск по каналу и карта тем тг-канала pomazkov.js',
   openGraph: {
-    title: 'pomazkov.js — поиск по каналу',
-    description: 'Семантический поиск и карта тем по постам Telegram-канала pomazkov.js.',
+    title: 'pomazkov.js',
+    description: 'Поиск по каналу и карта тем тг-канала pomazkov.js',
     type: 'website',
   },
 };
