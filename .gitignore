@@ -1,2 +1,19 @@
+# dependencies
+/node_modules
+
+# next.js
+/.next/
+/out/
+
+# env
+.env
+.env.*
+
+# telegram raw export (may contain private data)
+/data/raw/
+
+# misc
 .firebase/
 .DS_Store
+*.tsbuildinfo
+next-env.d.ts
