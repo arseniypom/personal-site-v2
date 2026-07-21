@@ -116,10 +116,35 @@ export default async function ChannelPage() {
       </header>
 
       <section className="card channel-intro">
-        <h1 className="channel-heading">Мой телеграм-канал</h1>
+        <div className="channel-title">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img className="channel-avatar" src="/channel-avatar.jpg" alt="Аватар канала" />
+          <h1 className="channel-heading">
+            <a
+              className="channel-title-link"
+              href="https://t.me/pomazkovjs"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              @pomazkov.js
+              <svg
+                className="channel-title-icon"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M7 17L17 7" />
+                <path d="M9 7h8v8" />
+              </svg>
+            </a>
+          </h1>
+        </div>
         <p className="channel-copy">
-          Ищите посты по смыслу, а не только по словам, — или изучайте карту тем, чтобы понять,
-          о чём канал.
+          Собрал интересную статистику по каналу и прикрутил векторный поиск по постам — enjoy!
         </p>
         {map.sample && (
           <p className="channel-notice">

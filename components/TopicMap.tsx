@@ -45,10 +45,7 @@ export default function TopicMap({
       )}
       {points.length > 0 && (
         <>
-          <p className="channel-map-hint">
-            Каждая точка — пост; близкие по смыслу посты лежат рядом. Наведите на точку, чтобы
-            увидеть превью, нажмите на тему, чтобы её подсветить.
-          </p>
+          <p className="channel-map-hint">Каждая точка — пост, нажми для просмотра.</p>
           <div className="map-legend">
             {clusters.map((cluster) => (
               <button

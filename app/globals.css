@@ -380,6 +380,38 @@ a {
   color: #ffffff;
 }
 
+.channel-title {
+  display: flex;
+  align-items: center;
+  gap: clamp(14px, 2.5vw, 22px);
+}
+
+.channel-avatar {
+  width: clamp(52px, 7vw, 68px);
+  height: clamp(52px, 7vw, 68px);
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.channel-title-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  color: #ffffff;
+  transition: color 0.15s ease;
+}
+
+.channel-title-link:hover {
+  color: #ffd94d;
+}
+
+.channel-title-icon {
+  width: 0.55em;
+  height: 0.55em;
+  opacity: 0.6;
+}
+
 .channel-copy {
   margin: 18px 0 0;
   font-size: 18px;
