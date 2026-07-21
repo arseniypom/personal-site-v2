@@ -4,11 +4,11 @@ import { join } from 'node:path';
 
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
-export const alt = 'Arsenii Pomazkov — Senior software engineer';
+export const alt = 'A. Pomazkov — Senior software engineer';
 
 export default async function Image() {
-  const avatar = await readFile(join(process.cwd(), 'public', 'avatar.jpg'));
-  const avatarSrc = `data:image/jpeg;base64,${avatar.toString('base64')}`;
+  const portrait = await readFile(join(process.cwd(), 'public', 'portrait.png'));
+  const portraitSrc = `data:image/png;base64,${portrait.toString('base64')}`;
 
   return new ImageResponse(
     (
@@ -17,68 +17,66 @@ export default async function Image() {
           width: '100%',
           height: '100%',
           display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          padding: '0 96px',
-          backgroundImage: 'linear-gradient(115deg, #14100f 0%, #201c1d 55%, #2f281c 100%)',
+          flexDirection: 'row',
+          backgroundColor: '#0f0b0d',
+          padding: 48,
+          gap: 24,
           fontFamily: 'sans-serif',
         }}
       >
-        <div style={{ display: 'flex', flexDirection: 'column', maxWidth: 660 }}>
-          <div style={{ fontSize: 32, color: '#8a8286' }}>Hi, I&rsquo;m</div>
-          <div
-            style={{
-              marginTop: 10,
-              fontSize: 68,
-              fontWeight: 700,
-              color: '#ffffff',
-              letterSpacing: '-2px',
-            }}
-          >
-            Arsenii Pomazkov
-          </div>
-          <div style={{ marginTop: 22, fontSize: 32, color: '#a29a9e' }}>
-            Senior software engineer · London
-          </div>
-          <div
-            style={{
-              marginTop: 40,
-              display: 'flex',
-              alignItems: 'center',
-              gap: 14,
-            }}
-          >
-            <div
-              style={{
-                width: 18,
-                height: 18,
-                borderRadius: 9,
-                backgroundImage: 'linear-gradient(150deg, #ffd94d 0%, #f97316 100%)',
-              }}
-            />
-            <div style={{ fontSize: 30, color: '#cfc8cc' }}>products &amp; AI</div>
-          </div>
-        </div>
         <div
           style={{
-            width: 340,
-            height: 340,
-            borderRadius: 170,
-            flexShrink: 0,
+            flexGrow: 1,
+            flexBasis: 0,
+            height: '100%',
+            minWidth: 0,
+            borderRadius: 40,
+            backgroundImage: 'linear-gradient(115deg, #1b171a 0%, #201c1d 55%, #2f281c 100%)',
             display: 'flex',
-            alignItems: 'center',
+            flexDirection: 'column',
             justifyContent: 'center',
+            padding: '0 68px',
+          }}
+        >
+          <div
+            style={{
+              fontSize: 96,
+              fontWeight: 700,
+              color: '#ffffff',
+              letterSpacing: '-3px',
+            }}
+          >
+            A. Pomazkov
+          </div>
+          <div style={{ marginTop: 22, fontSize: 34, color: '#8a8286' }}>
+            Software engineer
+          </div>
+        </div>
+
+        <div
+          style={{
+            width: 380,
+            height: '100%',
+            flexShrink: 0,
+            borderRadius: 40,
+            overflow: 'hidden',
+            position: 'relative',
+            display: 'flex',
             backgroundImage:
-              'radial-gradient(circle at 50% 70%, #fff3c4 0%, #ffd94d 40%, #f5b81f 100%)',
+              'radial-gradient(circle at 50% 78%, #fff3c4 0%, #ffd94d 34%, #ffc933 58%, #f5b81f 100%)',
           }}
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src={avatarSrc}
-            alt=""
-            width={304}
-            height={304}
-            style={{ borderRadius: 152, objectFit: 'cover' }}
+            src={portraitSrc}
+            width={513}
+            height={513}
+            style={{
+              position: 'absolute',
+              bottom: -1,
+              left: '50%',
+              transform: 'translateX(-50%)',
+            }}
           />
         </div>
       </div>

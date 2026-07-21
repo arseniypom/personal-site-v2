@@ -2,29 +2,23 @@ import { ImageResponse } from 'next/og';
 
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
-export const alt = 'pomazkov.js — поиск и карта тем по постам канала';
+export const alt = 'pomazkov.js — поиск и карта тем';
 
-// decorative "topic map": clusters of dots in the site palette
+// small cluster of "topic map" dots, positioned within the right card
 const DOTS: Array<{ x: number; y: number; r: number; color: string }> = [
-  // yellow cluster
-  { x: 820, y: 150, r: 13, color: '#ffd94d' },
-  { x: 878, y: 118, r: 9, color: '#ffd94d' },
-  { x: 905, y: 185, r: 11, color: '#ffd94d' },
-  { x: 845, y: 215, r: 8, color: '#ffd94d' },
-  // purple cluster
-  { x: 1035, y: 250, r: 12, color: '#a78bfa' },
-  { x: 1090, y: 215, r: 9, color: '#a78bfa' },
-  { x: 1075, y: 300, r: 14, color: '#a78bfa' },
-  { x: 1020, y: 330, r: 8, color: '#a78bfa' },
-  // orange cluster
-  { x: 870, y: 400, r: 12, color: '#ff9a3d' },
-  { x: 930, y: 372, r: 9, color: '#ff9a3d' },
-  { x: 940, y: 448, r: 13, color: '#ff9a3d' },
-  { x: 985, y: 405, r: 8, color: '#ff9a3d' },
-  // teal cluster
-  { x: 1060, y: 490, r: 11, color: '#5eead4' },
-  { x: 1115, y: 455, r: 8, color: '#5eead4' },
-  { x: 1120, y: 525, r: 12, color: '#5eead4' },
+  { x: 80, y: 90, r: 9, color: '#ffd94d' },
+  { x: 130, y: 60, r: 6, color: '#ffd94d' },
+  { x: 150, y: 120, r: 7, color: '#ffd94d' },
+  { x: 250, y: 160, r: 8, color: '#5eead4' },
+  { x: 300, y: 120, r: 6, color: '#5eead4' },
+  { x: 60, y: 260, r: 7, color: '#ff9a3d' },
+  { x: 110, y: 300, r: 9, color: '#ff9a3d' },
+  { x: 40, y: 350, r: 6, color: '#ff9a3d' },
+  { x: 260, y: 340, r: 8, color: '#ffffff' },
+  { x: 310, y: 380, r: 6, color: '#ffffff' },
+  { x: 220, y: 400, r: 6, color: '#ffffff' },
+  { x: 150, y: 440, r: 8, color: '#ffd94d' },
+  { x: 90, y: 460, r: 6, color: '#5eead4' },
 ];
 
 export default function Image() {
@@ -35,88 +29,92 @@ export default function Image() {
           width: '100%',
           height: '100%',
           display: 'flex',
-          alignItems: 'center',
-          backgroundImage: 'linear-gradient(115deg, #14100f 0%, #201c1d 55%, #2f281c 100%)',
+          flexDirection: 'row',
+          backgroundColor: '#0f0b0d',
+          padding: 48,
+          gap: 24,
           fontFamily: 'sans-serif',
-          position: 'relative',
         }}
       >
-        {DOTS.map((d, i) => (
-          <div
-            key={i}
-            style={{
-              position: 'absolute',
-              left: d.x - d.r,
-              top: d.y - d.r,
-              width: d.r * 2,
-              height: d.r * 2,
-              borderRadius: d.r,
-              backgroundColor: d.color,
-              opacity: 0.9,
-            }}
-          />
-        ))}
-        {DOTS.map((d, i) => (
-          <div
-            key={`glow-${i}`}
-            style={{
-              position: 'absolute',
-              left: d.x - d.r * 3,
-              top: d.y - d.r * 3,
-              width: d.r * 6,
-              height: d.r * 6,
-              borderRadius: d.r * 3,
-              backgroundColor: d.color,
-              opacity: 0.08,
-            }}
-          />
-        ))}
         <div
           style={{
+            flexGrow: 1,
+            flexBasis: 0,
+            height: '100%',
+            minWidth: 0,
+            borderRadius: 40,
+            backgroundImage: 'linear-gradient(115deg, #1b171a 0%, #201c1d 55%, #2f281c 100%)',
             display: 'flex',
             flexDirection: 'column',
-            maxWidth: 640,
-            paddingLeft: 96,
+            justifyContent: 'center',
+            padding: '0 68px',
           }}
         >
+          <div style={{ fontSize: 28, color: '#8a8286' }}>Telegram</div>
           <div
             style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 16,
-            }}
-          >
-            <div
-              style={{
-                width: 20,
-                height: 20,
-                borderRadius: 10,
-                backgroundImage: 'linear-gradient(150deg, #ffd94d 0%, #f97316 100%)',
-              }}
-            />
-            <div style={{ fontSize: 32, color: '#8a8286' }}>Telegram-канал</div>
-          </div>
-          <div
-            style={{
-              marginTop: 14,
-              fontSize: 82,
+              marginTop: 12,
+              fontSize: 88,
               fontWeight: 700,
               color: '#ffffff',
-              letterSpacing: '-2px',
+              letterSpacing: '-3px',
             }}
           >
             pomazkov.js
           </div>
+        </div>
+
+        <div
+          style={{
+            width: 380,
+            height: '100%',
+            flexShrink: 0,
+            borderRadius: 40,
+            overflow: 'hidden',
+            position: 'relative',
+            display: 'flex',
+            backgroundImage: 'linear-gradient(150deg, #6dc7ff 0%, #2aabee 45%, #0e75b8 100%)',
+          }}
+        >
           <div
             style={{
-              marginTop: 24,
-              fontSize: 34,
-              lineHeight: 1.4,
-              color: '#a29a9e',
+              position: 'absolute',
+              right: -60,
+              bottom: -80,
+              width: 300,
+              height: 300,
+              borderRadius: 64,
+              background: 'rgba(255, 255, 255, 0.16)',
+              transform: 'rotate(14deg)',
             }}
-          >
-            Поиск по смыслу и карта тем по постам канала
-          </div>
+          />
+          <div
+            style={{
+              position: 'absolute',
+              right: 40,
+              bottom: -120,
+              width: 260,
+              height: 260,
+              borderRadius: 64,
+              background: 'rgba(255, 255, 255, 0.22)',
+              transform: 'rotate(-8deg)',
+            }}
+          />
+          {DOTS.map((d, i) => (
+            <div
+              key={i}
+              style={{
+                position: 'absolute',
+                left: d.x - d.r,
+                top: d.y - d.r,
+                width: d.r * 2,
+                height: d.r * 2,
+                borderRadius: d.r,
+                backgroundColor: d.color,
+                opacity: 0.95,
+              }}
+            />
+          ))}
         </div>
       </div>
     ),
