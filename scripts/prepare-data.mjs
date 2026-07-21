@@ -464,7 +464,11 @@ async function main() {
     );
     await writeFile(
       path.join('data', 'map.json'),
-      JSON.stringify({ sample: false, clusters: [], points: [] }, null, 1),
+      JSON.stringify(
+        { updatedAt: new Date().toISOString().slice(0, 10), sample: false, clusters: [], points: [] },
+        null,
+        1,
+      ),
     );
     await rm(path.join('data', 'vectors.json'), { force: true });
     console.log(`Done: data/posts.json — ${posts.length} posts (keyword search mode).`);
@@ -507,6 +511,7 @@ async function main() {
   const scale = (v, min, max) => 0.05 + (0.9 * (v - min)) / (max - min || 1);
 
   const outMap = {
+    updatedAt: new Date().toISOString().slice(0, 10),
     sample: false,
     clusters: labels.map((label, id) => ({ id, label })),
     points: posts.map((p, i) => ({

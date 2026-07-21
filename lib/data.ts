@@ -35,6 +35,7 @@ export type MapCluster = { id: number; label: string };
 export type MapPoint = { id: number; x: number; y: number; c: number };
 
 export type MapData = {
+  updatedAt?: string; // YYYY-MM-DD, set by the data pipeline
   sample: boolean;
   clusters: MapCluster[];
   points: MapPoint[];

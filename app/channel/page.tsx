@@ -28,7 +28,6 @@ function formatDate(iso: string): string {
 
 export default async function ChannelPage() {
   const [map, posts, curated] = await Promise.all([loadMap(), loadPosts(), loadCurated()]);
-  const lastPostDate = posts.reduce((max, p) => (p.date > max ? p.date : max), '');
 
   const previews: PreviewMap = {};
   for (const post of posts) {
@@ -166,8 +165,8 @@ export default async function ChannelPage() {
 
       <footer className="site-footer">
         <div className="footer-line">Made by me &copy;2026</div>
-        {lastPostDate && (
-          <div className="footer-line">Последний пост — {formatDate(lastPostDate)}</div>
+        {map.updatedAt && (
+          <div className="footer-line">Обновлено {formatDate(map.updatedAt)}</div>
         )}
       </footer>
     </div>
