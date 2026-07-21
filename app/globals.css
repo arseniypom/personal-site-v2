@@ -1104,6 +1104,21 @@ a.series-part:hover {
 }
 
 @media (max-width: 640px) {
+  .map-legend {
+    gap: 6px;
+  }
+
+  .map-legend-chip {
+    padding: 4px 10px;
+    gap: 6px;
+    font-size: 12px;
+  }
+
+  .map-legend-dot {
+    width: 8px;
+    height: 8px;
+  }
+
   .topics-chart {
     height: 220px;
     gap: 10px;
