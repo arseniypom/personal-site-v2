@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
 import { loadCurated, loadMap, loadPosts, makePreview, toMeta } from '@/lib/data';
 import ChannelSearch from '@/components/ChannelSearch';
 import TopicMap, { type PreviewMap } from '@/components/TopicMap';
@@ -105,14 +104,9 @@ export default async function ChannelPage() {
     <div className="page">
       <header className="site-header">
         <div className="brand">
-          <Link href="/">
-            <span className="brand-name">Arsenii</span>
-            <span className="brand-role">, Software Engineer</span>
-          </Link>
+          <span className="brand-name">Arsenii</span>
+          <span className="brand-role">, Software Engineer</span>
         </div>
-        <nav className="site-nav">
-          <Link href="/">← На главную</Link>
-        </nav>
       </header>
 
       <section className="card channel-intro">
