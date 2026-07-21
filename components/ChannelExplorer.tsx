@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+import { PALETTE } from '@/lib/palette';
 
 type Cluster = { id: number; label: string };
 type Point = { id: number; x: number; y: number; c: number };
@@ -17,19 +18,6 @@ type SearchResult = {
   link: string | null;
   cluster: string | null;
 };
-
-const PALETTE = [
-  '#ffd94d',
-  '#a78bfa',
-  '#ff9a3d',
-  '#5eead4',
-  '#f472b6',
-  '#93c5fd',
-  '#bef264',
-  '#fca5a5',
-  '#fdba74',
-  '#c4b5fd',
-];
 
 const VIEW_W = 100;
 const VIEW_H = 64;
@@ -88,28 +76,29 @@ export default function ChannelExplorer({
   return (
     <>
       <section className="card channel-search">
-        <h2 className="channel-section-heading">Search the posts</h2>
+        <h2 className="channel-section-heading">Поиск по постам</h2>
         <form className="search-form" onSubmit={runSearch}>
           <input
             className="search-input"
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="e.g. how to stay productive with AI tools"
-            aria-label="Search query"
+            placeholder="например: как использовать ИИ в работе"
+            aria-label="Поисковый запрос"
           />
           <button className="search-button" type="submit" disabled={loading}>
-            {loading ? 'Searching…' : 'Search'}
+            {loading ? 'Ищу…' : 'Найти'}
           </button>
         </form>
         {mode === 'keyword' && results && (
           <p className="search-mode-note">
-            Keyword search mode — semantic search turns on once embeddings are generated.
+            Сейчас работает поиск по словам — поиск по смыслу включится после генерации
+            эмбеддингов.
           </p>
         )}
         {error && <p className="search-error">{error}</p>}
         {results && results.length === 0 && (
-          <p className="search-empty">Nothing found — try rephrasing the query.</p>
+          <p className="search-empty">Ничего не нашлось — попробуйте переформулировать.</p>
         )}
         {results && results.length > 0 && (
           <ul className="search-results">
@@ -127,7 +116,7 @@ export default function ChannelExplorer({
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    Open post →
+                    Открыть пост →
                   </a>
                 )}
               </li>
@@ -137,18 +126,18 @@ export default function ChannelExplorer({
       </section>
 
       <section className="card channel-map">
-        <h2 className="channel-section-heading">Topic map</h2>
+        <h2 className="channel-section-heading">Карта тем</h2>
         {points.length === 0 && (
           <p className="channel-map-hint">
-            The topic map appears once post embeddings are generated (see README — run the data
-            pipeline with an OpenAI API key).
+            Карта тем появится после генерации эмбеддингов (см. README — запустите пайплайн с
+            ключом OpenAI).
           </p>
         )}
         {points.length > 0 && (
         <>
         <p className="channel-map-hint">
-          Every dot is a post; posts about similar things sit close together. Hover a dot to peek,
-          click a topic to highlight it.
+          Каждая точка — пост; близкие по смыслу посты лежат рядом. Наведите на точку, чтобы
+          увидеть превью, нажмите на тему, чтобы её подсветить.
         </p>
         <div className="map-legend">
           {clusters.map((cluster) => (
@@ -175,7 +164,7 @@ export default function ChannelExplorer({
             className="map-svg"
             viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}
             role="img"
-            aria-label="Topic map of channel posts"
+            aria-label="Карта тем постов канала"
           >
             <defs>
               <filter id="map-blur" x="-50%" y="-50%" width="200%" height="200%">

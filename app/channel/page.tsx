@@ -1,7 +1,9 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { loadMap, loadPosts, makePreview } from '@/lib/data';
+import { loadCurated, loadMap, loadPosts, makePreview, toMeta } from '@/lib/data';
 import ChannelExplorer, { type PreviewMap } from '@/components/ChannelExplorer';
+import ChannelInsights, { type ChannelStats } from '@/components/ChannelInsights';
+import StoryArcs from '@/components/StoryArcs';
 
 export const metadata: Metadata = {
   title: 'pomazkov.js',
@@ -13,8 +15,14 @@ export const metadata: Metadata = {
   },
 };
 
+function formatDate(iso: string): string {
+  const [y, m, d] = iso.slice(0, 10).split('-');
+  return `${d}.${m}.${y}`;
+}
+
 export default async function ChannelPage() {
-  const [map, posts] = await Promise.all([loadMap(), loadPosts()]);
+  const [map, posts, curated] = await Promise.all([loadMap(), loadPosts(), loadCurated()]);
+  const lastPostDate = posts.reduce((max, p) => (p.date > max ? p.date : max), '');
 
   const previews: PreviewMap = {};
   for (const post of posts) {
@@ -24,6 +32,68 @@ export default async function ChannelPage() {
       link: post.link,
     };
   }
+
+  const metas = posts
+    .map((p) => toMeta(p))
+    .sort((a, b) => a.date.localeCompare(b.date));
+  const byId = new Map(metas.map((m) => [m.id, m]));
+
+  // Hidden gems: long, substantial posts that got fewer reactions than the
+  // typical post of their year (early posts naturally have fewer reactions,
+  // so we normalize per year).
+  const rxOf = (id: number) => byId.get(id)!.rx;
+  const medianRxByYear = new Map<string, number>();
+  for (const year of new Set(metas.map((m) => m.date.slice(0, 4)))) {
+    const sorted = metas
+      .filter((m) => m.date.slice(0, 4) === year)
+      .map((m) => m.rx)
+      .sort((a, b) => a - b);
+    medianRxByYear.set(year, sorted[Math.floor(sorted.length / 2)] ?? 0);
+  }
+  const topIds = new Set(
+    [...metas].sort((a, b) => b.rx - a.rx).slice(0, 15).map((m) => m.id),
+  );
+  const underratedIds = posts
+    .filter((p) => p.text.length >= 600 && !topIds.has(p.id))
+    .map((p) => {
+      const median = medianRxByYear.get(p.date.slice(0, 4)) || 1;
+      return { id: p.id, score: rxOf(p.id) / median };
+    })
+    .filter((c) => c.score < 0.8)
+    .sort((a, b) => a.score - b.score)
+    .slice(0, 5)
+    .map((c) => c.id);
+
+  // Posting-rhythm stats
+  const sortedDates = posts.map((p) => p.date).sort();
+  let longestGapDays = 0;
+  let longestGapFrom = '';
+  let longestGapTo = '';
+  for (let i = 1; i < sortedDates.length; i++) {
+    const gap =
+      (new Date(sortedDates[i]).getTime() - new Date(sortedDates[i - 1]).getTime()) / 86400000;
+    if (gap > longestGapDays) {
+      longestGapDays = Math.round(gap);
+      longestGapFrom = formatDate(sortedDates[i - 1]);
+      longestGapTo = formatDate(sortedDates[i]);
+    }
+  }
+  const byMonth = new Map<string, number>();
+  for (const m of metas) byMonth.set(m.date.slice(0, 7), (byMonth.get(m.date.slice(0, 7)) ?? 0) + 1);
+  const [busiestMonth, busiestCount] = [...byMonth.entries()].sort((a, b) => b[1] - a[1])[0] ?? [
+    '',
+    0,
+  ];
+
+  const stats: ChannelStats = {
+    totalPosts: posts.length,
+    totalReactions: metas.reduce((s, m) => s + m.rx, 0),
+    longestGapDays,
+    longestGapFrom,
+    longestGapTo,
+    busiestMonth,
+    busiestCount,
+  };
 
   return (
     <div className="page">
@@ -35,31 +105,40 @@ export default async function ChannelPage() {
           </Link>
         </div>
         <nav className="site-nav">
-          <Link href="/">← Home</Link>
+          <Link href="/">← На главную</Link>
         </nav>
       </header>
 
       <section className="card channel-intro">
-        <h1 className="channel-heading">My Telegram channel</h1>
+        <h1 className="channel-heading">Мой телеграм-канал</h1>
         <p className="channel-copy">
-          Search through the posts by meaning, not just keywords — or explore the topic map to see
-          what the channel is about.
+          Ищите посты по смыслу, а не только по словам, — или изучайте карту тем, чтобы понять,
+          о чём канал.
         </p>
         {map.sample && (
           <p className="channel-notice">
-            Showing sample data — run the data pipeline (see README) to load real posts.
+            Показаны тестовые данные — запустите пайплайн из README, чтобы загрузить настоящие
+            посты.
           </p>
         )}
       </section>
 
-      <ChannelExplorer
+      <ChannelExplorer clusters={map.clusters} points={map.points} previews={previews} />
+
+      <StoryArcs curated={curated} byId={byId} />
+
+      <ChannelInsights
+        metas={metas}
         clusters={map.clusters}
-        points={map.points}
-        previews={previews}
+        underratedIds={underratedIds}
+        stats={stats}
       />
 
       <footer className="site-footer">
         <div className="footer-line">Made by me &copy;2026</div>
+        {lastPostDate && (
+          <div className="footer-line">Последний пост — {formatDate(lastPostDate)}</div>
+        )}
       </footer>
     </div>
   );

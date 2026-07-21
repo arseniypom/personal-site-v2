@@ -9,7 +9,9 @@
  *   OPENAI_API_KEY=sk-... npm run prepare-data -- --export data/raw/messages.html --channel pomazkovjs
  *
  * With OPENAI_API_KEY set it embeds every post (text-embedding-3-small),
- * clusters posts into topics (k-means), projects them to 2D (UMAP) and writes:
+ * classifies posts into topics (an LLM reads every post, designs the taxonomy
+ * and assigns each post; k-means is only a fallback), projects them to 2D
+ * (supervised UMAP) and writes:
  *   data/posts.json   — posts with cluster assignment
  *   data/map.json     — 2D points + cluster labels for the topic map
  *   data/vectors.json — unit-normalized embeddings for semantic search
@@ -99,15 +101,37 @@ function extractJsonText(message) {
   return '';
 }
 
+function parseJsonReactions(m) {
+  if (!Array.isArray(m.reactions)) return [];
+  return m.reactions
+    .map((r) => ({ e: r.emoji ?? '⭐', n: r.count ?? 0 }))
+    .filter((r) => r.n > 0)
+    .sort((a, b) => b.n - a.n);
+}
+
 function parseJsonExport(raw) {
   const posts = [];
   for (const m of raw.messages ?? []) {
     if (m.type !== 'message') continue;
     const text = extractJsonText(m).trim();
     if (text.length < MIN_TEXT_LENGTH) continue;
-    posts.push({ id: m.id, date: m.date, text });
+    posts.push({ id: m.id, date: m.date, text, reactions: parseJsonReactions(m) });
   }
   return posts;
+}
+
+function parseHtmlReactions(block) {
+  const rxBlock = block.match(/<span class="reactions">([\s\S]*?)<\/span>\s*<\/div>/);
+  if (!rxBlock) return [];
+  const list = [];
+  const rxRe = /<span class="emoji">\s*([\s\S]*?)\s*<\/span>\s*<span class="count">\s*(\d+)\s*<\/span>/g;
+  let r;
+  while ((r = rxRe.exec(rxBlock[1])) !== null) {
+    // custom emoji are wrapped in extra markup — keep only the character itself
+    const emoji = htmlToText(r[1]).trim() || '⭐';
+    list.push({ e: emoji, n: Number(r[2]) });
+  }
+  return list.sort((a, b) => b.n - a.n);
 }
 
 function parseHtmlExport(html) {
@@ -133,6 +157,7 @@ function parseHtmlExport(html) {
       id: starts[i].id,
       date: dateMatch ? parseTgDate(dateMatch[1]) : '',
       text,
+      reactions: parseHtmlReactions(block),
     });
   }
   return posts;
@@ -314,48 +339,92 @@ function labelClusters(posts, assignment, k) {
   return labels;
 }
 
-// ---------- cluster labels (LLM naming, falls back to tf-idf) ----------
+// ---------- LLM topic classification ----------
+//
+// Instead of k-means over embeddings (which produces arbitrary groups on a
+// personal blog where posts mix topics), a strong chat model reads EVERY post
+// and both designs the topic taxonomy and assigns each post to a topic.
+// Embeddings are still used for search and the UMAP projection.
 
-async function labelClustersLLM(posts, assignment, k, fallbackLabels, apiKey) {
-  const clusters = [];
+const CHAT_MODEL = 'gpt-4.1';
+
+async function classifyPostsLLM(posts, apiKey) {
+  const payload = posts.map((p) => ({ id: p.id, text: p.text.slice(0, 600) }));
+  const res = await fetch('https://api.openai.com/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${apiKey}`,
+    },
+    body: JSON.stringify({
+      model: CHAT_MODEL,
+      temperature: 0,
+      response_format: { type: 'json_object' },
+      messages: [
+        {
+          role: 'system',
+          content:
+            'Ты редактор, размечающий темы постов персонального Telegram-канала фронтенд-разработчика. ' +
+            'Прочитай ВСЕ посты и придумай 6–9 тем, которые честно отражают реальное содержание канала. ' +
+            'Каждая тема должна объединять не меньше 8 постов; не выдумывай тему, если постов о ней мало. ' +
+            'Анонсы видео/стримов, статистика канала, опросы и мемы — это отдельная тема про жизнь канала, ' +
+            'не смешивай её с темами самих обучающих материалов. ' +
+            'Название темы: 2–4 слова на русском, ёмкое, без кавычек и точек. ' +
+            'Верни JSON вида {"topics": ["...", ...], "assignments": {"<id поста>": <индекс темы>, ...}}. ' +
+            'В assignments должен быть КАЖДЫЙ пост из входных данных, ровно один раз.',
+        },
+        { role: 'user', content: JSON.stringify(payload) },
+      ],
+    }),
+  });
+  if (!res.ok) throw new Error(`chat completions: ${res.status} ${await res.text()}`);
+  const json = await res.json();
+  const parsed = JSON.parse(json.choices[0].message.content);
+  const labels = parsed.topics?.map(String);
+  if (!Array.isArray(labels) || labels.length < 2) throw new Error('bad topics shape');
+
+  const assignment = posts.map((p) => {
+    const c = parsed.assignments?.[String(p.id)];
+    return Number.isInteger(c) && c >= 0 && c < labels.length ? c : -1;
+  });
+  return { labels, assignment };
+}
+
+// Posts the model skipped get the topic of the nearest assigned centroid.
+function fillUnassigned(assignment, vectors, k) {
+  const dim = vectors[0].length;
+  const centroids = [];
   for (let c = 0; c < k; c++) {
-    const samples = [];
-    for (let i = 0; i < posts.length && samples.length < 8; i++) {
-      if (assignment[i] === c) samples.push(posts[i].text.slice(0, 300));
+    const centroid = new Float32Array(dim);
+    let members = 0;
+    for (let i = 0; i < vectors.length; i++) {
+      if (assignment[i] !== c) continue;
+      members++;
+      for (let j = 0; j < dim; j++) centroid[j] += vectors[i][j];
     }
-    clusters.push({ cluster: c, samples });
+    if (members > 0) for (let j = 0; j < dim; j++) centroid[j] /= members;
+    centroids.push(centroid);
   }
-  try {
-    const res = await fetch('https://api.openai.com/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({
-        model: 'gpt-4o-mini',
-        response_format: { type: 'json_object' },
-        messages: [
-          {
-            role: 'system',
-            content:
-              'Ты придумываешь короткие названия тем для кластеров постов Telegram-канала про разработку и карьеру в IT. ' +
-              `Верни JSON вида {"labels": ["...", ...]} — ровно ${k} названий, по одному на кластер, в том же порядке. ` +
-              'Название: 1–3 слова на русском, ёмкое, без кавычек и точек. Названия не должны повторяться.',
-          },
-          { role: 'user', content: JSON.stringify(clusters) },
-        ],
-      }),
-    });
-    if (!res.ok) throw new Error(`chat completions: ${res.status}`);
-    const json = await res.json();
-    const labels = JSON.parse(json.choices[0].message.content).labels;
-    if (Array.isArray(labels) && labels.length === k) return labels.map(String);
-    throw new Error('unexpected labels shape');
-  } catch (err) {
-    console.warn(`LLM labeling failed (${err.message}), keeping tf-idf labels.`);
-    return fallbackLabels;
+  let filled = 0;
+  for (let i = 0; i < assignment.length; i++) {
+    if (assignment[i] !== -1) continue;
+    let best = 0;
+    let bestDist = Infinity;
+    for (let c = 0; c < k; c++) {
+      let d = 0;
+      for (let j = 0; j < dim; j++) {
+        const diff = vectors[i][j] - centroids[c][j];
+        d += diff * diff;
+      }
+      if (d < bestDist) {
+        bestDist = d;
+        best = c;
+      }
+    }
+    assignment[i] = best;
+    filled++;
   }
+  if (filled > 0) console.warn(`  ${filled} posts were unassigned by the LLM, filled by nearest centroid.`);
 }
 
 // ---------- main ----------
@@ -378,6 +447,7 @@ async function main() {
     text: p.text,
     link: args.channel ? `https://t.me/${args.channel}/${p.id}` : null,
     cluster,
+    reactions: p.reactions ?? [],
   });
 
   await mkdir('data', { recursive: true });
@@ -404,26 +474,30 @@ async function main() {
   console.log(`Embedding with ${EMBED_MODEL} (${EMBED_DIM}d)…`);
   const vectors = await embedAll(posts, apiKey);
 
-  const k = Math.max(4, Math.min(10, Math.round(Math.sqrt(posts.length / 2))));
-  console.log(`Clustering into ${k} topics…`);
-  const rng = mulberry32(42);
-  const assignment = kmeans(vectors, k, rng);
-  console.log('Naming topics…');
-  const labels = await labelClustersLLM(
-    posts,
-    assignment,
-    k,
-    labelClusters(posts, assignment, k),
-    apiKey,
-  );
+  console.log(`Classifying posts into topics with ${CHAT_MODEL}…`);
+  let labels;
+  let assignment;
+  try {
+    ({ labels, assignment } = await classifyPostsLLM(posts, apiKey));
+    fillUnassigned(assignment, vectors, labels.length);
+    console.log(`  ${labels.length} topics: ${labels.join(' | ')}`);
+  } catch (err) {
+    console.warn(`LLM classification failed (${err.message}), falling back to k-means.`);
+    const k = Math.max(4, Math.min(8, Math.round(Math.sqrt(posts.length / 4))));
+    assignment = kmeans(vectors, k, mulberry32(42));
+    labels = labelClusters(posts, assignment, k);
+  }
 
-  console.log('Projecting to 2D with UMAP…');
+  console.log('Projecting to 2D with supervised UMAP…');
   const umap = new UMAP({
     nComponents: 2,
     nNeighbors: Math.min(15, posts.length - 1),
-    minDist: 0.1,
+    minDist: 0.6,
     random: mulberry32(7),
   });
+  // Pull same-topic posts together so clusters are spatially coherent on the
+  // map, while embeddings still shape the local structure.
+  umap.setSupervisedProjection(assignment, { targetWeight: 0.3 });
   const coords = umap.fit(vectors.map((v) => Array.from(v)));
 
   const xs = coords.map((c) => c[0]);
@@ -460,7 +534,7 @@ async function main() {
 
   console.log('\nDone:');
   console.log(`  data/posts.json   — ${posts.length} posts`);
-  console.log(`  data/map.json     — ${k} topics: ${labels.join(' | ')}`);
+  console.log(`  data/map.json     — ${labels.length} topics: ${labels.join(' | ')}`);
   console.log(`  data/vectors.json — ${posts.length}×${EMBED_DIM} embeddings`);
   console.log('\nCommit the data/ files and push — Vercel will redeploy with real data.');
 }
