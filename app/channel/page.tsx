@@ -108,9 +108,6 @@ export default async function ChannelPage() {
             <a className="channel-intro-action is-primary" href="#channel-search">
               Найти пост <span aria-hidden="true">↓</span>
             </a>
-            <a className="channel-intro-action is-secondary" href="#topic-map">
-              Изучить темы
-            </a>
           </div>
           {map.sample && (
             <p className="channel-notice">
