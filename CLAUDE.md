@@ -46,7 +46,8 @@ OPENAI_API_KEY=... npm run prepare-data -- --export data/raw/messages.html --cha
 ## /channel page structure
 
 `app/channel/page.tsx` — серверный оркестратор: собирает `PostMeta[]` (`toMeta` в `lib/data.ts`),
-считает статистику и задаёт порядок секций:
+считает статистику и задаёт порядок секций. Тёмный hero использует тёплые оранжевые акценты
+и якорные CTA к поиску (`#channel-search`) и карте (`#topic-map`):
 
 1. `ActivityRhythm` (ChannelInsights.tsx) — плитки статистики + хитмэп по месяцам;
    дата старта вычисляется из данных, будущие месяцы визуально отделены от пустых

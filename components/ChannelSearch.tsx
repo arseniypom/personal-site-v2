@@ -67,7 +67,7 @@ export default function ChannelSearch({
   }
 
   return (
-    <section className="card channel-search">
+    <section className="card channel-search" id="channel-search">
       <h2 className="channel-section-heading">Поиск по постам</h2>
 
       <div className="search-suggestions" aria-label="Примеры запросов">

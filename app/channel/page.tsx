@@ -72,43 +72,53 @@ export default async function ChannelPage() {
       </header>
 
       <section className="card channel-intro">
-        <div className="channel-title">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img className="channel-avatar" src="/channel-avatar.jpg" alt="Аватар канала" />
-          <h1 className="channel-heading">
-            <a
-              className="channel-title-link"
-              href="https://t.me/pomazkovjs"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              @pomazkov.js
-              <svg
-                className="channel-title-icon"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden="true"
+        <div className="channel-intro-content">
+          <div className="channel-title">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img className="channel-avatar" src="/channel-avatar.jpg" alt="Аватар канала" />
+            <h1 className="channel-heading">
+              <a
+                className="channel-title-link"
+                href="https://t.me/pomazkovjs"
+                target="_blank"
+                rel="noopener noreferrer"
               >
-                <path d="M7 17L17 7" />
-                <path d="M9 7h8v8" />
-              </svg>
-            </a>
-          </h1>
-        </div>
-        <p className="channel-copy">
-          Архив @pomazkov.js – {posts.length} постов о разработке, карьере, релокации и ИИ.
-          Изучайте канал по темам или найдите нужное по смыслу.
-        </p>
-        {map.sample && (
-          <p className="channel-notice">
-            Показаны тестовые данные — запустите пайплайн из README, чтобы загрузить настоящие
-            посты.
+                @pomazkov.js
+                <svg
+                  className="channel-title-icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M7 17L17 7" />
+                  <path d="M9 7h8v8" />
+                </svg>
+              </a>
+            </h1>
+          </div>
+          <p className="channel-copy">
+            Архив @pomazkov.js – {posts.length} постов о разработке, карьере, релокации и ИИ.
+            Изучайте канал по темам или найдите нужное по смыслу.
           </p>
-        )}
+          <div className="channel-intro-actions" aria-label="Навигация по архиву">
+            <a className="channel-intro-action is-primary" href="#channel-search">
+              Найти пост <span aria-hidden="true">↓</span>
+            </a>
+            <a className="channel-intro-action is-secondary" href="#topic-map">
+              Изучить темы
+            </a>
+          </div>
+          {map.sample && (
+            <p className="channel-notice">
+              Показаны тестовые данные — запустите пайплайн из README, чтобы загрузить настоящие
+              посты.
+            </p>
+          )}
+        </div>
       </section>
 
       <ActivityRhythm metas={metas} clusters={map.clusters} stats={stats} />

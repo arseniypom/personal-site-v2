@@ -47,7 +47,7 @@ export default function TopicMap({
 
   return (
     <>
-      <section className="card channel-map">
+      <section className="card channel-map" id="topic-map">
         <h2 className="channel-section-heading">Карта тем</h2>
         {points.length === 0 && (
           <p className="channel-map-hint">
