@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { loadCurated, loadMap, loadPosts, makePreview, toMeta } from '@/lib/data';
+import { loadCurated, loadMap, loadPosts, toMeta } from '@/lib/data';
 import ChannelSearch from '@/components/ChannelSearch';
 import TopicMap, { type PreviewMap } from '@/components/TopicMap';
 import {
@@ -29,50 +29,38 @@ function formatDate(iso: string): string {
 export default async function ChannelPage() {
   const [map, posts, curated] = await Promise.all([loadMap(), loadPosts(), loadCurated()]);
 
-  const previews: PreviewMap = {};
-  for (const post of posts) {
-    previews[post.id] = {
-      preview: makePreview(post.text, 160),
-      date: post.date.slice(0, 10),
-      link: post.link,
-    };
-  }
-
   const metas = posts
     .map((p) => toMeta(p))
     .sort((a, b) => a.date.localeCompare(b.date));
+  const previews: PreviewMap = Object.fromEntries(metas.map((m) => [m.id, m]));
   const byId = new Map(metas.map((m) => [m.id, m]));
 
   // Posting-rhythm stats
-  const sortedDates = posts.map((p) => p.date).sort();
-  let longestGapDays = 0;
-  let longestGapFrom = '';
-  let longestGapTo = '';
-  for (let i = 1; i < sortedDates.length; i++) {
-    const gap =
-      (new Date(sortedDates[i]).getTime() - new Date(sortedDates[i - 1]).getTime()) / 86400000;
-    if (gap > longestGapDays) {
-      longestGapDays = Math.round(gap);
-      longestGapFrom = formatDate(sortedDates[i - 1]);
-      longestGapTo = formatDate(sortedDates[i]);
-    }
-  }
   const byMonth = new Map<string, number>();
   for (const m of metas) byMonth.set(m.date.slice(0, 7), (byMonth.get(m.date.slice(0, 7)) ?? 0) + 1);
   const [busiestMonth, busiestCount] = [...byMonth.entries()].sort((a, b) => b[1] - a[1])[0] ?? [
     '',
     0,
   ];
+  const startMonth = metas[0]?.date.slice(0, 7) ?? '';
+  const dataThroughMonth = (map.updatedAt ?? metas[metas.length - 1]?.date ?? '').slice(0, 7);
+  const [startYear, startMonthNumber] = startMonth.split('-').map(Number);
+  const [endYear, endMonthNumber] = dataThroughMonth.split('-').map(Number);
+  const monthsInArchive =
+    startYear && endYear
+      ? (endYear - startYear) * 12 + endMonthNumber - startMonthNumber + 1
+      : 1;
 
   const stats: ChannelStats = {
     totalPosts: posts.length,
     totalReactions: metas.reduce((s, m) => s + m.rx, 0),
-    longestGapDays,
-    longestGapFrom,
-    longestGapTo,
+    averagePostsPerMonth: posts.length / Math.max(monthsInArchive, 1),
+    startMonth,
+    dataThroughMonth,
     busiestMonth,
     busiestCount,
   };
+  const years = [...new Set(metas.map((m) => m.date.slice(0, 4)))].sort().reverse();
 
   return (
     <div className="page">
@@ -112,7 +100,8 @@ export default async function ChannelPage() {
           </h1>
         </div>
         <p className="channel-copy">
-          Занимательная статистика по каналу и векторный поиск по постам
+          Архив @pomazkov.js – {posts.length} постов о разработке, карьере, релокации и ИИ.
+          Изучайте канал по темам или найдите нужное по смыслу.
         </p>
         {map.sample && (
           <p className="channel-notice">
@@ -132,7 +121,7 @@ export default async function ChannelPage() {
 
       <TopicsOverTime metas={metas} clusters={map.clusters} />
 
-      <ChannelSearch />
+      <ChannelSearch clusters={map.clusters} years={years} />
 
       <RandomPost metas={metas} clusters={map.clusters} />
 

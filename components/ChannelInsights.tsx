@@ -10,9 +10,9 @@ type Cluster = { id: number; label: string };
 export type ChannelStats = {
   totalPosts: number;
   totalReactions: number;
-  longestGapDays: number;
-  longestGapFrom: string;
-  longestGapTo: string;
+  averagePostsPerMonth: number;
+  startMonth: string; // YYYY-MM
+  dataThroughMonth: string; // YYYY-MM
   busiestMonth: string; // YYYY-MM
   busiestCount: number;
 };
@@ -32,10 +32,29 @@ const MONTHS_FULL = [
   'ноябрь',
   'декабрь',
 ];
+const MONTHS_GENITIVE = [
+  'января',
+  'февраля',
+  'марта',
+  'апреля',
+  'мая',
+  'июня',
+  'июля',
+  'августа',
+  'сентября',
+  'октября',
+  'ноября',
+  'декабря',
+];
 
 function monthName(ym: string): string {
   const [y, m] = ym.split('-');
   return `${MONTHS_FULL[Number(m) - 1]} ${y}`;
+}
+
+function fromMonthName(ym: string): string {
+  const [y, m] = ym.split('-');
+  return `${MONTHS_GENITIVE[Number(m) - 1]} ${y}`;
 }
 
 function plural(n: number, one: string, few: string, many: string): string {
@@ -58,20 +77,25 @@ export function TopPosts({
   clusters: Cluster[];
 }) {
   const [topic, setTopic] = useState<number | 'all'>('all');
+  const [expanded, setExpanded] = useState(false);
   const labelOf = useMemo(() => new Map(clusters.map((c) => [c.id, c.label])), [clusters]);
 
-  const shown = useMemo(() => {
+  const topPosts = useMemo(() => {
     const pool = topic === 'all' ? metas : metas.filter((m) => m.cluster === topic);
     return [...pool].sort((a, b) => b.rx - a.rx).slice(0, 7);
   }, [metas, topic]);
+  const shown = expanded ? topPosts : topPosts.slice(0, 2);
 
   return (
     <section className="card channel-panel">
-      <h2 className="channel-section-heading">Лучшие посты</h2>
+      <h2 className="channel-section-heading">Больше всего реакций</h2>
       <select
         className="topic-select"
         value={topic}
-        onChange={(e) => setTopic(e.target.value === 'all' ? 'all' : Number(e.target.value))}
+        onChange={(e) => {
+          setTopic(e.target.value === 'all' ? 'all' : Number(e.target.value));
+          setExpanded(false);
+        }}
         aria-label="Фильтр по теме"
       >
         <option value="all">Все темы</option>
@@ -86,6 +110,16 @@ export function TopPosts({
           <PostItem key={m.id} post={m} clusterLabel={labelOf.get(m.cluster)} />
         ))}
       </ul>
+      {topPosts.length > 2 && (
+        <button
+          type="button"
+          className="post-list-toggle"
+          onClick={() => setExpanded((value) => !value)}
+          aria-expanded={expanded}
+        >
+          {expanded ? 'Свернуть' : `Показать ещё ${topPosts.length - 2}`}
+        </button>
+      )}
     </section>
   );
 }
@@ -242,7 +276,9 @@ export function ActivityRhythm({
       <div className="stat-tiles">
         <div className="stat-tile is-yellow">
           <div className="stat-tile-value">{stats.totalPosts}</div>
-          <div className="stat-tile-label">{postsWord(stats.totalPosts)} с февраля 2022</div>
+          <div className="stat-tile-label">
+            {postsWord(stats.totalPosts)} с {fromMonthName(stats.startMonth)}
+          </div>
         </div>
         <div className="stat-tile is-purple">
           <div className="stat-tile-value">{stats.totalReactions.toLocaleString('ru-RU')}</div>
@@ -252,9 +288,12 @@ export function ActivityRhythm({
         </div>
         <div className="stat-tile">
           <div className="stat-tile-value">
-            {stats.longestGapDays} {plural(stats.longestGapDays, 'день', 'дня', 'дней')}
+            {stats.averagePostsPerMonth.toLocaleString('ru-RU', {
+              minimumFractionDigits: 1,
+              maximumFractionDigits: 1,
+            })}
           </div>
-          <div className="stat-tile-label">самая долгая пауза</div>
+          <div className="stat-tile-label">поста в месяц · в среднем</div>
         </div>
         <div className="stat-tile is-green">
           <div className="stat-tile-value">
@@ -278,6 +317,10 @@ export function ActivityRhythm({
           <div key={year} className="heatmap-row">
             <span className="heatmap-year">{year}</span>
             {months.map(({ ym, count }) => {
+              const isFuture = ym > stats.dataThroughMonth;
+              if (isFuture) {
+                return <span key={ym} className="heatmap-cell is-future" aria-hidden="true" />;
+              }
               const isSel = selectedMonth === ym;
               return (
                 <button

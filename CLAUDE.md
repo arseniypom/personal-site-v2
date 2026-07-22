@@ -48,12 +48,15 @@ OPENAI_API_KEY=... npm run prepare-data -- --export data/raw/messages.html --cha
 `app/channel/page.tsx` — серверный оркестратор: собирает `PostMeta[]` (`toMeta` в `lib/data.ts`),
 считает статистику и задаёт порядок секций:
 
-1. `ActivityRhythm` (ChannelInsights.tsx) — плитки статистики + хитмэп по месяцам
-2. `TopicMap` — карта тем (SVG, tooltips)
+1. `ActivityRhythm` (ChannelInsights.tsx) — плитки статистики + хитмэп по месяцам;
+   дата старта вычисляется из данных, будущие месяцы визуально отделены от пустых
+2. `TopicMap` — карта тем (SVG, hover-preview); клик/тап по точке открывает пост в модалке
 3. `StoryArcs` — таймлайн с номерами + серии (пилюли Ч1…Чn → ссылки в TG)
-4. `TopPosts` (ChannelInsights.tsx) — топ-7 по реакциям, фильтр-селект по темам
+4. `TopPosts` (ChannelInsights.tsx) — топ-7 по реакциям, сначала видны 2, остальные
+   раскрываются кнопкой; фильтр-селект по темам
 5. `TopicsOverTime` (ChannelInsights.tsx) — stacked-столбцы по годам, drill-down по клику
-6. `ChannelSearch` — векторный поиск (API `/api/search`)
+6. `ChannelSearch` — гибридный поиск (эмбеддинги + слова + boost ручных серий),
+   быстрые примеры запросов и фильтры по теме/году (API `/api/search`)
 7. `RandomPost` — кнопка внизу, открывает модалку (превью + «Ещё один»)
 
 `PostItem` — единая карточка поста: дата, чип темы, эмодзи+число реакций, превью ~200 символов,
