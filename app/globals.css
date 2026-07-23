@@ -1419,6 +1419,10 @@ a.series-part:hover {
 }
 
 @media (max-width: 640px) {
+  .channel-page {
+    padding-inline: 16px;
+  }
+
   .map-legend {
     display: none;
   }
@@ -1501,5 +1505,14 @@ a.series-part:hover {
     overflow: hidden;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 4;
+  }
+}
+
+@media (max-width: 360px) {
+  .channel-intro,
+  .channel-search,
+  .channel-map,
+  .channel-panel {
+    padding-inline: 24px;
   }
 }
