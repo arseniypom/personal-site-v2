@@ -1419,7 +1419,7 @@ a.series-part:hover {
 }
 
 @media (max-width: 640px) {
-  .channel-page {
+  .page {
     padding-inline: 16px;
   }
 

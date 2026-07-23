@@ -63,7 +63,7 @@ export default async function ChannelPage() {
   const years = [...new Set(metas.map((m) => m.date.slice(0, 4)))].sort().reverse();
 
   return (
-    <div className="page channel-page">
+    <div className="page">
       <header className="site-header">
         <div className="brand">
           <span className="brand-name">Arsenii</span>
