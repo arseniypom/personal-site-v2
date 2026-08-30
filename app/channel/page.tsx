@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { loadCurated, loadMap, loadPosts, toMeta } from '@/lib/data';
+import type { TimedPoint } from '@/lib/mapLayout';
 import ChannelSearch from '@/components/ChannelSearch';
 import TopicMap, { type PreviewMap } from '@/components/TopicMap';
 import {
@@ -62,6 +63,13 @@ export default async function ChannelPage() {
   };
   const years = [...new Set(metas.map((m) => m.date.slice(0, 4)))].sort().reverse();
 
+  // Точки карты получают дату поста — по ней работают фильтр по годам и режим таймлайна.
+  const dateById = new Map(posts.map((p) => [p.id, p.date.slice(0, 10)]));
+  const mapPoints: TimedPoint[] = map.points.map((point) => {
+    const date = dateById.get(point.id) ?? '';
+    return { ...point, t: Date.parse(date) || 0, year: date.slice(0, 4) };
+  });
+
   return (
     <div className="page">
       <header className="site-header">
@@ -120,7 +128,7 @@ export default async function ChannelPage() {
 
       <ActivityRhythm metas={metas} clusters={map.clusters} stats={stats} />
 
-      <TopicMap clusters={map.clusters} points={map.points} previews={previews} />
+      <TopicMap clusters={map.clusters} points={mapPoints} previews={previews} />
 
       <StoryArcs curated={curated} byId={byId} />
 

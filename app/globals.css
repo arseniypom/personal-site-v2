@@ -770,6 +770,83 @@ a {
   border-radius: 50%;
 }
 
+/* Map controls: mode switch + year pills */
+
+.map-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.map-modes {
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 2px;
+  padding: 3px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.map-mode {
+  border: 0;
+  border-radius: 999px;
+  padding: 8px 18px;
+  background: transparent;
+  color: #cfc7cb;
+  font-family: inherit;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.map-mode:hover {
+  color: #f2eef0;
+}
+
+.map-mode.is-active {
+  background: #ffd94d;
+  color: #1a1206;
+  font-weight: 600;
+}
+
+.map-years {
+  display: flex;
+  gap: 8px;
+  min-width: 0;
+  overflow-x: auto;
+  padding-bottom: 2px;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.map-years::-webkit-scrollbar {
+  display: none;
+}
+
+.map-year {
+  flex: 0 0 auto;
+  padding: 7px 15px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: transparent;
+  color: #ded6da;
+  font-family: inherit;
+  font-size: 14px;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+}
+
+.map-year:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.map-year.is-active {
+  border-color: #ffd94d;
+  color: #ffd94d;
+  background: rgba(255, 217, 77, 0.1);
+}
+
 .map-wrap {
   position: relative;
   border-radius: 20px;
@@ -783,6 +860,71 @@ a {
   height: auto;
 }
 
+/* Point layer: position lives in CSS custom properties so the browser interpolates it */
+
+.map-dot,
+.map-glow {
+  transform: translate(var(--map-x), var(--map-y));
+  transition: transform 0.62s cubic-bezier(0.22, 0.61, 0.36, 1), opacity 0.32s ease;
+}
+
+.map-dot {
+  cursor: pointer;
+}
+
+.map-dot:hover {
+  transform: translate(var(--map-x), var(--map-y)) scale(1.45);
+  transition: transform 0.15s ease, opacity 0.32s ease;
+}
+
+/* Stagger only while the layout is actually changing — otherwise hover would lag too. */
+.map-wrap.is-moving .map-dot,
+.map-wrap.is-moving .map-glow {
+  transition-delay: var(--map-stagger);
+}
+
+/* The blurred glow re-rasterizes on every frame, so it steps aside during the flight. */
+.map-glow-layer {
+  transition: opacity 0.3s ease;
+}
+
+.map-wrap.is-moving .map-glow-layer {
+  opacity: 0;
+}
+
+.map-axis line {
+  stroke: rgba(255, 255, 255, 0.07);
+  stroke-width: 0.25;
+}
+
+.map-axis text {
+  font-size: 2.3px;
+  font-family: inherit;
+  fill: #8a8286;
+}
+
+.map-axis .map-lane-label {
+  font-size: 2.1px;
+  font-weight: 600;
+  fill: currentColor;
+  paint-order: stroke;
+  stroke: #14100f;
+  stroke-width: 0.5px;
+}
+
+.map-empty {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  display: grid;
+  place-content: center;
+  text-align: center;
+  padding: 0 24px;
+  font-size: 15px;
+  color: #8a8286;
+  pointer-events: none;
+}
+
 .map-cluster-label {
   font-size: 2.4px;
   font-weight: 600;
@@ -792,6 +934,25 @@ a {
   stroke-width: 0.6px;
   pointer-events: none;
   text-anchor: middle;
+  transition: transform 0.62s cubic-bezier(0.22, 0.61, 0.36, 1), opacity 0.3s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .map-dot,
+  .map-glow,
+  .map-glow-layer,
+  .map-cluster-label {
+    transition: none;
+  }
+
+  .map-wrap.is-moving .map-dot,
+  .map-wrap.is-moving .map-glow {
+    transition-delay: 0s;
+  }
+
+  .map-wrap.is-moving .map-glow-layer {
+    opacity: 1;
+  }
 }
 
 .map-tooltip {
@@ -1423,8 +1584,38 @@ a.series-part:hover {
     padding-inline: 16px;
   }
 
+  /* Легенда — единственный ключ «цвет → тема», в таймлайне подписи дорожек скрыты,
+     поэтому на мобиле она не прячется, а становится скроллируемым рядом. */
   .map-legend {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 8px;
+    padding-bottom: 2px;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .map-legend::-webkit-scrollbar {
     display: none;
+  }
+
+  .map-legend-chip {
+    flex: 0 0 auto;
+    padding: 6px 12px;
+    font-size: 13px;
+  }
+
+  .map-controls {
+    gap: 10px;
+  }
+
+  .map-modes {
+    flex: 1 1 auto;
+  }
+
+  .map-mode {
+    flex: 1 1 auto;
+    padding: 8px 12px;
   }
 
   .stat-tiles {
