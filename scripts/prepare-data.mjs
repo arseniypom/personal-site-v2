@@ -38,6 +38,7 @@ function parseArgs(argv) {
   for (let i = 2; i < argv.length; i++) {
     if (argv[i] === '--export') args.export = argv[++i];
     else if (argv[i] === '--channel') args.channel = argv[++i];
+    else if (argv[i] === '--reviewed') args.reviewed = true;
   }
   return args;
 }
@@ -433,8 +434,10 @@ async function main() {
   const args = parseArgs(process.argv);
   const apiKey = process.env.OPENAI_API_KEY;
 
-  console.log(`Reading export: ${args.export}`);
-  const posts = await loadExport(args.export);
+  console.log(args.reviewed ? 'Reading existing posts and reviewed topics' : `Reading export: ${args.export}`);
+  const posts = args.reviewed
+    ? JSON.parse(await readFile('data/posts.json', 'utf8'))
+    : await loadExport(args.export);
   if (posts.length === 0) {
     console.error('No usable posts found in the export.');
     process.exit(1);
@@ -445,14 +448,14 @@ async function main() {
     id: p.id,
     date: p.date,
     text: p.text,
-    link: args.channel ? `https://t.me/${args.channel}/${p.id}` : null,
+    link: args.channel ? `https://t.me/${args.channel}/${p.id}` : (p.link ?? null),
     cluster,
     reactions: p.reactions ?? [],
   });
 
   await mkdir('data', { recursive: true });
 
-  if (!apiKey) {
+  if (!apiKey && !args.reviewed) {
     console.warn(
       '\nOPENAI_API_KEY is not set — writing posts for keyword search only.\n' +
         'Semantic search and the topic map will activate after you re-run this\n' +
@@ -475,12 +478,31 @@ async function main() {
     return;
   }
 
-  console.log(`Embedding with ${EMBED_MODEL} (${EMBED_DIM}d)…`);
-  const vectors = await embedAll(posts, apiKey);
-
-  console.log(`Classifying posts into topics with ${CHAT_MODEL}…`);
+  let vectors;
   let labels;
   let assignment;
+  if (args.reviewed) {
+    const reviewed = JSON.parse(await readFile('data/reviewed-topics.json', 'utf8'));
+    const cached = JSON.parse(await readFile('data/vectors.json', 'utf8'));
+    labels = reviewed.topics;
+    assignment = posts.map((p) => reviewed.assignments[String(p.id)]);
+    if (!Array.isArray(labels) || labels.length !== 8 ||
+        assignment.some((c) => !Number.isInteger(c) || c < 0 || c >= labels.length)) {
+      throw new Error('Review every post in data/reviewed-topics.json before rebuilding.');
+    }
+    const buf = Buffer.from(cached.b64, 'base64');
+    if (cached.dim !== EMBED_DIM || cached.ids.length !== posts.length ||
+        !cached.ids.every((id, i) => id === posts[i].id) ||
+        buf.length !== posts.length * EMBED_DIM * 4) {
+      throw new Error('Cached vectors do not match posts; run the export pipeline first.');
+    }
+    const flat = new Float32Array(buf.buffer, buf.byteOffset, buf.length / 4);
+    vectors = posts.map((_, i) => flat.slice(i * EMBED_DIM, (i + 1) * EMBED_DIM));
+    console.log('Applying reviewed topics; reusing existing embeddings.');
+  } else {
+  console.log(`Embedding with ${EMBED_MODEL} (${EMBED_DIM}d)…`);
+  vectors = await embedAll(posts, apiKey);
+  console.log(`Classifying posts into topics with ${CHAT_MODEL}…`);
   try {
     ({ labels, assignment } = await classifyPostsLLM(posts, apiKey));
     fillUnassigned(assignment, vectors, labels.length);
@@ -490,6 +512,7 @@ async function main() {
     const k = Math.max(4, Math.min(8, Math.round(Math.sqrt(posts.length / 4))));
     assignment = kmeans(vectors, k, mulberry32(42));
     labels = labelClusters(posts, assignment, k);
+  }
   }
 
   console.log('Projecting to 2D with supervised UMAP…');
