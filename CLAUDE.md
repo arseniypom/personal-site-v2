@@ -75,7 +75,7 @@ OPENAI_API_KEY=... npm run prepare-data -- --export data/raw/messages.html --cha
 - `opacity` на сегментах графика создаёт stacking context — чтобы тултип не прятался за
   соседними колонками, при hover поднимаются `z-index` и колонка, и сегмент
   (`.topics-col:hover`, `.heatmap-row:hover`).
-- Все 236 постов сериализуются в RSC-payload — grep по HTML находит текст постов даже там,
+- Все посты сериализуются в RSC-payload — grep по HTML находит текст постов даже там,
   где они не отображаются; проверять видимые списки, а не raw HTML.
 - Клиентские секции получают один и тот же `metas` (React Flight дедуплицирует по ссылке).
 

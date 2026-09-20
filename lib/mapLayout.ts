@@ -3,7 +3,7 @@
 //
 // The expensive part (embeddings, LLM taxonomy, supervised UMAP) is precomputed offline by
 // scripts/prepare-data.mjs and lives in data/map.json. Everything here is O(n log n)
-// arithmetic on those coordinates — ~0.2 ms for the current 236 posts.
+// arithmetic on those coordinates — ~0.2 ms for the current archive size.
 import type { MapPoint } from './data';
 
 export type TimedPoint = MapPoint & {
