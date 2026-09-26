@@ -41,10 +41,10 @@ export default function Home() {
             </div>
           </div>
           <h1 className="hero-heading">
-            Engineering fintech at scale, shipping my own products.
+            Building fintech at scale at Wise. Writing about engineering and AI.
           </h1>
           <p className="hero-copy">
-            London · UK Global Talent. I write about engineering and AI.
+            London · UK Global Talent.
           </p>
         </section>
 
@@ -71,7 +71,7 @@ export default function Home() {
                 Wise
               </a>
             </li>
-            <li>Building a few independent products on the side.</li>
+            <li>Mentoring engineers on growing into senior and lead roles.</li>
           </ul>
         </section>
 
