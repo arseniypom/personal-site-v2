@@ -68,3 +68,19 @@ npm run prepare-data -- --export data/raw/messages.html --channel pomazkovjs
 1. Импортируй репозиторий в Vercel — фреймворк определится автоматически.
 2. В настройках проекта добавь env-переменную `OPENAI_API_KEY` (нужна для семантического поиска в рантайме).
 3. Привяжи домен: Project → Settings → Domains → добавь домен и пропиши у регистратора DNS-записи, которые покажет Vercel.
+
+## AI model guide
+
+`/ai-models` is an English-language, manually reviewed model comparison. Its snapshot
+lives in `data/ai-models.json`; each configuration links to its Artificial Analysis
+source. The current index version is 4.3.2 (checked 2026-09-28).
+
+Update scores and weighted cost per Intelligence Index task together, using the
+same index version. Preserve the exact effort / thinking / fallback configuration.
+Token prices are not interchangeable with benchmark task costs. The client computes
+the quality/cost frontier separately for All, OpenAI, and Anthropic using the displayed
+rounded values. Missing configurations are outside the guide's scope, not automatically
+excluded as inferior. When refreshing data, also review dates, methodology, and metadata in `app/ai-models/`.
+
+Run `npm run dev -- --port 3199`, then visit `http://localhost:3199/ai-models`.
+Stop the dev server before `npm run build` because both use the `.next` directory.
