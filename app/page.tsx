@@ -7,7 +7,6 @@ export default function Home() {
           <span className="brand-role">, Software Engineer</span>
         </div>
         <nav className="site-nav">
-          <a href="/ai-models">AI models</a>
           <a href="#currently">Currently</a>
           <a href="#contact">Contact</a>
         </nav>
