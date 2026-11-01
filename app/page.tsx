@@ -44,7 +44,7 @@ export default function Home() {
             Building fintech at scale at Wise. Writing about engineering and AI.
           </h1>
           <p className="hero-copy">
-            London · UK Global Talent.
+            London · UK Global Talent
           </p>
         </section>
 
@@ -71,7 +71,8 @@ export default function Home() {
                 Wise
               </a>
             </li>
-            <li>Mentoring engineers on growing into senior and lead roles.</li>
+            <li>Advising non-technical builders and teams on architecture and AI workflows</li>
+            <li>Mentoring engineers on growing into senior roles</li>
           </ul>
         </section>
 

@@ -295,6 +295,22 @@ a {
   position: relative;
 }
 
+.currently-list li {
+  padding-left: 20px;
+}
+
+.currently-list li::before {
+  content: '';
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-left: -20px;
+  margin-right: 13px;
+  border-radius: 999px;
+  background: #ffd94d;
+  vertical-align: 0.17em;
+}
+
 /* Contact */
 
 .contact {
