@@ -1,0 +1,366 @@
+{
+  "checkedAt": "2026-11-10",
+  "indexVersion": "5.0.1",
+  "models": [
+    {
+      "id": "gpt-6-astra-low",
+      "name": "GPT-6 Astra",
+      "provider": "openai",
+      "effort": "low",
+      "score": 43,
+      "cost": 1.42,
+      "source": "https://artificialanalysis.ai/models/gpt-6-astra-low"
+    },
+    {
+      "id": "gpt-6-astra-medium",
+      "name": "GPT-6 Astra",
+      "provider": "openai",
+      "effort": "medium",
+      "score": 52,
+      "cost": 2.73,
+      "source": "https://artificialanalysis.ai/models/gpt-6-astra-medium"
+    },
+    {
+      "id": "gpt-6-astra-high",
+      "name": "GPT-6 Astra",
+      "provider": "openai",
+      "effort": "high",
+      "score": 55,
+      "cost": 3.24,
+      "source": "https://artificialanalysis.ai/models/gpt-6-astra-high"
+    },
+    {
+      "id": "gpt-6-astra-xhigh",
+      "name": "GPT-6 Astra",
+      "provider": "openai",
+      "effort": "xhigh",
+      "score": 55,
+      "cost": 3.66,
+      "source": "https://artificialanalysis.ai/models/gpt-6-astra-xhigh"
+    },
+    {
+      "id": "gpt-6-1-sol-low",
+      "name": "GPT-6.1 Sol",
+      "provider": "openai",
+      "effort": "low",
+      "score": 35,
+      "cost": 0.16,
+      "source": "https://artificialanalysis.ai/models/gpt-6-1-sol-low"
+    },
+    {
+      "id": "gpt-6-1-sol-medium",
+      "name": "GPT-6.1 Sol",
+      "provider": "openai",
+      "effort": "medium",
+      "score": 46,
+      "cost": 0.36,
+      "source": "https://artificialanalysis.ai/models/gpt-6-1-sol-medium"
+    },
+    {
+      "id": "gpt-6-1-sol-high",
+      "name": "GPT-6.1 Sol",
+      "provider": "openai",
+      "effort": "high",
+      "score": 50,
+      "cost": 0.59,
+      "source": "https://artificialanalysis.ai/models/gpt-6-1-sol-high"
+    },
+    {
+      "id": "gpt-6-1-sol-xhigh",
+      "name": "GPT-6.1 Sol",
+      "provider": "openai",
+      "effort": "xhigh",
+      "score": 52,
+      "cost": 0.76,
+      "source": "https://artificialanalysis.ai/models/gpt-6-1-sol-xhigh"
+    },
+    {
+      "id": "gpt-6-1-sol",
+      "name": "GPT-6.1 Sol",
+      "provider": "openai",
+      "effort": "max",
+      "score": 55,
+      "cost": 1.27,
+      "source": "https://artificialanalysis.ai/models/gpt-6-1-sol"
+    },
+    {
+      "id": "gpt-6-1-terra-low",
+      "name": "GPT-6.1 Terra",
+      "provider": "openai",
+      "effort": "low",
+      "score": 29,
+      "cost": 0.07,
+      "source": "https://artificialanalysis.ai/models/gpt-6-1-terra-low"
+    },
+    {
+      "id": "gpt-6-1-terra-medium",
+      "name": "GPT-6.1 Terra",
+      "provider": "openai",
+      "effort": "medium",
+      "score": 38,
+      "cost": 0.17,
+      "source": "https://artificialanalysis.ai/models/gpt-6-1-terra-medium"
+    },
+    {
+      "id": "gpt-6-1-terra-high",
+      "name": "GPT-6.1 Terra",
+      "provider": "openai",
+      "effort": "high",
+      "score": 42,
+      "cost": 0.26,
+      "source": "https://artificialanalysis.ai/models/gpt-6-1-terra-high"
+    },
+    {
+      "id": "gpt-6-1-terra-xhigh",
+      "name": "GPT-6.1 Terra",
+      "provider": "openai",
+      "effort": "xhigh",
+      "score": 45,
+      "cost": 0.4,
+      "source": "https://artificialanalysis.ai/models/gpt-6-1-terra-xhigh"
+    },
+    {
+      "id": "gpt-6-1-terra",
+      "name": "GPT-6.1 Terra",
+      "provider": "openai",
+      "effort": "max",
+      "score": 51,
+      "cost": 0.96,
+      "source": "https://artificialanalysis.ai/models/gpt-6-1-terra"
+    },
+    {
+      "id": "gpt-6-luna-medium",
+      "name": "GPT-6 Luna",
+      "provider": "openai",
+      "effort": "medium",
+      "score": 18,
+      "cost": 0.04,
+      "source": "https://artificialanalysis.ai/models/gpt-6-luna-medium"
+    },
+    {
+      "id": "gpt-6-luna-high",
+      "name": "GPT-6 Luna",
+      "provider": "openai",
+      "effort": "high",
+      "score": 21,
+      "cost": 0.07,
+      "source": "https://artificialanalysis.ai/models/gpt-6-luna-high"
+    },
+    {
+      "id": "gpt-6-luna-xhigh",
+      "name": "GPT-6 Luna",
+      "provider": "openai",
+      "effort": "xhigh",
+      "score": 23,
+      "cost": 0.1,
+      "source": "https://artificialanalysis.ai/models/gpt-6-luna-xhigh"
+    },
+    {
+      "id": "claude-opus-5-5-low",
+      "name": "Claude Opus 5.5",
+      "provider": "anthropic",
+      "effort": "low",
+      "score": 35,
+      "cost": 0.98,
+      "source": "https://artificialanalysis.ai/models/claude-opus-5-5-low"
+    },
+    {
+      "id": "claude-opus-5-5-medium",
+      "name": "Claude Opus 5.5",
+      "provider": "anthropic",
+      "effort": "medium",
+      "score": 48,
+      "cost": 2.45,
+      "source": "https://artificialanalysis.ai/models/claude-opus-5-5-medium"
+    },
+    {
+      "id": "claude-opus-5-5-high",
+      "name": "Claude Opus 5.5",
+      "provider": "anthropic",
+      "effort": "high",
+      "score": 52,
+      "cost": 3.46,
+      "source": "https://artificialanalysis.ai/models/claude-opus-5-5-high"
+    },
+    {
+      "id": "claude-opus-5-5-xhigh",
+      "name": "Claude Opus 5.5",
+      "provider": "anthropic",
+      "effort": "xhigh",
+      "score": 57,
+      "cost": 6.05,
+      "source": "https://artificialanalysis.ai/models/claude-opus-5-5-xhigh"
+    },
+    {
+      "id": "gpt-6-astra",
+      "name": "GPT-6 Astra",
+      "provider": "openai",
+      "effort": "max",
+      "score": 57,
+      "cost": 6.24,
+      "source": "https://artificialanalysis.ai/models/gpt-6-astra"
+    },
+    {
+      "id": "gpt-6-luna",
+      "name": "GPT-6 Luna",
+      "provider": "openai",
+      "effort": "max",
+      "score": 28,
+      "cost": 0.15,
+      "source": "https://artificialanalysis.ai/models/gpt-6-luna"
+    },
+    {
+      "id": "claude-opus-5-5",
+      "name": "Claude Opus 5.5",
+      "provider": "anthropic",
+      "effort": "max",
+      "score": 59,
+      "cost": 10.04,
+      "source": "https://artificialanalysis.ai/models/claude-opus-5-5"
+    },
+    {
+      "id": "claude-fable-5-2",
+      "name": "Claude Fable 5.2",
+      "provider": "anthropic",
+      "effort": "max",
+      "score": 65,
+      "cost": 26.54,
+      "source": "https://artificialanalysis.ai/models/claude-fable-5-2"
+    },
+    {
+      "id": "claude-sonnet-5-5",
+      "name": "Claude Sonnet 5.5",
+      "provider": "anthropic",
+      "effort": "max",
+      "score": 55,
+      "cost": 10.02,
+      "source": "https://artificialanalysis.ai/models/claude-sonnet-5-5"
+    },
+    {
+      "id": "claude-sonnet-5-5-low",
+      "name": "Claude Sonnet 5.5",
+      "provider": "anthropic",
+      "effort": "low",
+      "score": 26,
+      "cost": 0.51,
+      "source": "https://artificialanalysis.ai/models/claude-sonnet-5-5-low"
+    },
+    {
+      "id": "claude-sonnet-5-5-medium",
+      "name": "Claude Sonnet 5.5",
+      "provider": "anthropic",
+      "effort": "medium",
+      "score": 31,
+      "cost": 0.78,
+      "source": "https://artificialanalysis.ai/models/claude-sonnet-5-5-medium"
+    },
+    {
+      "id": "claude-sonnet-5-5-high",
+      "name": "Claude Sonnet 5.5",
+      "provider": "anthropic",
+      "effort": "high",
+      "score": 42,
+      "cost": 1.64,
+      "source": "https://artificialanalysis.ai/models/claude-sonnet-5-5-high"
+    },
+    {
+      "id": "claude-sonnet-5-5-xhigh",
+      "name": "Claude Sonnet 5.5",
+      "provider": "anthropic",
+      "effort": "xhigh",
+      "score": 50,
+      "cost": 4.09,
+      "source": "https://artificialanalysis.ai/models/claude-sonnet-5-5-xhigh"
+    },
+    {
+      "id": "gpt-6-luna-low",
+      "name": "GPT-6 Luna",
+      "provider": "openai",
+      "effort": "low",
+      "score": 10,
+      "cost": 0.01,
+      "source": "https://artificialanalysis.ai/models/gpt-6-luna-low"
+    },
+    {
+      "id": "claude-fable-5-2-low",
+      "name": "Claude Fable 5.2",
+      "provider": "anthropic",
+      "effort": "low",
+      "score": 54,
+      "cost": 3.1,
+      "source": "https://artificialanalysis.ai/models/claude-fable-5-2-low"
+    },
+    {
+      "id": "claude-fable-5-2-medium",
+      "name": "Claude Fable 5.2",
+      "provider": "anthropic",
+      "effort": "medium",
+      "score": 56,
+      "cost": 3.8,
+      "source": "https://artificialanalysis.ai/models/claude-fable-5-2-medium"
+    },
+    {
+      "id": "claude-fable-5-2-high",
+      "name": "Claude Fable 5.2",
+      "provider": "anthropic",
+      "effort": "high",
+      "score": 62,
+      "cost": 9.08,
+      "source": "https://artificialanalysis.ai/models/claude-fable-5-2-high"
+    },
+    {
+      "id": "claude-fable-5-2-xhigh",
+      "name": "Claude Fable 5.2",
+      "provider": "anthropic",
+      "effort": "xhigh",
+      "score": 62,
+      "cost": 14.83,
+      "source": "https://artificialanalysis.ai/models/claude-fable-5-2-xhigh"
+    },
+    {
+      "id": "claude-haiku-5-5-low",
+      "name": "Claude Haiku 5.5",
+      "provider": "anthropic",
+      "effort": "low",
+      "score": 19,
+      "cost": 0.04,
+      "source": "https://artificialanalysis.ai/models/claude-haiku-5-5-low"
+    },
+    {
+      "id": "claude-haiku-5-5-medium",
+      "name": "Claude Haiku 5.5",
+      "provider": "anthropic",
+      "effort": "medium",
+      "score": 25,
+      "cost": 0.09,
+      "source": "https://artificialanalysis.ai/models/claude-haiku-5-5-medium"
+    },
+    {
+      "id": "claude-haiku-5-5-high",
+      "name": "Claude Haiku 5.5",
+      "provider": "anthropic",
+      "effort": "high",
+      "score": 30,
+      "cost": 0.16,
+      "source": "https://artificialanalysis.ai/models/claude-haiku-5-5-high"
+    },
+    {
+      "id": "claude-haiku-5-5-xhigh",
+      "name": "Claude Haiku 5.5",
+      "provider": "anthropic",
+      "effort": "xhigh",
+      "score": 35,
+      "cost": 0.25,
+      "source": "https://artificialanalysis.ai/models/claude-haiku-5-5-xhigh"
+    },
+    {
+      "id": "claude-haiku-5-5",
+      "name": "Claude Haiku 5.5",
+      "provider": "anthropic",
+      "effort": "max",
+      "score": 36,
+      "cost": 0.41,
+      "source": "https://artificialanalysis.ai/models/claude-haiku-5-5"
+    }
+  ]
+}
