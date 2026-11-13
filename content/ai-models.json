@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-11-10",
+  "checkedAt": "2026-11-06",
   "indexVersion": "5.0.1",
   "models": [
     {
@@ -219,13 +219,13 @@
       "source": "https://artificialanalysis.ai/models/claude-opus-5-5"
     },
     {
-      "id": "claude-fable-5-2",
-      "name": "Claude Fable 5.2",
+      "id": "claude-fable-5-1",
+      "name": "Claude Fable 5.1",
       "provider": "anthropic",
       "effort": "max",
-      "score": 65,
-      "cost": 26.54,
-      "source": "https://artificialanalysis.ai/models/claude-fable-5-2"
+      "score": 49,
+      "cost": 12.99,
+      "source": "https://artificialanalysis.ai/models/claude-fable-5-1"
     },
     {
       "id": "claude-sonnet-5-5",
@@ -282,40 +282,40 @@
       "source": "https://artificialanalysis.ai/models/gpt-6-luna-low"
     },
     {
-      "id": "claude-fable-5-2-low",
-      "name": "Claude Fable 5.2",
+      "id": "claude-fable-5-1-low",
+      "name": "Claude Fable 5.1",
       "provider": "anthropic",
       "effort": "low",
-      "score": 54,
-      "cost": 3.1,
-      "source": "https://artificialanalysis.ai/models/claude-fable-5-2-low"
+      "score": 39,
+      "cost": 4.47,
+      "source": "https://artificialanalysis.ai/models/claude-fable-5-1-low"
     },
     {
-      "id": "claude-fable-5-2-medium",
-      "name": "Claude Fable 5.2",
+      "id": "claude-fable-5-1-medium",
+      "name": "Claude Fable 5.1",
       "provider": "anthropic",
       "effort": "medium",
-      "score": 56,
-      "cost": 3.8,
-      "source": "https://artificialanalysis.ai/models/claude-fable-5-2-medium"
+      "score": 43,
+      "cost": 5.56,
+      "source": "https://artificialanalysis.ai/models/claude-fable-5-1-medium"
     },
     {
-      "id": "claude-fable-5-2-high",
-      "name": "Claude Fable 5.2",
+      "id": "claude-fable-5-1-high",
+      "name": "Claude Fable 5.1",
       "provider": "anthropic",
       "effort": "high",
-      "score": 62,
-      "cost": 9.08,
-      "source": "https://artificialanalysis.ai/models/claude-fable-5-2-high"
+      "score": 47,
+      "cost": 7.54,
+      "source": "https://artificialanalysis.ai/models/claude-fable-5-1-high"
     },
     {
-      "id": "claude-fable-5-2-xhigh",
-      "name": "Claude Fable 5.2",
+      "id": "claude-fable-5-1-xhigh",
+      "name": "Claude Fable 5.1",
       "provider": "anthropic",
       "effort": "xhigh",
-      "score": 62,
-      "cost": 14.83,
-      "source": "https://artificialanalysis.ai/models/claude-fable-5-2-xhigh"
+      "score": 50,
+      "cost": 10.85,
+      "source": "https://artificialanalysis.ai/models/claude-fable-5-1-xhigh"
     },
     {
       "id": "claude-haiku-5-5-low",
