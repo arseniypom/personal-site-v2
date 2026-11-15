@@ -30,10 +30,13 @@ export default function ModelRanking() {
       <div className={styles.switch} role="group" aria-label="Model developer">
         {([['all', 'All'], ['openai', 'OpenAI'], ['anthropic', 'Anthropic']] as const).map(([value, title]) => <button key={value} type="button" aria-pressed={provider === value} onClick={() => setProvider(value)}>{title}</button>)}
       </div>
-      <button className={styles.viewToggle} type="button" role="switch" aria-checked={hideCostly} onClick={() => setHideCostly(value => !value)}>
-        <span>Hide poor value</span>
-        <span className={styles.toggleTrack} aria-hidden="true"><span /></span>
-      </button>
+      <div className={styles.toggleGroup}>
+        <Popover><PopoverTrigger className={styles.info} openOnHover delay={100} closeDelay={150} aria-label="What “Hide poor value” does">i</PopoverTrigger><PopoverContent className={styles.infoContent}>Hides options that are both weaker and more expensive than another one.</PopoverContent></Popover>
+        <button className={styles.viewToggle} type="button" role="switch" aria-checked={hideCostly} onClick={() => setHideCostly(value => !value)}>
+          <span>Hide poor value</span>
+          <span className={styles.toggleTrack} aria-hidden="true"><span /></span>
+        </button>
+      </div>
       <span className={styles.srOnly} aria-live="polite">Configurations: {visible.length}</span>
     </div>
     <div className={styles.tiers}>

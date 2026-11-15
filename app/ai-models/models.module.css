@@ -71,6 +71,7 @@ html:has(.page) ::selection { background: #4a3f1a; color: #fff; }
 @media (prefers-reduced-motion: reduce) { .switch button { transition: none; } }
 
 .toolbar { display: flex; justify-content: space-between; flex-wrap: wrap; align-items: center; gap: 12px; }
+.toggleGroup { display: inline-flex; align-items: center; gap: 10px; }
 .viewToggle { display: inline-flex; align-items: center; gap: 12px; min-height: 44px; padding: 0; border: 0; background: transparent; color: #bfb6bb; font: inherit; font-size: 13px; cursor: pointer; }
 .viewToggle:hover { color: #f2eef0; }
 .toggleTrack { display: inline-flex; align-items: center; width: 36px; height: 22px; padding: 3px; border-radius: 999px; background: #443940; transition: background .15s; }
@@ -101,7 +102,7 @@ html:has(.page) ::selection { background: #4a3f1a; color: #fff; }
   .tableAll .scoreBar { display: none; }
 }
 @media (max-width: 640px) {
-  .viewToggle { margin-left: auto; order: -1; }
+  .toggleGroup { margin-left: auto; order: -1; }
   .tableAll, .tableAll thead, .tableAll tbody { display: block; }
   .tableAll tr { display: grid; grid-template-columns: minmax(0, 1fr) 57px 72px; column-gap: 7px; }
   .tableAll thead th:first-child, .tableAll thead th:nth-child(3), .tableAll thead th:nth-child(4) { width: auto; }
