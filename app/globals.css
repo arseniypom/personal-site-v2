@@ -82,6 +82,23 @@ a {
   color: #ffffff;
 }
 
+.site-nav a {
+  white-space: nowrap;
+}
+
+/* Two longer nav links: drop the role and tighten the nav so the header stays on one line */
+
+@media (max-width: 640px) {
+  .brand-role {
+    display: none;
+  }
+
+  .site-nav {
+    gap: 20px;
+    font-size: 15px;
+  }
+}
+
 /* Shared row / card */
 
 .row {
