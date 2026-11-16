@@ -3,13 +3,13 @@ import styles from './projects.module.css';
 
 export const metadata: Metadata = {
   title: 'You could build this',
-  description: 'Twelve small tools people made with AI for their own work and home, from a replaced $29-a-month subscription to a carb counter for a son.',
+  description: 'Small tools people made with AI for their own work and home, from a replaced $29-a-month subscription to a carb counter for a son.',
   alternates: { canonical: '/ai-beginner-projects' },
   openGraph: {
     type: 'website',
     locale: 'en_US',
     title: 'You could build this',
-    description: 'Twelve small tools people made with AI for their own home and work.',
+    description: 'Small tools people made with AI for their own home and work.',
     url: '/ai-beginner-projects',
   },
 };
@@ -30,6 +30,35 @@ type Project = {
 };
 
 const S3 = 'https://substack-post-media.s3.amazonaws.com/public/images/';
+
+const simple: Project[] = [
+  {
+    title: 'A tracker for one thing',
+    tone: 'yellow',
+    stat: { big: 'Tracker', small: 'tap once, see the history' },
+    body: [
+      'A page where you log one thing and look back at it later.',
+      'Allan made one for his migraines. Jackie Bavaro logs every eyelash style she wears, with a photo.',
+    ],
+  },
+  {
+    title: 'A picker',
+    tone: 'purple',
+    stat: { big: 'Picker', small: 'give it a list, it chooses' },
+    body: [
+      'Rob Balderstone built one that sets the speaking order at standup, and he uses it at work every day. Anthony built one that assigns Secret Santa pairs.',
+    ],
+    link: { href: 'https://standup-buddy.lovable.app/', label: 'See Rob’s' },
+  },
+  {
+    title: 'A calculator for one question',
+    tone: 'orange',
+    stat: { big: 'Calculator', small: 'a few numbers in, one answer out' },
+    body: [
+      'Kevin Roose made a site that tells him whether a piece of furniture will fit in his car trunk. A tip splitter or a unit converter is the same kind of project.',
+    ],
+  },
+];
 
 const work: Project[] = [
   {
@@ -158,19 +187,18 @@ const home: Project[] = [
 ];
 
 const extras = [
-  'Rob Balderstone built a randomizer for the speaking order at standup. He uses it at work every day.',
   'Olena Vozna built a browser extension that drops her free slots into an email and books the meeting.',
   'Javier Evelyn, a new dad, spent two weekends on a log for feedings, sleep and diapers.',
   'Faraz Khan built a workout app around his own training program. He says nobody else would want it, and he loves it.',
   'There are 102 steps up to Brett’s house. His app records which one the courier left the package on.',
 ];
 
-function Card({ project, index }: { project: Project; index: number }) {
+function Card({ project, index }: { project: Project; index?: number }) {
   const { image, stat, quote, link, tags } = project;
   return (
     <article className={styles.card}>
-      <div className={`${styles.media} ${styles[project.tone]}`}>
-        <span className={styles.number}>{String(index + 1).padStart(2, '0')}</span>
+      <div className={`${styles.media} ${styles[project.tone]} ${index === undefined ? styles.mediaShort : ''}`}>
+        {index !== undefined && <span className={styles.number}>{String(index + 1).padStart(2, '0')}</span>}
         {image ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
@@ -225,8 +253,13 @@ export default function BeginnerProjectsPage() {
           You could <span>build this</span>
         </h1>
         <p className={styles.lead}>
-          Twelve small tools people made with AI for their own home and work. Several of them had never written code.
+          Small tools people made with AI for their own home and work. Several of them had never written code.
         </p>
+
+        <h2 className={styles.section}>Super simple</h2>
+        <div className={styles.grid3}>
+          {simple.map((project) => <Card key={project.title} project={project} />)}
+        </div>
 
         <h2 className={styles.section}>For home and fun</h2>
         <div className={styles.grid}>
