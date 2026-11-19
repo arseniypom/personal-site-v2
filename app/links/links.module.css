@@ -75,10 +75,15 @@
   border-radius: 30px;
   background: #1b171a;
   color: #f2eef0;
-  transition: background-color 0.15s ease, transform 0.15s ease;
+  transition: background-color 0.2s ease, filter 0.2s ease, transform 0.15s ease;
   -webkit-tap-highlight-color: transparent;
 }
-.link:hover { background: #241f22; }
+/* Hover only on devices with a real pointer: on phones a tap would leave :hover stuck */
+@media (hover: hover) {
+  .link:not(.course):hover { background-color: #241f22; }
+  .link:not(.course):hover .arrow { color: #ffd94d; }
+  .course:hover { filter: brightness(1.07); }
+}
 .link:active { transform: scale(0.98); }
 .link:focus-visible { outline: 2px solid #ffd94d; outline-offset: 3px; }
 
@@ -92,11 +97,10 @@
   justify-content: center;
   color: #fff;
 }
-.yellow {
-  background: radial-gradient(circle at 50% 78%, #fff3c4 0%, #ffd94d 34%, #ffc933 58%, #f5b81f 100%);
-  color: #2a1f00;
-}
+/* Substack's brand orange (#ff6719), shifted a touch redder */
+.substack { background: linear-gradient(150deg, #ff8a4c 0%, #ff6719 50%, #e8461a 100%); }
 .purple { background: linear-gradient(150deg, #a78bfa 0%, #8b5cf6 45%, #6d3ef2 100%); }
+.blue { background: linear-gradient(150deg, #93d4ff 0%, #4f9dff 50%, #2563eb 100%); }
 .orange { background: linear-gradient(150deg, #ffb366 0%, #f97316 55%, #e2570b 100%); }
 
 .text {
@@ -123,4 +127,9 @@
   color: #6f676b;
   transition: color 0.15s ease;
 }
-.link:hover .arrow { color: #ffd94d; }
+
+/* Full-gradient course buttons (fake-door test) */
+.course { padding: 18px 20px 18px 24px; }
+.course .title { font-size: 18px; }
+.courseSub { font-size: 14px; line-height: 1.35; color: rgba(255, 255, 255, 0.82); text-wrap: balance; }
+.course .arrow { color: #fff; }

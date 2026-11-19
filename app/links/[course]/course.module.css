@@ -1,0 +1,125 @@
+/* /links/<course> — fake-door waitlist page, phone-first like /links. */
+.page {
+  max-width: 460px;
+  margin: 0 auto;
+  padding: 16px 16px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  color: #f2eef0;
+}
+
+.back {
+  align-self: flex-start;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.07);
+  color: #f2eef0;
+}
+
+.hero {
+  padding: 28px 24px 30px;
+  border-radius: 30px;
+  color: #fff;
+}
+.orange { background: linear-gradient(150deg, #ffb366 0%, #f97316 55%, #e2570b 100%); }
+.purple { background: linear-gradient(150deg, #a78bfa 0%, #8b5cf6 45%, #6d3ef2 100%); }
+
+.title {
+  margin: 0;
+  font-size: 34px;
+  line-height: 1.08;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+.subtitle {
+  margin: 12px 0 0;
+  font-size: 17px;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.88);
+  text-wrap: pretty;
+}
+
+.card {
+  padding: 24px;
+  border-radius: 30px;
+  background: #1b171a;
+}
+.h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: #fff;
+}
+.list {
+  margin: 16px 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-size: 16px;
+  line-height: 1.45;
+  color: #a29a9e;
+}
+.list li { padding-left: 20px; }
+.list li::before {
+  content: '';
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-left: -20px;
+  margin-right: 13px;
+  border-radius: 999px;
+  background: #ffd94d;
+  vertical-align: 0.17em;
+}
+.list b { color: #f2eef0; font-weight: 600; }
+.plain { color: #e2dcdf; }
+
+.extra {
+  margin: 18px 0 0;
+  font-size: 16px;
+  line-height: 1.45;
+  color: #ffd94d;
+}
+.text {
+  margin: 10px 0 0;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #a29a9e;
+  text-wrap: pretty;
+}
+
+.join .h2 { margin-top: 22px; }
+.price {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+}
+.priceBig {
+  font-size: 40px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: #ffd94d;
+}
+.priceSmall { font-size: 14px; color: #8a8286; }
+
+/* Tally adds ~8px inner padding; pull the iframe out so the field lines up with the text */
+.form { margin: 12px -8px 0; width: calc(100% + 16px); border: 0; display: block; }
+.placeholder {
+  margin-top: 16px;
+  padding: 18px;
+  border-radius: 18px;
+  border: 1px dashed #3a3337;
+  color: #6f676b;
+  font-size: 14px;
+  text-align: center;
+}

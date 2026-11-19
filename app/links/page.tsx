@@ -1,5 +1,9 @@
 import type { Metadata, Viewport } from 'next';
 import styles from './links.module.css';
+import { courses } from './courses';
+
+// Course order is shuffled per request so button position doesn't skew the fake-door test.
+export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'Arsenii · Links',
@@ -8,7 +12,7 @@ export const metadata: Metadata = {
 };
 export const viewport: Viewport = { themeColor: '#0f0b0d', colorScheme: 'dark' };
 
-type Tone = 'yellow' | 'purple' | 'orange';
+type Tone = 'substack' | 'blue';
 
 type LinkItem = {
   title: string;
@@ -35,10 +39,13 @@ const links: LinkItem[] = [
     title: 'My no-slop Substack',
     sub: 'Weekly pro AI workflows, click by click',
     href: 'https://arseniipmzkv.substack.com/subscribe',
-    tone: 'yellow',
+    tone: 'substack',
     icon: (
-      <svg {...iconProps}>
-        <path d="M4 5h16M4 9.5h16M4 14v6l8-4 8 4v-6z" />
+      // Substack mark: two bars over a bookmark ribbon, filled
+      <svg width={20} height={20} viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+        <rect x="3" y="3" width="18" height="2.6" rx="0.6" />
+        <rect x="3" y="8" width="18" height="2.6" rx="0.6" />
+        <path d="M3 13h18v8.4c0 .4-.4.6-.7.4L12 17.2l-8.3 4.6c-.3.2-.7 0-.7-.4V13z" />
       </svg>
     ),
   },
@@ -46,7 +53,7 @@ const links: LinkItem[] = [
     title: '1:1 session with me',
     sub: 'Bring an unclear problem → leave with a plan and AI workflows',
     href: 'https://tally.so/r/PR17EV',
-    tone: 'purple',
+    tone: 'blue',
     icon: (
       <svg {...iconProps}>
         <rect x="3" y="6" width="13" height="12" rx="3" />
@@ -57,6 +64,7 @@ const links: LinkItem[] = [
 ];
 
 export default function LinksPage() {
+  const ordered = Math.random() < 0.5 ? courses : [...courses].reverse();
   return (
     <main className={styles.page}>
       <header className={styles.profile}>
@@ -70,6 +78,19 @@ export default function LinksPage() {
       </header>
 
       <ul className={styles.list}>
+        {ordered.map((c) => (
+          <li key={c.slug}>
+            <a className={`${styles.link} ${styles.course} ${styles[c.tone]}`} href={`/links/${c.slug}`}>
+              <span className={styles.text}>
+                <span className={styles.title}>{c.title}</span>
+                <span className={styles.courseSub}>{c.buttonSub}</span>
+              </span>
+              <svg className={styles.arrow} {...iconProps} width={18} height={18}>
+                <path d="M9 18l6-6-6-6" />
+              </svg>
+            </a>
+          </li>
+        ))}
         {links.map((l) => (
           <li key={l.href}>
             <a className={styles.link} href={l.href} target="_blank" rel="noopener noreferrer">
