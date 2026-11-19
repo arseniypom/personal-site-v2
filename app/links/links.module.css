@@ -113,10 +113,9 @@
 }
 .sub {
   font-size: 14px;
+  line-height: 1.35;
   color: #8a8286;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  text-wrap: pretty;
 }
 
 .arrow {
@@ -125,12 +124,3 @@
   transition: color 0.15s ease;
 }
 .link:hover .arrow { color: #ffd94d; }
-
-.footer {
-  margin-top: auto;
-  padding-top: 48px;
-  text-align: center;
-  font-size: 14px;
-}
-.footer a { color: #6f676b; }
-.footer a:hover { color: #fff; }

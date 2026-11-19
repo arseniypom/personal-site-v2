@@ -3,7 +3,7 @@ import styles from './links.module.css';
 
 export const metadata: Metadata = {
   title: 'Arsenii · Links',
-  description: 'I test AI tools so you don’t have to. Substack, 1:1 sessions and more.',
+  description: 'Big Tech engineer. Your shortcut to using AI like a pro.',
   alternates: { canonical: '/links' },
 };
 export const viewport: Viewport = { themeColor: '#0f0b0d', colorScheme: 'dark' };
@@ -33,7 +33,7 @@ const iconProps = {
 const links: LinkItem[] = [
   {
     title: 'My no-slop Substack',
-    sub: 'Insights and tools I use myself',
+    sub: 'Weekly pro AI workflows, click by click',
     href: 'https://arseniipmzkv.substack.com/subscribe',
     tone: 'yellow',
     icon: (
@@ -44,7 +44,7 @@ const links: LinkItem[] = [
   },
   {
     title: '1:1 session with me',
-    sub: 'Ask me anything about AI',
+    sub: 'Bring an unclear problem → leave with a plan and AI workflows',
     href: 'https://tally.so/r/PR17EV',
     tone: 'purple',
     icon: (
@@ -66,7 +66,7 @@ export default function LinksPage() {
         </div>
         <h1 className={styles.name}>Arsenii Pomazkov</h1>
         <p className={styles.handle}>@ask.arsenii</p>
-        <p className={styles.bio}>I test AI tools so you don&rsquo;t have to</p>
+        <p className={styles.bio}>Big Tech engineer. Your shortcut to using AI like a pro</p>
       </header>
 
       <ul className={styles.list}>
@@ -85,10 +85,6 @@ export default function LinksPage() {
           </li>
         ))}
       </ul>
-
-      <footer className={styles.footer}>
-        <a href="/">My website</a>
-      </footer>
     </main>
   );
 }
