@@ -1,87 +1,96 @@
 {
-  "checkedAt": "2026-11-15",
+  "checkedAt": "2026-11-19",
   "indexVersion": "5.0.1",
   "models": [
     {
-      "id": "gpt-6-astra-low",
-      "name": "GPT-6 Astra",
+      "id": "gpt-6-2-astra-low",
+      "name": "GPT-6.2 Astra",
       "provider": "openai",
       "effort": "low",
-      "score": 43,
-      "cost": 1.42,
-      "source": "https://artificialanalysis.ai/models/gpt-6-astra-low"
-    },
-    {
-      "id": "gpt-6-astra-medium",
-      "name": "GPT-6 Astra",
-      "provider": "openai",
-      "effort": "medium",
-      "score": 52,
-      "cost": 2.73,
-      "source": "https://artificialanalysis.ai/models/gpt-6-astra-medium"
-    },
-    {
-      "id": "gpt-6-astra-high",
-      "name": "GPT-6 Astra",
-      "provider": "openai",
-      "effort": "high",
-      "score": 55,
-      "cost": 3.24,
-      "source": "https://artificialanalysis.ai/models/gpt-6-astra-high"
-    },
-    {
-      "id": "gpt-6-astra-xhigh",
-      "name": "GPT-6 Astra",
-      "provider": "openai",
-      "effort": "xhigh",
-      "score": 55,
-      "cost": 3.66,
-      "source": "https://artificialanalysis.ai/models/gpt-6-astra-xhigh"
-    },
-    {
-      "id": "gpt-6-1-sol-low",
-      "name": "GPT-6.1 Sol",
-      "provider": "openai",
-      "effort": "low",
-      "score": 35,
-      "cost": 0.16,
-      "source": "https://artificialanalysis.ai/models/gpt-6-1-sol-low"
-    },
-    {
-      "id": "gpt-6-1-sol-medium",
-      "name": "GPT-6.1 Sol",
-      "provider": "openai",
-      "effort": "medium",
       "score": 46,
-      "cost": 0.36,
-      "source": "https://artificialanalysis.ai/models/gpt-6-1-sol-medium"
+      "cost": 0.66,
+      "source": "https://artificialanalysis.ai/models/gpt-6-2-astra-low"
     },
     {
-      "id": "gpt-6-1-sol-high",
-      "name": "GPT-6.1 Sol",
+      "id": "gpt-6-2-astra-medium",
+      "name": "GPT-6.2 Astra",
+      "provider": "openai",
+      "effort": "medium",
+      "score": 57,
+      "cost": 1.62,
+      "source": "https://artificialanalysis.ai/models/gpt-6-2-astra-medium"
+    },
+    {
+      "id": "gpt-6-2-astra-high",
+      "name": "GPT-6.2 Astra",
       "provider": "openai",
       "effort": "high",
-      "score": 50,
-      "cost": 0.59,
-      "source": "https://artificialanalysis.ai/models/gpt-6-1-sol-high"
+      "score": 60,
+      "cost": 2.07,
+      "source": "https://artificialanalysis.ai/models/gpt-6-2-astra-high"
     },
     {
-      "id": "gpt-6-1-sol-xhigh",
-      "name": "GPT-6.1 Sol",
+      "id": "gpt-6-2-astra-xhigh",
+      "name": "GPT-6.2 Astra",
       "provider": "openai",
       "effort": "xhigh",
-      "score": 52,
-      "cost": 0.76,
-      "source": "https://artificialanalysis.ai/models/gpt-6-1-sol-xhigh"
+      "score": 62,
+      "cost": 2.52,
+      "source": "https://artificialanalysis.ai/models/gpt-6-2-astra-xhigh"
     },
     {
-      "id": "gpt-6-1-sol",
-      "name": "GPT-6.1 Sol",
+      "id": "gpt-6-2-astra",
+      "name": "GPT-6.2 Astra",
       "provider": "openai",
       "effort": "max",
+      "score": 62,
+      "cost": 4.0,
+      "source": "https://artificialanalysis.ai/models/gpt-6-2-astra"
+    },
+    {
+      "id": "gpt-6-2-sol-low",
+      "name": "GPT-6.2 Sol",
+      "provider": "openai",
+      "effort": "low",
+      "score": 41,
+      "cost": 0.18,
+      "source": "https://artificialanalysis.ai/models/gpt-6-2-sol-low"
+    },
+    {
+      "id": "gpt-6-2-sol-medium",
+      "name": "GPT-6.2 Sol",
+      "provider": "openai",
+      "effort": "medium",
+      "score": 53,
+      "cost": 0.41,
+      "source": "https://artificialanalysis.ai/models/gpt-6-2-sol-medium"
+    },
+    {
+      "id": "gpt-6-2-sol-high",
+      "name": "GPT-6.2 Sol",
+      "provider": "openai",
+      "effort": "high",
       "score": 55,
-      "cost": 1.27,
-      "source": "https://artificialanalysis.ai/models/gpt-6-1-sol"
+      "cost": 0.56,
+      "source": "https://artificialanalysis.ai/models/gpt-6-2-sol-high"
+    },
+    {
+      "id": "gpt-6-2-sol-xhigh",
+      "name": "GPT-6.2 Sol",
+      "provider": "openai",
+      "effort": "xhigh",
+      "score": 56,
+      "cost": 0.65,
+      "source": "https://artificialanalysis.ai/models/gpt-6-2-sol-xhigh"
+    },
+    {
+      "id": "gpt-6-2-sol",
+      "name": "GPT-6.2 Sol",
+      "provider": "openai",
+      "effort": "max",
+      "score": 57,
+      "cost": 1.01,
+      "source": "https://artificialanalysis.ai/models/gpt-6-2-sol"
     },
     {
       "id": "gpt-6-1-terra-low",
@@ -190,15 +199,6 @@
       "score": 57,
       "cost": 6.05,
       "source": "https://artificialanalysis.ai/models/claude-opus-5-5-xhigh"
-    },
-    {
-      "id": "gpt-6-astra",
-      "name": "GPT-6 Astra",
-      "provider": "openai",
-      "effort": "max",
-      "score": 57,
-      "cost": 6.24,
-      "source": "https://artificialanalysis.ai/models/gpt-6-astra"
     },
     {
       "id": "gpt-6-luna",

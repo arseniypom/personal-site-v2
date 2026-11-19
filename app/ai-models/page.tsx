@@ -4,7 +4,7 @@ import styles from './models.module.css';
 
 export const metadata: Metadata = {
   title: 'AI Model Tier List',
-  description: 'OpenAI and Anthropic models by reasoning effort, intelligence index and cost per benchmark task. Checked on November 15, 2026.',
+  description: 'OpenAI and Anthropic models by reasoning effort, intelligence index and cost per benchmark task. Checked on November 19, 2026.',
   alternates: { canonical: '/ai-models' },
   openGraph: { type: 'website', locale: 'en_US', title: 'AI Model Tier List', description: 'OpenAI and Anthropic models by intelligence and cost.', url: '/ai-models' },
 };
@@ -13,7 +13,7 @@ export const viewport: Viewport = { themeColor: '#0f0b0d', colorScheme: 'dark' }
 export default function ModelsPage() {
   return <div className={styles.page}>
     <main>
-      <div className={styles.heading}><h1><span>AI model</span> <span>tier list</span></h1><time dateTime="2026-11-15">November 15, 2026</time></div>
+      <div className={styles.heading}><h1><span>AI model</span> <span>tier list</span></h1><time dateTime="2026-11-19">November 19, 2026</time></div>
       <p className={styles.lead}>OpenAI and Anthropic models come with several reasoning levels each, so there are dozens of options to choose from. I made this list to compare them in one place. Each option has an intelligence score and the cost of one benchmark task, and options are grouped into tiers by how hard a task they can handle.</p>
       <ModelRanking />
       <details className={styles.notes} id="methodology">
