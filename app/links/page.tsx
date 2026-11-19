@@ -1,0 +1,94 @@
+import type { Metadata, Viewport } from 'next';
+import styles from './links.module.css';
+
+export const metadata: Metadata = {
+  title: 'Arsenii · Links',
+  description: 'I test AI tools so you don’t have to. Substack, 1:1 sessions and more.',
+  alternates: { canonical: '/links' },
+};
+export const viewport: Viewport = { themeColor: '#0f0b0d', colorScheme: 'dark' };
+
+type Tone = 'yellow' | 'purple' | 'orange';
+
+type LinkItem = {
+  title: string;
+  sub: string;
+  href: string;
+  tone: Tone;
+  icon: React.ReactNode;
+};
+
+const iconProps = {
+  width: 22,
+  height: 22,
+  viewBox: '0 0 24 24',
+  fill: 'none',
+  stroke: 'currentColor',
+  strokeWidth: 2,
+  strokeLinecap: 'round' as const,
+  strokeLinejoin: 'round' as const,
+  'aria-hidden': true,
+};
+
+const links: LinkItem[] = [
+  {
+    title: 'My no-slop Substack',
+    sub: 'Insights and tools I use myself',
+    href: 'https://arseniipmzkv.substack.com/subscribe',
+    tone: 'yellow',
+    icon: (
+      <svg {...iconProps}>
+        <path d="M4 5h16M4 9.5h16M4 14v6l8-4 8 4v-6z" />
+      </svg>
+    ),
+  },
+  {
+    title: '1:1 session with me',
+    sub: 'Ask me anything about AI',
+    href: 'https://tally.so/r/PR17EV',
+    tone: 'purple',
+    icon: (
+      <svg {...iconProps}>
+        <rect x="3" y="6" width="13" height="12" rx="3" />
+        <path d="m16 10.5 5-3v9l-5-3" />
+      </svg>
+    ),
+  },
+];
+
+export default function LinksPage() {
+  return (
+    <main className={styles.page}>
+      <header className={styles.profile}>
+        <div className={styles.avatar}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/portrait.png" alt="Arsenii" />
+        </div>
+        <h1 className={styles.name}>Arsenii Pomazkov</h1>
+        <p className={styles.handle}>@ask.arsenii</p>
+        <p className={styles.bio}>I test AI tools so you don&rsquo;t have to</p>
+      </header>
+
+      <ul className={styles.list}>
+        {links.map((l) => (
+          <li key={l.href}>
+            <a className={styles.link} href={l.href} target="_blank" rel="noopener noreferrer">
+              <span className={`${styles.icon} ${styles[l.tone]}`}>{l.icon}</span>
+              <span className={styles.text}>
+                <span className={styles.title}>{l.title}</span>
+                <span className={styles.sub}>{l.sub}</span>
+              </span>
+              <svg className={styles.arrow} {...iconProps} width={18} height={18}>
+                <path d="M7 17 17 7M8 7h9v9" />
+              </svg>
+            </a>
+          </li>
+        ))}
+      </ul>
+
+      <footer className={styles.footer}>
+        <a href="/">My website</a>
+      </footer>
+    </main>
+  );
+}
