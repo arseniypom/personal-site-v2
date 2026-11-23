@@ -156,31 +156,26 @@ const features: Feature[] = [
     ],
   },
   {
-    id: 'cowork',
-    name: 'Cowork and scheduled tasks',
+    id: 'tasks',
+    name: 'Tasks and schedules',
     subtitle: 'Claude does whole tasks for you, including ones that repeat every week.',
     intro: [
-      'Give Claude a whole task, like “go through this week’s emails and draft replies to the ones that need an answer”. It plans the steps, uses your files, apps and browser, and keeps working in the cloud after you close your laptop.',
-      'A scheduled task does the same on a timer, like “every Monday at 9am, write me a short brief for each meeting this week”.',
+      'Give Claude a whole task, like “go through this week’s emails and draft replies to the ones that need an answer”. It plans the steps, uses your files and apps, and keeps working in the cloud after you close your laptop.',
+      'Add how often it should run, and it becomes a scheduled task, like “every Monday at 9am, write me a short brief for each meeting this week”.',
     ],
     plan: 'Paid plans',
     paths: [
       {
-        label: 'Cowork',
-        steps: ['Message box', 'Cowork', 'Describe the task'],
+        steps: ['Any chat', 'Describe the task and how often to run it', 'Schedule'],
       },
       {
-        label: 'Scheduled',
+        label: 'Older version with a Cowork button',
         steps: ['Scheduled in the sidebar', 'New task', 'Create with Claude'],
       },
     ],
     tryNote: 'Connect Gmail and Calendar first (#4):',
     prompt:
       'Create a scheduled task for every Friday at [4pm].\nIt looks at my sent emails and my calendar for this week and writes a short summary: what I finished, what’s still open, and who’s waiting for me.\nDon’t send anything. Run it once now so I can see what it looks like.',
-
-    after: [
-      'No Cowork option in your message box? You have the newer Claude: give the task in any chat and say how often it should run.',
-    ],
   },
 ];
 
