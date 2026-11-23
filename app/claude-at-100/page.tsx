@@ -299,20 +299,6 @@ export default function ClaudeAt100Page() {
           {features.map((f, i) => <FeatureBlock key={f.id} f={f} index={i} />)}
         </div>
 
-        <section className={`${styles.feature} ${styles.bonus}`}>
-          <header className={styles.featureHead}>
-            <h2>Bonus: model and effort</h2>
-            <p className={styles.subtitle}>Use less of your limit on simple tasks.</p>
-          </header>
-          <div className={styles.featureBody}>
-            <p>
-              Low or Medium is enough for short emails. High works for most things. Use the top levels only for hard
-              problems, because they use up your limit faster.
-            </p>
-            <TurnOn title="Change it" paths={[{ steps: ['Model name next to send', 'Effort'] }]} />
-          </div>
-        </section>
-
         <section className={styles.closing}>
           <div className={styles.blob1}></div>
           <div className={styles.blob2}></div>
