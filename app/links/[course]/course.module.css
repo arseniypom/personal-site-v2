@@ -97,6 +97,38 @@
   text-wrap: pretty;
 }
 
+/* "This is for you if" — the reader should recognise themselves, so bright text, not grey. */
+.forYou { box-shadow: inset 0 0 0 1px rgba(255, 217, 77, 0.22); }
+.forYouList {
+  margin: 16px 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-size: 17px;
+  line-height: 1.4;
+  font-weight: 500;
+  color: #f2eef0;
+}
+.forYouList li { padding-left: 30px; position: relative; text-wrap: pretty; }
+.forYouList li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  top: 1px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(255, 217, 77, 0.14);
+  color: #ffd94d;
+  font-size: 12px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .join .h2 { margin-top: 22px; }
 .price {
   display: flex;
@@ -112,14 +144,75 @@
 }
 .priceSmall { font-size: 14px; color: #8a8286; }
 
-/* Tally adds ~8px inner padding; pull the iframe out so the field lines up with the text */
-.form { margin: 12px -8px 0; width: calc(100% + 16px); border: 0; display: block; }
-.placeholder {
-  margin-top: 16px;
-  padding: 18px;
-  border-radius: 18px;
-  border: 1px dashed #3a3337;
+.terms {
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 15px;
+  line-height: 1.45;
+  color: #a29a9e;
+}
+.terms li { padding-left: 24px; position: relative; }
+.terms li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: #ffd94d;
+  font-weight: 600;
+}
+
+.cta {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 56px;
+  border-radius: 999px;
+  background: #ffd94d;
+  color: #0f0b0d;
+  font-size: 17px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+.cta:active { transform: scale(0.98); }
+@media (hover: hover) {
+  .cta:hover { background: #ffe27a; }
+}
+.secure {
+  margin: 10px 0 0;
+  font-size: 13px;
   color: #6f676b;
-  font-size: 14px;
   text-align: center;
+}
+
+/* /links/<course>/reserved */
+.done { text-align: center; padding: 32px 24px; }
+.doneIcon {
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 16px;
+  border-radius: 50%;
+  background: rgba(255, 217, 77, 0.14);
+  color: #ffd94d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.done .text { margin-top: 12px; }
+.secondary {
+  margin-top: 20px;
+  display: inline-flex;
+  align-items: center;
+  height: 48px;
+  padding: 0 22px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.07);
+  color: #f2eef0;
+  font-size: 15px;
+  font-weight: 500;
+  text-decoration: none;
 }

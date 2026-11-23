@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from 'next';
-import Script from 'next/script';
 import { notFound } from 'next/navigation';
-import { courses, getCourse, TALLY_FORM_ID } from '../courses';
+import { courses, getCourse, LAUNCH_BY } from '../courses';
 import styles from './course.module.css';
 
 export const dynamicParams = false;
@@ -19,8 +18,6 @@ export default async function CoursePage({ params }: Props) {
   const c = getCourse((await params).course);
   if (!c) notFound();
 
-  const tallySrc = `https://tally.so/embed/${TALLY_FORM_ID}?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1&course=${c.slug}`;
-
   return (
     <main className={styles.page}>
       <a className={styles.back} href="/links" aria-label="Back">
@@ -33,6 +30,17 @@ export default async function CoursePage({ params }: Props) {
         <h1 className={styles.title}>{c.title}</h1>
         <p className={styles.subtitle}>{c.subtitle}</p>
       </header>
+
+      {c.forYou && (
+        <section className={`${styles.card} ${styles.forYou}`}>
+          <h2 className={styles.h2}>This is for you if</h2>
+          <ul className={styles.forYouList}>
+            {c.forYou.map((line) => (
+              <li key={line}>{line}</li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       <section className={styles.card}>
         <h2 className={styles.h2}>{c.listTitle}</h2>
@@ -52,28 +60,21 @@ export default async function CoursePage({ params }: Props) {
         {c.extra && <p className={styles.extra}>{c.extra}</p>}
       </section>
 
-      {c.forYou && (
-        <section className={styles.card}>
-          <h2 className={styles.h2}>This is for you if</h2>
-          <p className={styles.text}>{c.forYou}</p>
-        </section>
-      )}
-
       <section className={`${styles.card} ${styles.join}`}>
         <div className={styles.price}>
           <span className={styles.priceBig}>{c.price}</span>
           <span className={styles.priceSmall}>Founding price · goes up after launch</span>
         </div>
-        <h2 className={styles.h2}>Join the waitlist</h2>
-        <p className={styles.text}>Not launched yet. Leave your email and you’ll be first to know.</p>
-        {TALLY_FORM_ID ? (
-          <>
-            <iframe data-tally-src={tallySrc} loading="lazy" width="100%" height="160" title="Waitlist" className={styles.form} />
-            <Script src="https://tally.so/widgets/embed.js" strategy="lazyOnload" />
-          </>
-        ) : (
-          <div className={styles.placeholder}>Tally form goes here</div>
-        )}
+        <h2 className={styles.h2}>Reserve your spot for $1</h2>
+        <ul className={styles.terms}>
+          <li>$1 today locks the {c.price} founding price</li>
+          <li>Pay the rest only when the course launches. Nothing is charged automatically</li>
+          <li>Not out by {LAUNCH_BY}? You get your $1 back</li>
+        </ul>
+        <a className={styles.cta} href={c.checkoutUrl}>
+          Reserve for $1
+        </a>
+        <p className={styles.secure}>Secure checkout by Stripe</p>
       </section>
     </main>
   );
