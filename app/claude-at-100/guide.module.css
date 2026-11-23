@@ -1,0 +1,186 @@
+/* /claude-at-100 — palette and shapes follow the landing page and /ai-beginner-projects. */
+.page {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 40px 28px 64px;
+  color: #f2eef0;
+}
+.page a:focus-visible,
+.page button:focus-visible { outline: 2px solid #ffd94d; outline-offset: 4px; border-radius: 6px; }
+.page :target { scroll-margin-top: 24px; }
+
+.header { padding: 8px 6px 26px; }
+.brand { font-size: 18px; font-weight: 600; letter-spacing: .01em; color: #6f676b; }
+.brand span { color: #fff; }
+
+.title {
+  margin: 28px 6px 0;
+  max-width: 14em;
+  font-size: clamp(40px, 7vw, 76px);
+  line-height: 1.06;
+  font-weight: 600;
+  letter-spacing: -.025em;
+  color: #fff;
+}
+.title span { color: #ffd94d; }
+.lead { margin: 20px 6px 0; max-width: 30em; font-size: clamp(17px, 2vw, 21px); line-height: 1.5; color: #cfc8cc; text-wrap: pretty; }
+.meta { margin: 10px 6px 0; font-size: 15px; color: #8a8286; }
+
+/* Contents pills */
+.toc { display: flex; flex-wrap: wrap; gap: 10px; margin: 32px 0 0; }
+.toc a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 16px 9px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .06);
+  color: #f2eef0;
+  font-size: 15px;
+  font-weight: 500;
+  transition: background-color .15s ease, color .15s ease;
+}
+.toc a span {
+  display: inline-grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--tone, #ffd94d) 16%, transparent);
+  color: var(--tone, #ffd94d);
+  font-size: 13px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.toc a:hover { background: #ffd94d; color: #241c04; }
+.toc a:hover span { background: rgba(36, 28, 4, .14); color: #241c04; }
+
+/* Feature blocks. Type scale: 38 title / 20 subtitle / 17 body / 14 meta.
+   Colour: white = titles, #cfc8cc = reading text, #8a8286 = secondary.
+   Yellow only on what you press or fill in (Copy, [fields]). */
+.features { display: flex; flex-direction: column; margin-top: 64px; }
+.feature {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  gap: clamp(28px, 5vw, 72px);
+  padding: 64px 6px;
+  border-top: 1px solid rgba(255, 255, 255, .07);
+}
+.feature:first-child { border-top: 0; padding-top: 8px; }
+
+.featureHead { align-self: start; position: sticky; top: 32px; display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.number { color: var(--tone, #ffd94d); font-variant-numeric: tabular-nums; }
+.featureHead h2 { margin: 0; font-size: clamp(30px, 3.4vw, 38px); line-height: 1.1; font-weight: 600; letter-spacing: -.02em; color: #fff; text-wrap: balance; }
+.subtitle { position: relative; margin: 0; padding-left: 18px; max-width: 18em; font-size: clamp(18px, 1.8vw, 20px); line-height: 1.4; font-weight: 500; color: #f2eef0; text-wrap: pretty; }
+/* Pill-shaped bar in the block's colour, same tone as its number */
+.subtitle::before { content: ''; position: absolute; left: 0; top: .2em; bottom: .2em; width: 4px; border-radius: 999px; background: var(--tone, #6f676b); }
+
+.featureBody { display: flex; flex-direction: column; gap: 20px; max-width: 640px; min-width: 0; }
+.featureBody > p { margin: 0; font-size: 17px; line-height: 1.65; color: #cfc8cc; text-wrap: pretty; }
+
+/* Action group: the prompt first, then where to turn it on (collapsed). */
+.actions { display: flex; flex-direction: column; gap: 10px; margin-top: 8px; }
+
+.turnOn { border-radius: 24px; background: rgba(255, 255, 255, .035); font-size: 15px; line-height: 1.5; color: #8a8286; transition: background-color .15s ease; }
+.turnOn:hover { background: rgba(255, 255, 255, .055); }
+.turnOn summary { display: flex; align-items: baseline; gap: 10px; padding: 14px 22px; cursor: pointer; list-style: none; border-radius: 24px; }
+.turnOn summary::-webkit-details-marker { display: none; }
+.turnOn summary:focus-visible { outline: 2px solid #ffd94d; outline-offset: 2px; }
+.turnOnTitle { flex-shrink: 0; white-space: nowrap; font-weight: 600; color: #fff; }
+.plan { font-size: 14px; }
+.plan::before { content: '('; }
+.plan::after { content: ')'; }
+.chevron { align-self: center; margin-left: auto; width: 8px; height: 8px; border-right: 2px solid #8a8286; border-bottom: 2px solid #8a8286; transform: translateY(-2px) rotate(45deg); transition: transform .15s ease; }
+.turnOn[open] .chevron { transform: translateY(2px) rotate(-135deg); }
+.paths { display: flex; flex-direction: column; gap: 6px; margin: 0; padding: 0 22px 16px; list-style: none; }
+
+/* Tip: tinted with the block's colour so it reads as a useful extra, not a footnote */
+.tip { display: flex; flex-direction: column; gap: 6px; padding: 18px 22px; border-radius: 24px; background: color-mix(in srgb, var(--tone, #8a8286) 9%, transparent); }
+.tip p { margin: 0; font-size: 16px; line-height: 1.6; color: #e4dee1; text-wrap: pretty; }
+.tip .tipTitle { font-size: 15px; font-weight: 600; color: var(--tone, #fff); }
+.pathLabel { color: #8a8286; }
+.pathLine { color: #cfc8cc; }
+.sep { color: #6f676b; }
+
+.prompt { border-radius: 24px; background: #1b171a; overflow: hidden; }
+.promptBar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 12px 0 22px; }
+.promptTitle { font-size: 15px; font-weight: 600; color: #fff; }
+.promptNote { margin: 0; padding: 10px 22px 0; font-size: 14px; line-height: 1.5; color: #8a8286; }
+.promptNote mark { background: none; color: #f2eef0; }
+.copy {
+  padding: 7px 16px;
+  border: 0;
+  border-radius: 999px;
+  background: #ffd94d;
+  color: #241c04;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color .15s ease;
+}
+.copy:hover { background: #ffe680; }
+.promptText {
+  margin: 0;
+  padding: 14px 22px 24px;
+  white-space: pre-wrap;
+  font-size: 15px;
+  line-height: 1.6;
+  color: #f2eef0;
+  overflow-wrap: anywhere;
+}
+.promptText mark { padding: 1px 4px; border-radius: 6px; background: rgba(255, 217, 77, .14); color: #ffd94d; }
+
+/* Closing CTA, orange like the finale tile in the design doc */
+.closing {
+  position: relative;
+  overflow: hidden;
+  margin-top: 40px;
+  padding: clamp(32px, 5.5vw, 72px);
+  border-radius: 30px;
+  background: linear-gradient(150deg, #ff9a3d 0%, #f97316 55%, #ea580c 100%);
+  color: #fff;
+}
+.closing h2, .closing p, .ctaRow { position: relative; }
+.closing h2 { margin: 0; max-width: 16em; font-size: clamp(36px, 5.4vw, 60px); line-height: 1.05; font-weight: 600; letter-spacing: -.025em; }
+.closing p { margin: 20px 0 0; max-width: 30em; font-size: clamp(18px, 2vw, 21px); line-height: 1.55; color: #ffe8d6; }
+.ctaRow { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+.cta {
+  padding: 14px 24px;
+  border-radius: 999px;
+  font-size: 17px;
+  font-weight: 600;
+  transition: background-color .15s ease, color .15s ease;
+}
+.cta { background: #fff; color: #7c2d06; }
+.cta:hover { background: #ffd94d; color: #241c04; }
+.blob1, .blob2 { position: absolute; border-radius: 64px; pointer-events: none; }
+.blob1 { right: -60px; bottom: -80px; width: 300px; height: 300px; background: rgba(255, 255, 255, .16); transform: rotate(14deg); }
+.blob2 { right: 40px; bottom: -120px; width: 260px; height: 260px; background: rgba(255, 255, 255, .22); transform: rotate(-8deg); }
+
+.footer { display: flex; justify-content: space-between; gap: 16px; padding: 34px 6px 0; font-size: 15px; color: #6f676b; }
+.footer a { color: #8a8286; }
+.footer a:hover { color: #fff; }
+
+@media (max-width: 900px) {
+  .feature { grid-template-columns: 1fr; gap: 20px; padding: 44px 4px; }
+  .featureHead { position: static; }
+}
+@media (max-width: 640px) {
+  .page { padding: 24px 16px 48px; }
+  .title { margin: 12px 4px 0; }
+  .lead, .meta { margin-left: 4px; margin-right: 4px; }
+  .toc { gap: 8px; margin-top: 24px; }
+  .toc a { font-size: 14px; padding: 7px 13px 7px 8px; }
+  .features { margin-top: 36px; }
+  .closing { margin-top: 24px; }
+  .closing { border-radius: 24px; }
+  .prompt { border-radius: 20px; }
+  .featureBody > p { font-size: 16px; }
+  .promptText { font-size: 14px; }
+  .closing p { font-size: 16px; }
+  .blob1, .blob2 { opacity: .5; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .toc a, .copy, .cta, .turnOn, .chevron { transition: none; }
+}
