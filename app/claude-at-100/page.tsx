@@ -105,7 +105,6 @@ const features: Feature[] = [
     ],
     prompt:
       'Look at my calendar for next week and my emails from the last 7 days.\nTell me which meetings I’m not ready for and what I need for them, which emails still need a reply from me, and any deadlines I might have missed.\nDon’t send or change anything.',
-    after: ['Claude asks you before it sends, replies to or forwards an email. I’d leave it like that.'],
   },
   {
     id: 'research',
@@ -118,9 +117,6 @@ const features: Feature[] = [
     paths: [{ steps: ['Turn on web search', '+ in the message box', 'Research'] }],
     prompt:
       'Research [3 tools for taking meeting notes / 3 competitors of my company]. For each one, tell me what it does, how much it costs, who it’s for, and what people complain about. Use reviews and Reddit, and add links.\nPut it in a table at the end. Then tell me which one fits [my situation in one line] and why.\nMark anything you found in only one source.',
-    after: [
-      'On your phone it only searches the web, not your apps. It also uses your limit faster than a normal chat.',
-    ],
   },
   {
     id: 'files',
@@ -177,10 +173,6 @@ const features: Feature[] = [
         label: 'Scheduled',
         steps: ['Scheduled in the sidebar', 'New task', 'Create with Claude'],
       },
-      {
-        label: 'Browser',
-        steps: ['Settings', 'Customize', 'Connectors', 'Claude in Chrome', 'Configure'],
-      },
     ],
     tryNote: 'Connect Gmail and Calendar first (#4):',
     prompt:
@@ -191,6 +183,9 @@ const features: Feature[] = [
     ],
   },
 ];
+
+/** Quick wins for the Start here row: all work on the free plan. */
+const startHere = ['instructions', 'projects', 'connectors', 'skills'];
 
 /** One colour per feature, from the site's extra palette. Used for the number in the title and in the contents. */
 const tones = ['#ffd94d', '#a78bfa', '#ff9a3d', '#5eead4', '#f472b6', '#93c5fd', '#bef264', '#fca5a5'];
@@ -285,11 +280,18 @@ export default function ClaudeAt100Page() {
         <p className={styles.lead}>
           8 Claude features worth setting up. For each one: where to turn it on and a prompt to copy.
         </p>
-        <p className={styles.meta}>Most of them need a paid plan (Pro, $20 a month).</p>
 
+        <p className={styles.startHint}>
+          <span>Short on time?</span> Start with the highlighted four.
+        </p>
         <nav className={styles.toc} aria-label="Contents">
           {features.map((f, i) => (
-            <a key={f.id} href={`#${f.id}`} style={{ '--tone': tones[i] } as CSSProperties}>
+            <a
+              key={f.id}
+              href={`#${f.id}`}
+              className={startHere.includes(f.id) ? styles.start : undefined}
+              style={{ '--tone': tones[i] } as CSSProperties}
+            >
               <span>{i + 1}</span> {f.name}
             </a>
           ))}

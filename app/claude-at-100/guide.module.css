@@ -24,10 +24,14 @@
 }
 .title span { color: #ffd94d; }
 .lead { margin: 20px 6px 0; max-width: 30em; font-size: clamp(17px, 2vw, 21px); line-height: 1.5; color: #cfc8cc; text-wrap: pretty; }
-.meta { margin: 10px 6px 0; font-size: 15px; color: #8a8286; }
+
+/* Start here: a hint line, and the four quick wins highlighted inside the contents */
+.startHint { margin: 32px 6px 0; font-size: 16px; line-height: 1.5; color: #cfc8cc; }
+.startHint span { font-weight: 600; color: #ffd94d; }
 
 /* Contents pills */
-.toc { display: flex; flex-wrap: wrap; gap: 10px; margin: 32px 0 0; }
+.toc { display: flex; flex-wrap: wrap; gap: 10px; margin: 14px 0 0; }
+.toc a.start { background: rgba(255, 217, 77, .13); color: #fff; font-weight: 600; box-shadow: inset 0 0 0 1.5px rgba(255, 217, 77, .45); }
 .toc a {
   display: inline-flex;
   align-items: center;
@@ -169,7 +173,8 @@
 @media (max-width: 640px) {
   .page { padding: 24px 16px 48px; }
   .title { margin: 12px 4px 0; }
-  .lead, .meta { margin-left: 4px; margin-right: 4px; }
+  .lead { margin-left: 4px; margin-right: 4px; }
+  .startHint { margin: 24px 4px 0; font-size: 15px; }
   .toc { gap: 8px; margin-top: 24px; }
   .toc a { font-size: 14px; padding: 7px 13px 7px 8px; }
   .features { margin-top: 36px; }
