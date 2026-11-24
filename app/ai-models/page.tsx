@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import ModelRanking from './ranking';
+import Subscribe from './subscribe';
 import styles from './models.module.css';
 
 export const metadata: Metadata = {
@@ -16,6 +17,7 @@ export default function ModelsPage() {
       <div className={styles.heading}><h1><span>AI model</span> <span>tier list</span></h1><time dateTime="2026-11-19">November 19, 2026</time></div>
       <p className={styles.lead}>OpenAI and Anthropic models come with several reasoning levels each, so there are dozens of options to choose from. I made this list to compare them in one place. Each option has an intelligence score and the cost of one benchmark task, and options are grouped into tiers by how hard a task they can handle.</p>
       <ModelRanking />
+      <Subscribe />
       <details className={styles.notes} id="methodology">
         <summary>Data and methodology</summary>
         <p><a href="https://artificialanalysis.ai/evaluations/artificial-analysis-intelligence-index" target="_blank" rel="noreferrer">Artificial Analysis Intelligence Index v5.0.1 ↗</a>. Scores are rounded and are not percentages. Cost is the weighted average API price per benchmark task.</p>
