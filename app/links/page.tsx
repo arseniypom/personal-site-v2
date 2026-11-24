@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 };
 export const viewport: Viewport = { themeColor: '#0f0b0d', colorScheme: 'dark' };
 
-type Tone = 'substack' | 'blue';
+type Tone = 'newsletter' | 'blue';
 
 type LinkItem = {
   title: string;
@@ -34,21 +34,21 @@ const iconProps = {
   'aria-hidden': true,
 };
 
+// Newsletter goes first (main goal of the funnel), then the course fake doors, then the rest.
+const newsletter: LinkItem = {
+  title: 'My no-slop newsletter',
+  sub: 'Weekly pro AI workflows, click by click',
+  href: 'https://askarsenii.kit.com/',
+  tone: 'newsletter',
+  icon: (
+    <svg {...iconProps}>
+      <rect x="3" y="5" width="18" height="14" rx="3" />
+      <path d="m4 7.5 8 5.5 8-5.5" />
+    </svg>
+  ),
+};
+
 const links: LinkItem[] = [
-  {
-    title: 'My no-slop Substack',
-    sub: 'Weekly pro AI workflows, click by click',
-    href: 'https://arseniipmzkv.substack.com/subscribe',
-    tone: 'substack',
-    icon: (
-      // Substack mark: two bars over a bookmark ribbon, filled
-      <svg width={20} height={20} viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-        <rect x="3" y="3" width="18" height="2.6" rx="0.6" />
-        <rect x="3" y="8" width="18" height="2.6" rx="0.6" />
-        <path d="M3 13h18v8.4c0 .4-.4.6-.7.4L12 17.2l-8.3 4.6c-.3.2-.7 0-.7-.4V13z" />
-      </svg>
-    ),
-  },
   {
     title: '1:1 session with me',
     sub: 'Bring an unclear problem → leave with a plan and AI workflows',
@@ -62,6 +62,21 @@ const links: LinkItem[] = [
     ),
   },
 ];
+
+const renderLink = (l: LinkItem) => (
+  <li key={l.href}>
+    <a className={styles.link} href={l.href} target="_blank" rel="noopener noreferrer">
+      <span className={`${styles.icon} ${styles[l.tone]}`}>{l.icon}</span>
+      <span className={styles.text}>
+        <span className={styles.title}>{l.title}</span>
+        <span className={styles.sub}>{l.sub}</span>
+      </span>
+      <svg className={styles.arrow} {...iconProps} width={18} height={18}>
+        <path d="M7 17 17 7M8 7h9v9" />
+      </svg>
+    </a>
+  </li>
+);
 
 export default function LinksPage() {
   const ordered = Math.random() < 0.5 ? courses : [...courses].reverse();
@@ -91,20 +106,7 @@ export default function LinksPage() {
             </a>
           </li>
         ))}
-        {links.map((l) => (
-          <li key={l.href}>
-            <a className={styles.link} href={l.href} target="_blank" rel="noopener noreferrer">
-              <span className={`${styles.icon} ${styles[l.tone]}`}>{l.icon}</span>
-              <span className={styles.text}>
-                <span className={styles.title}>{l.title}</span>
-                <span className={styles.sub}>{l.sub}</span>
-              </span>
-              <svg className={styles.arrow} {...iconProps} width={18} height={18}>
-                <path d="M7 17 17 7M8 7h9v9" />
-              </svg>
-            </a>
-          </li>
-        ))}
+        {[newsletter, ...links].map(renderLink)}
       </ul>
     </main>
   );

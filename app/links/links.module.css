@@ -97,8 +97,8 @@
   justify-content: center;
   color: #fff;
 }
-/* Substack's brand orange (#ff6719), shifted a touch redder */
-.substack { background: linear-gradient(150deg, #ff8a4c 0%, #ff6719 50%, #e8461a 100%); }
+/* Newsletter: site accent yellow; dark icon for contrast */
+.newsletter { background: linear-gradient(150deg, #ffe680 0%, #ffd94d 50%, #f5c518 100%); color: #0f0b0d; }
 .purple { background: linear-gradient(150deg, #a78bfa 0%, #8b5cf6 45%, #6d3ef2 100%); }
 .blue { background: linear-gradient(150deg, #93d4ff 0%, #4f9dff 50%, #2563eb 100%); }
 .orange { background: linear-gradient(150deg, #ffb366 0%, #f97316 55%, #e2570b 100%); }
