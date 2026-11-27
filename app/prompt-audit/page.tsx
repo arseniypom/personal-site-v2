@@ -107,6 +107,7 @@ export default function PromptAuditPage() {
             <p>Open a new conversation inside the project you want to audit, then paste this prompt:</p>
             <CopyPrompt
               text={appPrompt}
+              previewParagraphs={2}
               note={<>Based on Anthropic’s <a href="https://github.com/anthropics/skills/blob/main/skills/claude-api/shared/prompt-audit.md" target="_blank" rel="noreferrer">prompt-audit</a>, adapted for Claude Projects.</>}
             />
             <p>Reply with the finding numbers you approve. If Claude cannot edit a setting, save the approved text there yourself.</p>

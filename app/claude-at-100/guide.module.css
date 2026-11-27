@@ -189,3 +189,9 @@
 @media (prefers-reduced-motion: reduce) {
   .toc a, .copy, .cta, .turnOn, .chevron { transition: none; }
 }
+
+/* Disclosure stays beside Copy so its position is stable when toggled. */
+.promptControls { display: flex; align-items: center; justify-content: flex-end; flex-wrap: wrap; gap: 8px 12px; }
+.promptToggle { padding: 8px 0; border: 0; background: transparent; color: #bfb6bb; font: inherit; font-size: 14px; cursor: pointer; }
+.promptToggle:hover { color: #fff; }
+.promptToggle:focus-visible { outline: 2px solid #ffd94d; outline-offset: 4px; border-radius: 4px; }
