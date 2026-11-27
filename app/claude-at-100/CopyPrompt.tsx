@@ -19,11 +19,24 @@ export default function CopyPrompt({
   const [state, setState] = useState<'idle' | 'copied' | 'manual'>('idle');
   const [expanded, setExpanded] = useState(false);
   const contentId = useId();
+  const cardRef = useRef<HTMLDivElement>(null);
   const paragraphs = text.split('\n\n');
-  const collapsible = !!previewParagraphs && previewParagraphs > 0 && paragraphs.length > previewParagraphs;
-  const preview = collapsible ? paragraphs.slice(0, previewParagraphs).join('\n\n') : text;
-  const remainder = collapsible ? '\n\n' + paragraphs.slice(previewParagraphs).join('\n\n') : '';
+  const limit = Math.max(0, previewParagraphs ?? 0);
+  const wholeParagraphs = Math.floor(limit);
+  const partialParagraph = paragraphs[wholeParagraphs] ?? '';
+  const partialWords = [...partialParagraph.matchAll(/\S+/g)];
+  const lastWord = partialWords[Math.ceil(partialWords.length * (limit % 1)) - 1];
+  const partial = lastWord ? partialParagraph.slice(0, lastWord.index! + lastWord[0].length) : '';
+  const preview = limit ? [...paragraphs.slice(0, wholeParagraphs), ...(partial ? [partial] : [])].join('\n\n') : text;
+  const collapsible = preview.length < text.length;
   const textRef = useRef<HTMLParagraphElement>(null);
+
+  const toggleExpanded = () => {
+    const top = cardRef.current?.getBoundingClientRect().top ?? 0;
+    const restoreTop = window.scrollY + top - 24;
+    flushSync(() => setExpanded(value => !value));
+    if (expanded && top < 0) window.scrollTo({ top: Math.max(0, restoreTop), behavior: 'instant' });
+  };
 
   const flash = (s: 'copied' | 'manual') => {
     setState(s);
@@ -74,23 +87,27 @@ export default function CopyPrompt({
   );
 
   return (
-    <div className={styles.prompt}>
+    <div ref={cardRef} className={styles.prompt}>
       <div className={styles.promptBar}>
         <span className={styles.promptTitle}>{title}</span>
-        <div className={styles.promptControls}>
-          {collapsible && <button type="button" className={styles.promptToggle} aria-expanded={expanded} aria-controls={contentId} onClick={() => setExpanded(value => !value)}>
-            {expanded ? 'Show less' : 'Show full prompt'}
-          </button>}
         <button type="button" className={styles.copy} onClick={copy} aria-live="polite">
           {state === 'copied' ? 'Copied' : state === 'manual' ? 'Selected, copy it' : 'Copy'}
         </button>
-        </div>
       </div>
       {note && <p className={styles.promptNote}>{note}</p>}
-      <p ref={textRef} className={styles.promptText}>
-        {renderText(preview)}
-        {collapsible && <span id={contentId} hidden={!expanded}>{renderText(remainder)}</span>}
+      {collapsible && !expanded && <p className={`${styles.promptText} ${styles.promptPreview}`}>{renderText(preview)}</p>}
+      <p id={contentId} ref={textRef} className={styles.promptText} hidden={collapsible && !expanded}>
+        {renderText(text)}
       </p>
+      {collapsible && <div className={styles.promptDisclosure}>
+        <button type="button" className={styles.promptToggle} aria-expanded={expanded} aria-controls={contentId} onClick={toggleExpanded}>
+          {expanded ? 'Collapse' : 'Expand'}
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" className={expanded ? styles.promptChevronUp : undefined}>
+            <path d="m4 6 4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </button>
+      </div>}
+
     </div>
   );
 }

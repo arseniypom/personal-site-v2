@@ -190,8 +190,11 @@
   .toc a, .copy, .cta, .turnOn, .chevron { transition: none; }
 }
 
-/* Disclosure stays beside Copy so its position is stable when toggled. */
-.promptControls { display: flex; align-items: center; justify-content: flex-end; flex-wrap: wrap; gap: 8px 12px; }
-.promptToggle { padding: 8px 0; border: 0; background: transparent; color: #bfb6bb; font: inherit; font-size: 14px; cursor: pointer; }
-.promptToggle:hover { color: #fff; }
-.promptToggle:focus-visible { outline: 2px solid #ffd94d; outline-offset: 4px; border-radius: 4px; }
+/* Fade makes the clipped preview explicit; Copy always uses the full text. */
+.prompt { overflow-anchor: none; }
+.promptPreview { padding-bottom: 0; mask-image: linear-gradient(to bottom, #000 calc(100% - 56px), transparent); }
+.promptDisclosure { display: flex; justify-content: center; padding: 4px 22px 16px; }
+.promptToggle { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 44px; padding: 8px 16px; border: 1px solid rgba(255,255,255,.12); border-radius: 999px; background: rgba(255,255,255,.04); color: #d8d0d5; font: inherit; font-size: 14px; cursor: pointer; }
+.promptToggle:hover { color: #fff; background: rgba(255,255,255,.08); }
+.promptToggle:focus-visible { outline: 2px solid #ffd94d; outline-offset: 4px; }
+.promptChevronUp { transform: rotate(180deg); }

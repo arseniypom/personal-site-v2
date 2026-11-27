@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Topic map: year filter and timeline</title>
+<style>
+  :root {
+    --bg: #0f0b0d; --card: #1b171a; --card2: #241f23; --line: rgba(255,255,255,.08);
+    --text: #f3eef0; --muted: #a39aa0; --dim: #6f666b;
+    --yellow: #ffd94d; --violet: #a78bfa; --orange: #ff9a3d; --teal: #5eead4;
+    --pink: #f472b6; --blue: #93c5fd; --lime: #bef264; --rose: #fca5a5;
+    --good: #bef264; --mid: #ffd94d; --bad: #fca5a5;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--bg); color: var(--text); overflow-x: clip; }
+  body { font: 15px/1.55 ui-sans-serif, -apple-system, "Segoe UI", Inter, sans-serif; }
+  main { max-width: 1080px; margin: 0 auto; padding: 40px 16px 80px; }
+  h1 { font-size: clamp(28px, 4.6vw, 44px); line-height: 1.1; margin: 0 0 12px; letter-spacing: -.02em; }
+  h2 { font-size: 24px; margin: 0 0 6px; letter-spacing: -.01em; }
+  h3 { font-size: 16px; margin: 0 0 6px; }
+  p { margin: 0 0 10px; }
+  .lede { color: var(--muted); max-width: 720px; font-size: 16px; }
+  code, .mono { font: 13px/1.4 ui-monospace, "SF Mono", Menlo, monospace; }
+  code { background: rgba(255,255,255,.06); padding: 1px 6px; border-radius: 6px; overflow-wrap: anywhere; }
+  section { margin-top: 28px; }
+  .card { background: var(--card); border-radius: 30px; padding: 26px; }
+  .card + .card { margin-top: 16px; }
+  .hint { color: var(--muted); margin-bottom: 18px; }
+  .pill { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 999px; border: 1px solid var(--line); font-size: 13px; color: var(--muted); white-space: nowrap; }
+  .pill.y { border-color: var(--yellow); color: var(--yellow); background: rgba(255,217,77,.08); }
+  .grid { display: grid; gap: 16px; }
+  .grid > * { min-width: 0; }
+  .g2 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); }
+  .g3 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); }
+  .callout { border-radius: 24px; padding: 20px 22px; background: linear-gradient(135deg, rgba(255,217,77,.16), rgba(255,154,61,.08)); border: 1px solid rgba(255,217,77,.35); }
+  .callout strong { color: var(--yellow); }
+  figure { margin: 0; }
+  figcaption { color: var(--muted); font-size: 13px; margin-top: 8px; }
+  svg { display: block; width: 100%; height: auto; }
+  .mock { background: rgba(255,255,255,.03); border-radius: 20px; padding: 10px; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th, td { text-align: left; padding: 12px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { color: var(--muted); font-weight: 500; font-size: 12px; text-transform: uppercase; letter-spacing: .06em; }
+  td:first-child { font-weight: 600; }
+  tr.pick td { background: rgba(255,217,77,.06); }
+  tr.pick td:first-child { box-shadow: inset 3px 0 0 var(--yellow); }
+  .tbl { overflow-x: auto; border-radius: 20px; background: var(--card2); }
+  .tbl table { min-width: 760px; }
+  .s { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; vertical-align: 0; }
+  .s.g { background: var(--good); } .s.m { background: var(--mid); } .s.b { background: var(--bad); }
+  .sub { display: block; color: var(--muted); font-weight: 400; font-size: 13px; }
+
+  .opt { background: var(--card2); border-radius: 24px; padding: 20px; border: 1px solid transparent; }
+  .opt.rec { border-color: var(--yellow); }
+  .opt .tag { float: right; }
+  .opt ul { margin: 8px 0 0; padding-left: 18px; color: var(--muted); }
+  .opt li { margin: 3px 0; }
+  .opt li b { color: var(--text); font-weight: 600; }
+
+  .tier { border-radius: 24px; padding: 18px 20px; background: var(--card2); }
+  .tier .when { font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: var(--dim); }
+  .tier h3 { margin-top: 4px; }
+  .tier p { color: var(--muted); font-size: 14px; }
+
+  .bench td, .bench th { padding: 8px 10px; }
+  .bench td:not(:first-child) { font-family: ui-monospace, Menlo, monospace; font-size: 13px; }
+  .hot { color: var(--orange); }
+
+  ol.steps { counter-reset: s; list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
+  ol.steps > li { counter-increment: s; background: var(--card2); border-radius: 22px; padding: 16px 18px 16px 58px; position: relative; }
+  ol.steps > li::before { content: counter(s); position: absolute; left: 16px; top: 14px; width: 28px; height: 28px; border-radius: 50%; background: var(--yellow); color: #1b171a; font-weight: 700; display: grid; place-content: center; font-size: 14px; }
+  ol.steps p { color: var(--muted); font-size: 14px; margin: 4px 0 0; }
+  .meta { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+
+  .q { background: var(--card2); border-radius: 22px; padding: 16px 18px; }
+  .q + .q { margin-top: 10px; }
+  .q p { color: var(--muted); font-size: 14px; margin: 4px 0 0; }
+
+  .svg-label { font: 600 11px ui-sans-serif, -apple-system, sans-serif; fill: var(--text); }
+  .svg-muted { font: 10px ui-sans-serif, -apple-system, sans-serif; fill: var(--muted); }
+  .svg-mono { font: 10px ui-monospace, Menlo, monospace; fill: var(--muted); }
+  @media (max-width: 640px) { .card { padding: 20px; border-radius: 24px; } main { padding-top: 24px; } }
+</style>
+</head>
+<body>
+<main>
+
+<header>
+  <div class="meta" style="margin-bottom:14px"><span class="pill y">Plan · /channel topic map</span><span class="pill">253 posts · 8 topics · 2022–2026</span></div>
+  <h1>Year filter, animated transitions and timeline mode</h1>
+  <p class="lede">The goal: filter the map by year and switch to a chronological layout, with dots flying smoothly between positions instead of jumping, on desktop and on a phone.</p>
+</header>
+
+<section>
+  <div class="callout" id="finding">
+    <p style="margin:0"><strong>This is already on <code>main</code>.</strong> Commit <code>65a8e13</code> (2026-08-30) added both modes, the year chips, CSS-driven transitions and the pure layout module <code>lib/mapLayout.ts</code>. So this plan compares that implementation with the alternatives, confirms where the layout should be calculated, and lists what is still missing. I'm not proposing a rewrite.</p>
+  </div>
+</section>
+
+<!-- ============ TARGET BEHAVIOR ============ -->
+<section class="card" id="behavior">
+  <h2>Target behavior</h2>
+  <p class="hint">One set of 253 <code>&lt;circle&gt;</code>s, each keyed by post id. Changing a control only changes where each dot sits and whether it's visible.</p>
+  <div class="grid g3">
+    <figure id="mock-topics">
+      <div class="mock">
+        <svg viewBox="0 0 200 130" role="img" aria-labelledby="mt1">
+          <title id="mt1">Topics mode, all years</title>
+          <g opacity=".9">
+            <g fill="#ffd94d"><circle cx="40" cy="30" r="2.4"/><circle cx="46" cy="36" r="2.4"/><circle cx="36" cy="40" r="2.4"/><circle cx="50" cy="28" r="2.4"/><circle cx="44" cy="44" r="2.4"/><circle cx="54" cy="38" r="2.4"/></g>
+            <g fill="#a78bfa"><circle cx="110" cy="26" r="2.4"/><circle cx="118" cy="32" r="2.4"/><circle cx="104" cy="34" r="2.4"/><circle cx="114" cy="40" r="2.4"/></g>
+            <g fill="#ff9a3d"><circle cx="160" cy="50" r="2.4"/><circle cx="166" cy="58" r="2.4"/><circle cx="154" cy="60" r="2.4"/><circle cx="170" cy="46" r="2.4"/><circle cx="162" cy="66" r="2.4"/></g>
+            <g fill="#5eead4"><circle cx="70" cy="86" r="2.4"/><circle cx="78" cy="92" r="2.4"/><circle cx="64" cy="96" r="2.4"/><circle cx="74" cy="100" r="2.4"/></g>
+            <g fill="#f472b6"><circle cx="130" cy="96" r="2.4"/><circle cx="138" cy="102" r="2.4"/><circle cx="124" cy="104" r="2.4"/><circle cx="142" cy="92" r="2.4"/><circle cx="134" cy="110" r="2.4"/></g>
+          </g>
+          <text x="46" y="18" text-anchor="middle" class="svg-label" fill="#ffd94d" style="fill:#ffd94d">JS &amp; React</text>
+          <text x="162" y="38" text-anchor="middle" class="svg-label" style="fill:#ff9a3d">Interviews</text>
+        </svg>
+      </div>
+      <figcaption><b>Topics · All years.</b> Supervised-UMAP coordinates from <code>map.json</code>, unchanged.</figcaption>
+    </figure>
+    <figure id="mock-year">
+      <div class="mock">
+        <svg viewBox="0 0 200 130" role="img" aria-labelledby="mt2">
+          <title id="mt2">Topics mode, single year: affine zoom to the subset</title>
+          <rect x="22" y="14" width="160" height="104" rx="8" fill="none" stroke="rgba(255,217,77,.35)" stroke-dasharray="3 3"/>
+          <g fill="#ffd94d"><circle cx="40" cy="34" r="3"/><circle cx="56" cy="46" r="3"/><circle cx="34" cy="54" r="3"/></g>
+          <g fill="#a78bfa"><circle cx="120" cy="28" r="3"/><circle cx="134" cy="40" r="3"/></g>
+          <g fill="#ff9a3d"><circle cx="164" cy="70" r="3"/><circle cx="152" cy="84" r="3"/><circle cx="170" cy="92" r="3"/></g>
+          <g fill="#5eead4"><circle cx="64" cy="100" r="3"/></g>
+          <g fill="#f472b6" opacity=".18"><circle cx="128" cy="104" r="2"/><circle cx="140" cy="108" r="2"/></g>
+          <text x="100" y="126" text-anchor="middle" class="svg-mono">bbox → uniform scale ≤ 2.2×</text>
+        </svg>
+      </div>
+      <figcaption><b>Topics · 2024.</b> The map zooms on that year's points. Other years fade out in place, so neighbors stay neighbors.</figcaption>
+    </figure>
+    <figure id="mock-timeline">
+      <div class="mock">
+        <svg viewBox="0 0 200 130" role="img" aria-labelledby="mt3">
+          <title id="mt3">Timeline mode: time on x, one lane per topic, beeswarm inside lane</title>
+          <g stroke="rgba(255,255,255,.08)"><line x1="20" y1="12" x2="20" y2="124"/><line x1="65" y1="12" x2="65" y2="124"/><line x1="110" y1="12" x2="110" y2="124"/><line x1="155" y1="12" x2="155" y2="124"/></g>
+          <g class="svg-mono"><text x="20" y="9">2022</text><text x="65" y="9">2023</text><text x="110" y="9">2024</text><text x="155" y="9">2025</text></g>
+          <g fill="#ffd94d"><circle cx="26" cy="24" r="2.2"/><circle cx="34" cy="28" r="2.2"/><circle cx="34" cy="20" r="2.2"/><circle cx="72" cy="24" r="2.2"/><circle cx="96" cy="24" r="2.2"/><circle cx="140" cy="24" r="2.2"/></g>
+          <g fill="#a78bfa"><circle cx="58" cy="46" r="2.2"/><circle cx="80" cy="46" r="2.2"/><circle cx="84" cy="50" r="2.2"/><circle cx="170" cy="46" r="2.2"/></g>
+          <g fill="#ff9a3d"><circle cx="70" cy="68" r="2.2"/><circle cx="76" cy="72" r="2.2"/><circle cx="76" cy="64" r="2.2"/><circle cx="82" cy="68" r="2.2"/><circle cx="120" cy="68" r="2.2"/></g>
+          <g fill="#5eead4"><circle cx="112" cy="90" r="2.2"/><circle cx="150" cy="90" r="2.2"/><circle cx="182" cy="90" r="2.2"/></g>
+          <g fill="#f472b6"><circle cx="44" cy="112" r="2.2"/><circle cx="100" cy="112" r="2.2"/><circle cx="160" cy="112" r="2.2"/><circle cx="166" cy="116" r="2.2"/></g>
+        </svg>
+      </div>
+      <figcaption><b>Timeline.</b> Post date runs along x and each topic gets its own lane. Below 640 px the axes swap and the timeline runs top to bottom.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ============ APPROACHES ============ -->
+<section class="card" id="approaches">
+  <h2>Approaches compared</h2>
+  <p class="hint">The decision is how to render the dots and how to animate them. 253 dots is small, so headroom up to ~2k matters more than raw speed.</p>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>Approach</th><th>Implementation complexity</th><th>Perf · 253 dots<span class="sub" style="text-transform:none;letter-spacing:0">and headroom</span></th><th>Mobile</th><th>Interrupting mid-flight</th></tr></thead>
+      <tbody>
+        <tr class="pick" id="opt-a">
+          <td>A · SVG + CSS transitions on <code>--map-x/--map-y</code><span class="sub">current</span></td>
+          <td><span class="s g"></span>Low. No animation library. React sets two custom properties per dot and the browser interpolates.</td>
+          <td><span class="s g"></span>One React commit per change, then zero JS per frame. Fine to ~1.5k. The blur glow is the only expensive part and it's hidden during the flight.</td>
+          <td><span class="s g"></span>Native hit-testing, a 5-unit invisible stroke for a fat tap target, tap opens the modal. Supports <code>prefers-reduced-motion</code>.</td>
+          <td><span class="s g"></span>Free: CSS retargets from the current computed transform.</td>
+        </tr>
+        <tr id="opt-b">
+          <td>B · SVG + JS tween<span class="sub">framer-motion / react-spring / d3-transition</span></td>
+          <td><span class="s m"></span>Medium. Adds a dependency (~30–50 kB for motion). Springs feel nice, but every dot becomes a motion component.</td>
+          <td><span class="s m"></span>Writes attributes on the main thread every frame (253 × 60/s). OK on desktop, can jank on mid-range Android around 1k dots.</td>
+          <td><span class="s g"></span>Same SVG hit-testing as A.</td>
+          <td><span class="s g"></span>Springs keep velocity, which is slightly nicer than A.</td>
+        </tr>
+        <tr id="opt-c">
+          <td>C · Canvas 2D + rAF interpolation</td>
+          <td><span class="s b"></span>High. Needs manual hit-testing (quadtree), DPR scaling, a hover/focus layer, and redrawn axes and labels. The SVG a11y is lost.</td>
+          <td><span class="s g"></span>Best headroom (10k+). Overkill at 253.</td>
+          <td><span class="s m"></span>Taps need custom hit radii and the canvas has to be resized on rotation.</td>
+          <td><span class="s g"></span>Easy, since you own the loop.</td>
+        </tr>
+        <tr id="opt-d">
+          <td>D · WebGL<span class="sub">regl / pixi / deck.gl</span></td>
+          <td><span class="s b"></span>Very high, with a 100–400 kB library for a decorative section.</td>
+          <td><span class="s g"></span>100k+ dots. Irrelevant here.</td>
+          <td><span class="s b"></span>Context loss and battery cost, and text labels still need DOM.</td>
+          <td><span class="s g"></span>Shader uniforms.</td>
+        </tr>
+        <tr id="opt-e">
+          <td>E · FLIP / View Transitions API</td>
+          <td><span class="s m"></span>Medium. 253 <code>view-transition-name</code>s, or measuring each dot's position before and after.</td>
+          <td><span class="s m"></span>View Transitions snapshot elements as bitmaps, so dots blur when the zoom changes. FLIP needs a layout read per dot.</td>
+          <td><span class="s m"></span>View Transitions only recently reached Safari, and SVG children are poorly supported.</td>
+          <td><span class="s b"></span>A new transition cancels the running one and the dots snap.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="margin-top:14px"><strong style="color:var(--yellow)">Verdict: keep A.</strong> <span style="color:var(--muted)">It's the simplest option that stays smooth when someone clicks through the year chips quickly. The layout function doesn't know about the renderer, so moving to canvas later (C) would only replace <code>DotLayer</code>.</span></p>
+</section>
+
+<!-- ============ ARCHITECTURE ============ -->
+<section class="card" id="architecture">
+  <h2>Architecture: where each calculation runs</h2>
+  <p class="hint">The work is split into three tiers by cost and by what each step depends on.</p>
+
+  <figure id="arch-diagram" class="mock" style="padding:14px">
+    <svg viewBox="0 0 960 250" role="img" aria-labelledby="arch-t">
+      <title id="arch-t">Data flow: offline pipeline, server page, client layout, browser compositor</title>
+      <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6f666b"/></marker></defs>
+      <g id="n-pipeline"><title>scripts/prepare-data.mjs</title>
+        <rect x="10" y="40" width="200" height="150" rx="22" fill="#241f23" stroke="rgba(255,255,255,.1)"/>
+        <text x="30" y="70" class="svg-muted">OFFLINE · npm run prepare-data</text>
+        <text x="30" y="96" class="svg-label">embeddings → LLM topics</text>
+        <text x="30" y="116" class="svg-label">→ supervised UMAP</text>
+        <text x="30" y="150" class="svg-mono">map.json {x, y, c}</text>
+        <text x="30" y="168" class="svg-mono">seconds–minutes, once</text>
+      </g>
+      <g id="n-server"><title>app/channel/page.tsx</title>
+        <rect x="255" y="40" width="200" height="150" rx="22" fill="#241f23" stroke="rgba(255,255,255,.1)"/>
+        <text x="275" y="70" class="svg-muted">SERVER · page.tsx (RSC)</text>
+        <text x="275" y="96" class="svg-label">join post dates</text>
+        <text x="275" y="116" class="svg-label">→ TimedPoint {t, year}</text>
+        <text x="275" y="150" class="svg-mono">build time, static</text>
+      </g>
+      <g id="n-layout"><title>lib/mapLayout.ts computeLayout()</title>
+        <rect x="500" y="20" width="220" height="190" rx="22" fill="rgba(255,217,77,.08)" stroke="#ffd94d"/>
+        <text x="520" y="50" class="svg-muted" style="fill:#ffd94d">CLIENT · useMemo (also SSR)</text>
+        <text x="520" y="76" class="svg-label">computeLayout(points, view)</text>
+        <text x="520" y="100" class="svg-mono">topics: bbox affine zoom</text>
+        <text x="520" y="118" class="svg-mono">timeline: lanes + beeswarm</text>
+        <text x="520" y="136" class="svg-mono">orientation h / v (≤640px)</text>
+        <text x="520" y="168" class="svg-mono">0.02–0.16 ms @ 253</text>
+        <text x="520" y="186" class="svg-mono">pure, DOM-free</text>
+      </g>
+      <g id="n-browser"><title>DotLayer + CSS transitions</title>
+        <rect x="765" y="40" width="185" height="150" rx="22" fill="#241f23" stroke="rgba(255,255,255,.1)"/>
+        <text x="785" y="70" class="svg-muted">BROWSER · per frame</text>
+        <text x="785" y="96" class="svg-label">memo DotLayer</text>
+        <text x="785" y="116" class="svg-label">sets --map-x/y</text>
+        <text x="785" y="150" class="svg-mono">CSS transition 620ms</text>
+        <text x="785" y="168" class="svg-mono">0 JS per frame</text>
+      </g>
+      <g stroke="#6f666b" stroke-width="1.5" fill="none" marker-end="url(#ar)">
+        <path id="e1" d="M210 115 H250"/><path id="e2" d="M455 115 H495"/><path id="e3" d="M720 115 H760"/>
+      </g>
+      <g id="n-input"><title>View reducer: mode, year, cluster</title>
+        <rect x="520" y="222" width="180" height="24" rx="12" fill="none" stroke="#6f666b" stroke-dasharray="3 3"/>
+        <text x="610" y="238" text-anchor="middle" class="svg-mono">view {mode, year, cluster}</text>
+      </g>
+    </svg>
+  </figure>
+
+  <div class="grid g3" style="margin-top:16px">
+    <div class="tier" id="tier-offline"><div class="when">Offline pipeline</div><h3>Anything that depends on content</h3><p>Embeddings, the LLM taxonomy and UMAP are slow and nondeterministic, so they belong here. Don't precompute the timeline beeswarm in the pipeline, because it depends on screen orientation and on the selected year range.</p></div>
+    <div class="tier" id="tier-client"><div class="when">Client, pure function</div><h3>Anything that depends on the view</h3><p>Mode, year and orientation give 2 × 6 × 2 = 24 possible layouts, each under 0.2 ms. A Web Worker or an API route would cost more in overhead than the calculation itself. The same function runs during SSR, so the first paint already has the right positions and nothing flashes.</p></div>
+    <div class="tier" id="tier-browser"><div class="when">Browser compositor</div><h3>Everything between keyframes</h3><p>Interpolation, the stagger (index × 0.5 ms, capped at 120 ms) and fading. React renders once per click, and hover and modal state live outside the memoized dot layer.</p></div>
+  </div>
+
+  <h3 style="margin-top:22px">Measured cost of <code>computeLayout</code> (Node, M-series, 200-run average)</h3>
+  <div class="tbl" style="margin-top:8px">
+    <table class="bench" style="min-width:520px">
+      <thead><tr><th>Points</th><th>topics · all</th><th>topics · 2024</th><th>timeline · all</th><th>timeline · 2024</th></tr></thead>
+      <tbody>
+        <tr><td>253 (today)</td><td>0.016 ms</td><td>0.013 ms</td><td>0.159 ms</td><td>0.028 ms</td></tr>
+        <tr><td>1 012 (×4)</td><td>0.066 ms</td><td>0.065 ms</td><td>1.38 ms</td><td>0.149 ms</td></tr>
+        <tr><td>2 024 (×8)</td><td>0.173 ms</td><td>0.130 ms</td><td class="hot">5.68 ms</td><td>0.473 ms</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="color:var(--muted);font-size:14px;margin-top:8px">The timeline beeswarm is O(n²) within each lane (<code>done.some(...)</code> scans every dot already placed). It doesn't matter at today's size, but at about 2k posts it would take roughly 20 ms on a phone. Scanning only a sliding window of dots within <code>minGap</code> would make it close to linear.</p>
+</section>
+
+<!-- ============ ANIMATION + MOBILE ============ -->
+<section class="grid g2">
+  <div class="card" id="choreo">
+    <h2>Animation choreography</h2>
+    <p class="hint">Already implemented.</p>
+    <ul style="color:var(--muted);padding-left:18px;margin:0">
+      <li><b style="color:var(--text)">Exits fade in place.</b> In timeline mode, filtered-out dots park at their lane center instead of flying across the screen.</li>
+      <li><b style="color:var(--text)">Stagger only while moving.</b> The <code>.is-moving</code> class lasts 720 ms, so hover isn't delayed.</li>
+      <li><b style="color:var(--text)">Glow off during flight.</b> <code>feGaussianBlur</code> re-renders every frame and is the real 60 fps bottleneck on phones.</li>
+      <li><b style="color:var(--text)">Cluster labels</b> move to the centroid of their topic's visible dots and are pushed apart vertically so they don't overlap.</li>
+      <li><b style="color:var(--text)">Reduced motion</b> turns off all transitions and the stagger.</li>
+    </ul>
+  </div>
+  <div class="card" id="mobile">
+    <h2>Mobile</h2>
+    <p class="hint">≤640 px, checked against <code>TopicMap.tsx</code>.</p>
+    <ul style="color:var(--muted);padding-left:18px;margin:0">
+      <li><b style="color:var(--text)">Vertical timeline</b> (viewBox 100×170). Eight horizontal lanes would be about 4 px tall each at 390 px wide.</li>
+      <li><b style="color:var(--text)">Orientation</b> comes from <code>useSyncExternalStore(matchMedia)</code>, with <code>'h'</code> on the server, so phones get a single client re-render after hydration.</li>
+      <li><b style="color:var(--text)">Tap targets:</b> a dot has r = 1.05 plus a transparent stroke of 5, about 20 px on a phone.</li>
+      <li><b style="color:var(--text)">Year chips and the legend</b> scroll horizontally, and tapping a dot opens the modal because touch has no hover.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ NEXT STEPS ============ -->
+<section class="card" id="next">
+  <h2>Proposed follow-ups</h2>
+  <p class="hint">Small and independent, in priority order.</p>
+  <ol class="steps">
+    <li id="step-url"><h3>Keep mode and year in the URL</h3><p>Sync <code>?map=timeline&amp;year=2024</code> with <code>history.replaceState</code> and read it on load, so a specific view can be shared. Don't use Next router navigation, because it would re-run the RSC payload with every post in it.</p><div class="meta"><span class="pill">TopicMap.tsx</span><span class="pill">~30 lines</span></div></li>
+    <li id="step-stagger"><h3>Stagger by position, not array order</h3><p>Order the delay by the target x (or by date in timeline mode). The flight then reads as a left-to-right sweep instead of random noise. Compute it in <code>computeLayout</code> as a <code>delay</code> field on <code>Placed</code>.</p><div class="meta"><span class="pill">mapLayout.ts</span><span class="pill">DotLayer</span></div></li>
+    <li id="step-perf"><h3>Measure the animation on a throttled phone profile</h3><p>Chrome performance trace at 4× CPU slowdown, 430 px wide, with the year chips clicked rapidly. Target: no frames over 16 ms during a flight. Note: the bench above is for layout only and doesn't include paint.</p><div class="meta"><span class="pill">verification</span></div></li>
+    <li id="step-swarm"><h3>Make the beeswarm close to linear</h3><p>Only needed if the archive grows past ~1k posts. The output is the same, so it's safe to do whenever.</p><div class="meta"><span class="pill">mapLayout.ts</span><span class="pill">optional</span></div></li>
+  </ol>
+</section>
+
+<!-- ============ RISKS / QUESTIONS ============ -->
+<section class="card" id="questions">
+  <h2>Risks and open questions</h2>
+  <div class="q" id="q-scope"><h3>Did you want something beyond what's shipped?</h3><p>If the current behavior is what you had in mind, this is a review and only the follow-ups are new. If you wanted a different timeline (for example one row of all posts colored by topic, or a month histogram), annotate the timeline mockup above.</p></div>
+  <div class="q" id="q-zoom"><h3>Should the year filter zoom?</h3><p>Right now, picking a year rescales the map to fit that year's posts (up to 2.2×). The alternative keeps the map fixed and only fades other years, which makes comparing years easier but leaves sparse years (2022 has 35 posts) looking empty.</p></div>
+  <div class="q" id="q-pipeline"><h3>Pipeline reruns change the UMAP</h3><p>Regenerating <code>map.json</code> moves every dot, which is expected. Positions in the timeline depend only on dates, so they stay stable.</p></div>
+</section>
+
+</main>
+</body>
+</html>
