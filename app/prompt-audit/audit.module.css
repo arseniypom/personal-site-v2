@@ -1,0 +1,59 @@
+/* /prompt-audit: extras on top of the /claude-at-100 guide styles. */
+.nowrap { white-space: nowrap; }
+.kicker { margin: 14px 6px 0; font-size: clamp(18px, 2.2vw, 24px); font-weight: 500; color: #8a8286; }
+
+.code {
+  padding: 1px 6px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, .07);
+  color: #f2eef0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: .88em;
+  overflow-wrap: anywhere;
+}
+
+.list { display: flex; flex-direction: column; gap: 6px; margin: -6px 0 0; padding-left: 22px; font-size: 17px; line-height: 1.6; color: #cfc8cc; }
+.list li::marker { color: var(--tone, #8a8286); }
+
+/* Before / After */
+.compare { display: grid; grid-template-columns: 1fr; gap: 10px; }
+.card { border-radius: 24px; padding: 16px 22px 22px; }
+.before { background: #1b171a; }
+.after { background: rgba(94, 234, 212, .09); box-shadow: inset 0 0 0 1.5px rgba(94, 234, 212, .35); }
+.cardTitle { margin: 0 0 10px; font-size: 15px; font-weight: 600; color: #8a8286; }
+.after .cardTitle { color: #5eead4; }
+.pre {
+  margin: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 14px;
+  line-height: 1.65;
+  color: #f2eef0;
+}
+.before .pre { color: #a39ba0; }
+
+/* Result numbers */
+.stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 22px;
+  border-radius: 24px;
+  background: color-mix(in srgb, var(--tone, #5eead4) 10%, transparent);
+}
+.statValue { font-size: clamp(36px, 4.4vw, 52px); line-height: 1; font-weight: 600; letter-spacing: -.02em; color: var(--tone, #fff); font-variant-numeric: tabular-nums; }
+.statLabel { font-size: 15px; line-height: 1.4; color: #cfc8cc; }
+
+@media (max-width: 640px) {
+  .kicker { margin: 10px 4px 0; }
+  .list { font-size: 16px; }
+  .card, .stat { padding: 16px 18px 18px; border-radius: 20px; }
+  .pre { font-size: 13px; }
+}
+
+/* Course banner sits between section 1 and the divider above section 2 */
+.banner { margin: 0 0 56px; }
+@media (max-width: 640px) { .banner { margin-bottom: 40px; } }
+.toc { margin-top: 32px; }

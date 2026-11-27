@@ -4,7 +4,15 @@ import { useRef, useState, type ReactNode } from 'react';
 import styles from './guide.module.css';
 
 /** Prompt box with a copy button. [Brackets] are highlighted as fill-in fields. */
-export default function CopyPrompt({ text, note }: { text: string; note?: ReactNode }) {
+export default function CopyPrompt({
+  text,
+  note,
+  title = 'Prompt',
+}: {
+  text: string;
+  note?: ReactNode;
+  title?: string;
+}) {
   const [state, setState] = useState<'idle' | 'copied' | 'manual'>('idle');
   const textRef = useRef<HTMLParagraphElement>(null);
 
@@ -56,7 +64,7 @@ export default function CopyPrompt({ text, note }: { text: string; note?: ReactN
   return (
     <div className={styles.prompt}>
       <div className={styles.promptBar}>
-        <span className={styles.promptTitle}>Prompt</span>
+        <span className={styles.promptTitle}>{title}</span>
         <button type="button" className={styles.copy} onClick={copy} aria-live="polite">
           {state === 'copied' ? 'Copied' : state === 'manual' ? 'Selected, copy it' : 'Copy'}
         </button>
