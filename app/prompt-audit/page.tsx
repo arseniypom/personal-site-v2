@@ -108,6 +108,7 @@ export default function PromptAuditPage() {
           <Section index={0} subtitle="Find and review the instructions already in your project.">
             <p>Open a new conversation inside the project you want to audit, then paste this prompt:</p>
             <CopyPrompt
+              trackAs="1. Audit prompt"
               text={appPrompt}
               previewParagraphs={1}
             />
@@ -130,16 +131,16 @@ export default function PromptAuditPage() {
             <p>
               Update first (you need <code className={own.code}>v2.1.283</code> or newer):
             </p>
-            <CopyPrompt title="Terminal" text="claude update" />
+            <CopyPrompt trackAs="2. claude update" title="Terminal" text="claude update" />
             <p>Then, in your project folder, start Claude Code and run:</p>
-            <CopyPrompt title="Claude Code" text="/doctor prompt-audit" />
+            <CopyPrompt trackAs="3. /doctor prompt-audit" title="Claude Code" text="/doctor prompt-audit" />
             <p>
               It checks <code className={own.code}>CLAUDE.md</code>, <code className={own.code}>CLAUDE.local.md</code>,{' '}
               <code className={own.code}>AGENTS.md</code>, and the rules, skills, commands, subagents and output
               styles in <code className={own.code}>.claude/</code> and <code className={own.code}>~/.claude/</code>.
               To check a single file or folder, add its path:
             </p>
-            <CopyPrompt title="Claude Code" text="/doctor prompt-audit .claude/skills/deploy" />
+            <CopyPrompt trackAs="4. /doctor for one skill" title="Claude Code" text="/doctor prompt-audit .claude/skills/deploy" />
             <p>You get a list of problems with proposed edits:</p>
             <ul className={own.list}>
               <li>instructions written for older models</li>
@@ -147,9 +148,9 @@ export default function PromptAuditPage() {
               <li>files that contradict each other</li>
             </ul>
             <p>Nothing changes until you say so. Back up first:</p>
-            <CopyPrompt title="Terminal" text="cp CLAUDE.md CLAUDE.md.bak" />
+            <CopyPrompt trackAs="5. Backup CLAUDE.md" title="Terminal" text="cp CLAUDE.md CLAUDE.md.bak" />
             <p>Then tell it which edits to apply:</p>
-            <CopyPrompt text="Apply 1, 2 and 4. Skip 3." />
+            <CopyPrompt trackAs="6. Apply fixes" text="Apply 1, 2 and 4. Skip 3." />
             <div className={styles.tip}>
               <p className={styles.tipTitle}>What to keep</p>
               <p>

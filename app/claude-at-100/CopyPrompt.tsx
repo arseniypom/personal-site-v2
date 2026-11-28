@@ -4,18 +4,24 @@ import { useId, useRef, useState, type ReactNode } from 'react';
 import { flushSync } from 'react-dom';
 import styles from './guide.module.css';
 
-/** Prompt box with a copy button. [Brackets] are highlighted as fill-in fields. */
+/**
+ * Prompt box with a copy button. [Brackets] are highlighted as fill-in fields.
+ * `trackAs` names the prompt in PostHog click events (property `prompt`), so identical "Copy" buttons can be told apart.
+ */
 export default function CopyPrompt({
   text,
   note,
   title = 'Prompt',
   previewParagraphs,
+  trackAs,
 }: {
   text: string;
   note?: ReactNode;
   title?: string;
   previewParagraphs?: number;
+  trackAs?: string;
 }) {
+  const trackAttr = { 'data-ph-capture-attribute-prompt': trackAs ?? text.slice(0, 60) };
   const [state, setState] = useState<'idle' | 'copied' | 'manual'>('idle');
   const [expanded, setExpanded] = useState(false);
   const contentId = useId();
@@ -90,7 +96,7 @@ export default function CopyPrompt({
     <div ref={cardRef} className={styles.prompt}>
       <div className={styles.promptBar}>
         <span className={styles.promptTitle}>{title}</span>
-        <button type="button" className={styles.copy} onClick={copy} aria-live="polite">
+        <button type="button" className={styles.copy} onClick={copy} aria-live="polite" {...trackAttr}>
           {state === 'copied' ? 'Copied' : state === 'manual' ? 'Selected, copy it' : 'Copy'}
         </button>
       </div>
@@ -100,7 +106,7 @@ export default function CopyPrompt({
         {renderText(text)}
       </p>
       {collapsible && <div className={styles.promptDisclosure}>
-        <button type="button" className={styles.promptToggle} aria-expanded={expanded} aria-controls={contentId} onClick={toggleExpanded}>
+        <button type="button" className={styles.promptToggle} aria-expanded={expanded} aria-controls={contentId} onClick={toggleExpanded} {...trackAttr}>
           {expanded ? 'Collapse' : 'Expand'}
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" className={expanded ? styles.promptChevronUp : undefined}>
             <path d="m4 6 4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
