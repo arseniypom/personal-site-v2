@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import { notFound } from 'next/navigation';
 import { courses, getCourse, LAUNCH_BY } from '../../courses';
+import { START_DATE } from '../../claude-7-days';
 import styles from '../course.module.css';
 
 // Stripe Payment Link redirects here after a paid $1 spot (?session_id=cs_…).
@@ -13,7 +14,9 @@ type Props = { params: Promise<{ course: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const c = getCourse((await params).course);
-  return c ? { title: `Spot reserved · ${c.title}`, robots: { index: false, follow: false } } : {};
+  return c
+    ? { title: `${c.landing ? 'You’re in' : 'Spot reserved'} · ${c.title}`, robots: { index: false, follow: false } }
+    : {};
 }
 
 export default async function ReservedPage({ params }: Props) {
@@ -32,11 +35,17 @@ export default async function ReservedPage({ params }: Props) {
             <path d="M5 12.5l4.5 4.5L19 7.5" />
           </svg>
         </div>
-        <h2 className={styles.h2}>Your spot is reserved</h2>
+        <h2 className={styles.h2}>{c.landing ? 'You’re in' : 'Your spot is reserved'}</h2>
+        {c.landing ? (
+          <p className={styles.text}>
+            Payment received. On {START_DATE} you’ll get an email with access to the course.
+          </p>
+        ) : (
         <p className={styles.text}>
           The {c.price} founding price is yours. When the course launches, you’ll get an email with a link to pay
           the rest. If it’s not out by {LAUNCH_BY}, you get your $1 back.
         </p>
+        )}
         <a className={styles.secondary} href="/links">
           Back to links
         </a>

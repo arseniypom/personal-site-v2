@@ -10,6 +10,8 @@
  * Test links redirect back to http://localhost:3199, live ones to www.pomazkov.com.
  * Test card: 4242 4242 4242 4242, any future date, any CVC.
  */
+import { claude7Days, type Landing } from './claude-7-days';
+
 const STRIPE_LIVE = process.env.VERCEL_ENV === 'production';
 const stripeLink = (path: string) => `https://buy.stripe.com/${STRIPE_LIVE ? '' : 'test_'}${path}`;
 
@@ -33,12 +35,14 @@ export type Course = {
    * Stripe Payment Link for the $1 spot (account "Pomazkov"), see `stripeLink`.
    */
   checkoutUrl: string;
+  /** Full landing page (author, levels, plans, FAQ). Without it the short fake-door page is shown. */
+  landing?: Landing;
 };
 
 export const courses: Course[] = [
   {
     slug: 'claude-7-days',
-    title: 'Master Claude in 7 Days',
+    title: 'Claude in 7 Days',
     buttonSub: 'Get Claude doing real work for you, no code',
     subtitle: 'Go from AI-curious to AI-confident in one week. No coding required.',
     tone: 'orange',
@@ -59,8 +63,9 @@ export const courses: Course[] = [
       'Tutorials went nowhere and you feel left behind',
       'You’re short on time and just want to know where to start',
     ],
-    price: '$69',
+    price: '$93',
     checkoutUrl: stripeLink('cNidR91BA1ef6n5fUWafS00'),
+    landing: claude7Days,
   },
   {
     slug: 'video-editing',

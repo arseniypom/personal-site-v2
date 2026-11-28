@@ -2,12 +2,18 @@ import type { Metadata, Viewport } from 'next';
 import { notFound } from 'next/navigation';
 import { courses, getCourse, LAUNCH_BY } from '../courses';
 import styles from './course.module.css';
+import CourseLanding from './CourseLanding';
 
 export const dynamicParams = false;
 export const generateStaticParams = () => courses.map((c) => ({ course: c.slug }));
-export const viewport: Viewport = { themeColor: '#0f0b0d', colorScheme: 'dark' };
-
 type Props = { params: Promise<{ course: string }> };
+
+export async function generateViewport({ params }: Props): Promise<Viewport> {
+  const c = getCourse((await params).course);
+  return c?.landing
+    ? { themeColor: '#fbf7f1', colorScheme: 'light' }
+    : { themeColor: '#0f0b0d', colorScheme: 'dark' };
+}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const c = getCourse((await params).course);
@@ -17,6 +23,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function CoursePage({ params }: Props) {
   const c = getCourse((await params).course);
   if (!c) notFound();
+  if (c.landing) return <CourseLanding course={c} l={c.landing} />;
 
   return (
     <main className={styles.page}>
