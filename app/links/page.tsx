@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   description: 'Big Tech engineer. Your shortcut to using AI like a pro.',
   alternates: { canonical: '/links' },
 };
-export const viewport: Viewport = { themeColor: '#0f0b0d', colorScheme: 'dark' };
+export const viewport: Viewport = { themeColor: '#fbf7f1', colorScheme: 'light' };
 
 type Tone = 'newsletter' | 'blue';
 

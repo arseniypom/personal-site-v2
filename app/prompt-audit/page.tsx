@@ -3,6 +3,7 @@ import type { Metadata, Viewport } from 'next';
 import CopyPrompt from '../claude-at-100/CopyPrompt';
 import styles from '../claude-at-100/guide.module.css';
 import own from './audit.module.css';
+import { START_DATE } from '../links/claude-7-days';
 
 export const metadata: Metadata = {
   title: 'Prepare your setup for Opus 5.6',
@@ -111,18 +112,18 @@ export default function PromptAuditPage() {
             />
           </Section>
 
-          <section className={`${styles.closing} ${own.banner}`}>
-            <div className={styles.blob1}></div>
-            <div className={styles.blob2}></div>
-            <h2>Master Claude in 7 Days</h2>
-            <p>
-              3 years of daily Claude use, boiled down to the setup that works for me and the
-              professionals and founders I work with. Step by step, no code.
-            </p>
-            <div className={styles.ctaRow}>
-              <a className={styles.cta} href="/links/claude-7-days">See the course</a>
+          <aside className={own.course} aria-label="Course">
+            <div>
+              <p className={own.courseEyebrow}>Course · Starts {START_DATE}</p>
+              <h2>
+                Learn to use Claude <mark>properly</mark> in 7 days
+              </h2>
+              <p>Setup, memory, Skills and automations, one level a day. From 30 minutes a day, no code.</p>
             </div>
-          </section>
+            <a className={own.courseCta} href="/links/claude-7-days">
+              See the course <span>· $93</span>
+            </a>
+          </aside>
 
           <Section index={1} subtitle="A built-in command checks every instruction file in your project.">
             <p>

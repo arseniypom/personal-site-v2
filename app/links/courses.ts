@@ -43,7 +43,7 @@ export const courses: Course[] = [
   {
     slug: 'claude-7-days',
     title: 'Claude in 7 Days',
-    buttonSub: 'Get Claude doing real work for you, no code',
+    buttonSub: '7 levels, one a day. Starts December 7',
     subtitle: 'Go from AI-curious to AI-confident in one week. No coding required.',
     tone: 'orange',
     listTitle: 'What’s inside',

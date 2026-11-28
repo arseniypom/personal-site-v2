@@ -53,7 +53,66 @@
   .pre { font-size: 13px; }
 }
 
-/* Course banner sits between section 1 and the divider above section 2 */
-.banner { margin: 0 0 56px; }
-@media (max-width: 640px) { .banner { margin-bottom: 40px; } }
+/* Course promo between section 1 and the divider above section 2: compact, one hook + one CTA */
+.course {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 20px 32px;
+  margin: 0 0 56px;
+  padding: 28px 32px;
+  border-radius: 30px;
+  background: linear-gradient(150deg, #ff9a3d 0%, #f97316 55%, #ea580c 100%);
+  color: #fff;
+}
+.courseEyebrow {
+  margin: 0 0 10px;
+  display: inline-block;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: rgba(26, 24, 22, 0.18);
+  font-size: 13px;
+  font-weight: 600;
+}
+.course h2 {
+  margin: 0;
+  font-size: clamp(24px, 3vw, 32px);
+  line-height: 1.12;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+.course mark {
+  color: #1a1816;
+  background: #ffd94d;
+  padding: 0 0.12em;
+  border-radius: 6px;
+}
+.course p:not(.courseEyebrow) {
+  margin: 10px 0 0;
+  max-width: 34em;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #ffe8d6;
+}
+.courseCta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 52px;
+  padding: 0 24px;
+  border-radius: 999px;
+  background: #fff;
+  color: #7c2d06;
+  font-size: 16px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: background-color .15s ease, color .15s ease;
+}
+.courseCta span { font-weight: 500; opacity: .7; }
+.courseCta:hover { background: #ffd94d; color: #241c04; }
+@media (max-width: 640px) {
+  .course { grid-template-columns: 1fr; margin-bottom: 40px; padding: 24px; border-radius: 24px; }
+}
 .toc { margin-top: 32px; }

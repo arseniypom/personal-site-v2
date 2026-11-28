@@ -1,4 +1,9 @@
-/* /links — Instagram link-in-bio page. Phone-first; on wider screens it stays a centred phone-width column. */
+/* /links — Instagram link-in-bio page. Phone-first; on wider screens it stays a centred phone-width column.
+   Light warm theme, same palette as the course landing (landing.module.css). */
+:global(html):has(.page),
+:global(body):has(.page) {
+  background: #fbf7f1;
+}
 .page {
   max-width: 460px;
   min-height: 100svh;
@@ -6,7 +11,7 @@
   padding: 56px 16px 32px;
   display: flex;
   flex-direction: column;
-  color: #f2eef0;
+  color: #1a1816;
 }
 
 .profile {
@@ -24,7 +29,7 @@
   overflow: hidden;
   position: relative;
   background: radial-gradient(circle at 50% 78%, #fff3c4 0%, #ffd94d 34%, #ffc933 58%, #f5b81f 100%);
-  box-shadow: 0 0 0 4px #0f0b0d, 0 0 0 5px rgba(255, 217, 77, 0.35);
+  box-shadow: 0 0 0 4px #fbf7f1, 0 0 0 5px rgba(245, 184, 31, 0.5);
 }
 .avatar img {
   position: absolute;
@@ -41,12 +46,12 @@
   line-height: 1.15;
   font-weight: 600;
   letter-spacing: -0.02em;
-  color: #fff;
+  color: #1a1816;
 }
 .handle {
   margin: 6px 0 0;
   font-size: 15px;
-  color: #8a8286;
+  color: #8f8780;
 }
 
 .bio {
@@ -54,7 +59,7 @@
   max-width: 18em;
   font-size: 17px;
   line-height: 1.4;
-  color: #f2eef0;
+  color: #1a1816;
   text-wrap: balance;
 }
 
@@ -73,19 +78,20 @@
   gap: 14px;
   padding: 10px 18px 10px 10px;
   border-radius: 30px;
-  background: #1b171a;
-  color: #f2eef0;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(26, 24, 22, 0.04), inset 0 0 0 1px rgba(26, 24, 22, 0.09);
+  color: #1a1816;
   transition: background-color 0.2s ease, filter 0.2s ease, transform 0.15s ease;
   -webkit-tap-highlight-color: transparent;
 }
 /* Hover only on devices with a real pointer: on phones a tap would leave :hover stuck */
 @media (hover: hover) {
-  .link:not(.course):hover { background-color: #241f22; }
-  .link:not(.course):hover .arrow { color: #ffd94d; }
+  .link:not(.course):hover { background-color: #f3ede4; }
+  .link:not(.course):hover .arrow { color: #1a1816; }
   .course:hover { filter: brightness(1.07); }
 }
 .link:active { transform: scale(0.98); }
-.link:focus-visible { outline: 2px solid #ffd94d; outline-offset: 3px; }
+.link:focus-visible { outline: 2px solid #1a1816; outline-offset: 3px; }
 
 .icon {
   flex-shrink: 0;
@@ -113,23 +119,23 @@
 .title {
   font-size: 17px;
   font-weight: 600;
-  color: #fff;
+  color: #1a1816;
 }
 .sub {
   font-size: 14px;
   line-height: 1.35;
-  color: #8a8286;
+  color: #8f8780;
   text-wrap: pretty;
 }
 
 .arrow {
   flex-shrink: 0;
-  color: #6f676b;
+  color: #8f8780;
   transition: color 0.15s ease;
 }
 
 /* Full-gradient course buttons (fake-door test) */
-.course { padding: 18px 20px 18px 24px; }
-.course .title { font-size: 18px; }
+.course { padding: 18px 20px 18px 24px; box-shadow: none; }
+.course .title { font-size: 18px; color: #fff; }
 .courseSub { font-size: 14px; line-height: 1.35; color: rgba(255, 255, 255, 0.82); text-wrap: balance; }
 .course .arrow { color: #fff; }
