@@ -174,7 +174,7 @@ export const claude7Days: Landing = {
     },
     {
       q: 'What if I fall behind?',
-      a: 'Once a level opens, it stays open. You can catch up any time. Access: [until …].',
+      a: 'Once a level opens, it stays open. You can catch up any time.',
     },
     {
       q: 'Why Claude and not ChatGPT?',

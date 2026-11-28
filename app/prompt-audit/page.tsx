@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     url: '/prompt-audit',
   },
 };
-export const viewport: Viewport = { themeColor: '#0f0b0d', colorScheme: 'dark' };
+export const viewport: Viewport = { themeColor: '#fbf7f1', colorScheme: 'light' };
 
 // Desktop adaptation of Anthropic's claude-api/shared/prompt-audit.md:
 // https://github.com/anthropics/skills/blob/main/skills/claude-api/shared/prompt-audit.md
@@ -51,7 +51,8 @@ const sections = [
   { id: 'result', name: 'Result' },
 ];
 
-const tones = ['#ffd94d', '#a78bfa', '#5eead4'];
+// Same three hues as the dark guide, deepened so numbers and bars read on the light background.
+const tones = ['#e0a100', '#7c4dff', '#0d9488'];
 
 function Section({
   index,
@@ -78,7 +79,7 @@ function Section({
 
 export default function PromptAuditPage() {
   return (
-    <div className={styles.page}>
+    <div className={`${styles.page} ${own.light}`}>
       <header className={styles.header}>
         <a className={styles.brand} href="/">
           <span>Arsenii</span>, Software Engineer

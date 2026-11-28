@@ -1,27 +1,55 @@
-/* /prompt-audit: extras on top of the /claude-at-100 guide styles. */
+/* /prompt-audit: extras on top of the /claude-at-100 guide styles.
+   Light warm theme (same palette as the course landing). The guide styles read --g-* variables
+   with dark defaults, so /claude-at-100 stays dark. Colour roles stay the same:
+   ink = titles, reading text a step lighter, yellow only on what you press (Copy) and the marker. */
+:global(html):has(.light),
+:global(body):has(.light) {
+  background: #fbf7f1;
+}
+.light {
+  --g-ink: #1a1816;
+  --g-text2: #1a1816;
+  --g-text: #4a433e;
+  --g-tip-text: #3a3430;
+  --g-muted: #8f8780;
+  --g-faint: #a39b94;
+  --g-line: rgba(26, 24, 22, .09);
+  --g-soft: rgba(26, 24, 22, .05);
+  --g-soft-hover: rgba(26, 24, 22, .08);
+  --g-surface: #fff;
+  --g-surface-shadow: 0 1px 2px rgba(26, 24, 22, .04), inset 0 0 0 1px rgba(26, 24, 22, .09);
+  --g-focus: #1a1816;
+  --g-accent-text: #1a1816;
+  --g-accent-bg: #ffd94d;
+  --g-accent-pad: 0 .12em;
+  --g-mark-bg: rgba(255, 217, 77, .55);
+  --g-mark-text: #1a1816;
+  background: #fbf7f1;
+  color: #1a1816;
+}
 .nowrap { white-space: nowrap; }
 .kicker { margin: 14px 6px 0; font-size: clamp(18px, 2.2vw, 24px); font-weight: 500; color: #8a8286; }
 
 .code {
   padding: 1px 6px;
   border-radius: 6px;
-  background: rgba(255, 255, 255, .07);
-  color: #f2eef0;
+  background: rgba(26, 24, 22, .06);
+  color: #1a1816;
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: .88em;
   overflow-wrap: anywhere;
 }
 
-.list { display: flex; flex-direction: column; gap: 6px; margin: -6px 0 0; padding-left: 22px; font-size: 17px; line-height: 1.6; color: #cfc8cc; }
+.list { display: flex; flex-direction: column; gap: 6px; margin: -6px 0 0; padding-left: 22px; font-size: 17px; line-height: 1.6; color: #4a433e; }
 .list li::marker { color: var(--tone, #8a8286); }
 
 /* Before / After */
 .compare { display: grid; grid-template-columns: 1fr; gap: 10px; }
 .card { border-radius: 24px; padding: 16px 22px 22px; }
-.before { background: #1b171a; }
-.after { background: rgba(94, 234, 212, .09); box-shadow: inset 0 0 0 1.5px rgba(94, 234, 212, .35); }
+.before { background: #f3ede4; }
+.after { background: rgba(13, 148, 136, .07); box-shadow: inset 0 0 0 1.5px rgba(13, 148, 136, .35); }
 .cardTitle { margin: 0 0 10px; font-size: 15px; font-weight: 600; color: #8a8286; }
-.after .cardTitle { color: #5eead4; }
+.after .cardTitle { color: #0d9488; }
 .pre {
   margin: 0;
   white-space: pre-wrap;
@@ -29,9 +57,9 @@
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 14px;
   line-height: 1.65;
-  color: #f2eef0;
+  color: #1a1816;
 }
-.before .pre { color: #a39ba0; }
+.before .pre { color: #6b625c; }
 
 /* Result numbers */
 .stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
@@ -44,7 +72,7 @@
   background: color-mix(in srgb, var(--tone, #5eead4) 10%, transparent);
 }
 .statValue { font-size: clamp(36px, 4.4vw, 52px); line-height: 1; font-weight: 600; letter-spacing: -.02em; color: var(--tone, #fff); font-variant-numeric: tabular-nums; }
-.statLabel { font-size: 15px; line-height: 1.4; color: #cfc8cc; }
+.statLabel { font-size: 15px; line-height: 1.4; color: #4a433e; }
 
 @media (max-width: 640px) {
   .kicker { margin: 10px 4px 0; }
