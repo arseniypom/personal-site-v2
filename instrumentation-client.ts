@@ -21,5 +21,17 @@ posthog.init(POSTHOG_KEY, {
   },
 });
 
-// Tag local traffic so it's easy to filter out in PostHog.
-posthog.register({ env: process.env.NODE_ENV });
+// PostHog's $referrer is the session's entry referrer (e.g. instagram), not the previous page on this site.
+// Internal links are full page loads, so document.referrer tells which page sent the visitor here.
+function previousPage(): string {
+  if (!document.referrer) return '$direct';
+  try {
+    const ref = new URL(document.referrer);
+    return ref.origin === location.origin ? ref.pathname : ref.hostname;
+  } catch {
+    return '$direct';
+  }
+}
+
+// Tag local traffic so it's easy to filter out in PostHog; set previous_page on every load so it never goes stale.
+posthog.register({ env: process.env.NODE_ENV, previous_page: previousPage() });
