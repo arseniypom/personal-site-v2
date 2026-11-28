@@ -141,5 +141,6 @@
 @media (max-width: 640px) {
   .course { grid-template-columns: 1fr; margin-bottom: 40px; padding: 24px; border-radius: 24px; }
   .course h2 { font-size: clamp(1.0625rem, 5.5vw, 1.5rem); text-wrap: wrap; }
+  .courseDuration { display: block; }
 }
 .toc { margin-top: 32px; }

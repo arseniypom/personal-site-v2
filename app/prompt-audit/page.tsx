@@ -117,7 +117,7 @@ export default function PromptAuditPage() {
             <div>
               <p className={own.courseEyebrow}>Course · Starts {START_DATE}</p>
               <h2>
-                Learn to use Claude <mark>properly</mark> in 7 days
+                Learn to use Claude <mark>properly</mark> <span className={own.courseDuration}>in 7 days</span>
               </h2>
               <p>Setup, memory, Skills and automations, one level a day. From 30 minutes a day, no code.</p>
             </div>
