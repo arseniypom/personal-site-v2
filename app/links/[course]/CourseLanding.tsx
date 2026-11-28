@@ -1,6 +1,7 @@
 import type { Course } from '../courses';
 import type { Landing } from '../claude-7-days';
 import s from './landing.module.css';
+import CourseTracking from './CourseTracking';
 
 function UkFlag() {
   return (
@@ -54,6 +55,7 @@ const Check = () => (
 export default function CourseLanding({ course, l }: { course: Course; l: Landing }) {
   return (
     <div className={s.page}>
+      <CourseTracking course={course.slug} />
       <header className={s.bar}>
         <a className={s.back} href="/links" aria-label="Back">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
@@ -61,14 +63,14 @@ export default function CourseLanding({ course, l }: { course: Course; l: Landin
           </svg>
         </a>
         <span className={s.barTitle}>{course.title}</span>
-        <a className={s.barCta} href="#plans">
+        <a className={s.barCta} href="#plans" data-cta="header">
           {l.cta}
         </a>
       </header>
 
       <main className={s.main}>
         {/* Hero */}
-        <section className={s.hero}>
+        <section className={s.hero} data-section="hero">
           <p className={s.eyebrow}>{l.eyebrow}</p>
           <h1 className={s.h1}>
             <Marked text={l.headline} />
@@ -81,10 +83,10 @@ export default function CourseLanding({ course, l }: { course: Course; l: Landin
             ))}
           </ul>
           <div className={s.heroCtas}>
-            <a className={s.cta} href="#plans">
+            <a className={s.cta} href="#plans" data-cta="hero">
               {l.cta}
             </a>
-            <a className={s.ghost} href="#levels">
+            <a className={s.ghost} href="#levels" data-cta="hero_levels">
               See the 7 levels
             </a>
           </div>
@@ -92,7 +94,7 @@ export default function CourseLanding({ course, l }: { course: Course; l: Landin
 
         {/* Pains + outcomes */}
         <div className={s.two}>
-          <section className={`${s.card} ${s.pains}`}>
+          <section className={`${s.card} ${s.pains}`} data-section="pains">
             <h2 className={s.h2}>{l.painsTitle}</h2>
             <ul className={s.painList}>
               {l.pains.map((p) => (
@@ -103,7 +105,7 @@ export default function CourseLanding({ course, l }: { course: Course; l: Landin
             </ul>
           </section>
 
-          <section className={`${s.card} ${s.gains}`}>
+          <section className={`${s.card} ${s.gains}`} data-section="outcomes">
             <h2 className={s.h2}>
               <Marked text={l.outcomesTitle} />
             </h2>
@@ -123,7 +125,7 @@ export default function CourseLanding({ course, l }: { course: Course; l: Landin
         </div>
 
         {/* Levels */}
-        <section id="levels" className={s.levelsWrap}>
+        <section id="levels" className={s.levelsWrap} data-section="levels">
           <div className={s.sectionHead}>
             <h2 className={s.h2big}>{l.levelsTitle}</h2>
             <p className={s.hint}>{l.levelsSub}</p>
@@ -151,7 +153,7 @@ export default function CourseLanding({ course, l }: { course: Course; l: Landin
         </section>
 
         {/* Author */}
-        <section className={`${s.card} ${s.author}`}>
+        <section className={`${s.card} ${s.author}`} data-section="author">
           <h2 className={`${s.h2big} ${s.authorHello}`}>{l.author.hello}</h2>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img className={s.authorPhoto} src={l.author.photo} alt="Arsenii" />
@@ -176,7 +178,7 @@ export default function CourseLanding({ course, l }: { course: Course; l: Landin
         </section>
 
         {/* Plans */}
-        <section id="plans" className={s.plansWrap}>
+        <section id="plans" className={s.plansWrap} data-section="plans">
           <div className={s.sectionHead}>
             <h2 className={s.h2big}>{l.pricingTitle}</h2>
             <p className={s.hint}>{l.pricingSub}</p>
@@ -213,7 +215,7 @@ export default function CourseLanding({ course, l }: { course: Course; l: Landin
                     <p>{t.bonus.text}</p>
                   </div>
                 )}
-                <a className={s.cta} href={t.checkoutUrl}>
+                <a className={s.cta} href={t.checkoutUrl} data-cta="plan" data-tier={t.id} data-price={t.price}>
                   Join for {t.price}
                 </a>
               </article>
@@ -231,7 +233,7 @@ export default function CourseLanding({ course, l }: { course: Course; l: Landin
         </section>
 
         {/* FAQ */}
-        <section className={s.faqWrap}>
+        <section className={s.faqWrap} data-section="faq">
           <h2 className={s.h2big}>Questions</h2>
           <div className={s.faq}>
             {l.faq.map((f) => (
@@ -244,10 +246,10 @@ export default function CourseLanding({ course, l }: { course: Course; l: Landin
         </section>
 
         {/* Close */}
-        <section className={s.close}>
+        <section className={s.close} data-section="close">
           <h2 className={s.closeTitle}>{l.close.title}</h2>
           <p>{l.close.text}</p>
-          <a className={s.cta} href="#plans">
+          <a className={s.cta} href="#plans" data-cta="close">
             {l.cta}
           </a>
         </section>
