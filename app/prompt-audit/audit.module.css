@@ -127,7 +127,6 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
   height: 52px;
   padding: 0 24px;
   border-radius: 999px;
@@ -138,9 +137,9 @@
   white-space: nowrap;
   transition: background-color .15s ease, color .15s ease;
 }
-.courseCta span { font-weight: 500; opacity: .7; }
 .courseCta:hover { background: #ffd94d; color: #241c04; }
 @media (max-width: 640px) {
   .course { grid-template-columns: 1fr; margin-bottom: 40px; padding: 24px; border-radius: 24px; }
+  .course h2 { font-size: clamp(1.0625rem, 5.5vw, 1.5rem); text-wrap: wrap; }
 }
 .toc { margin-top: 32px; }

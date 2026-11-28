@@ -122,7 +122,7 @@ export default function PromptAuditPage() {
               <p>Setup, memory, Skills and automations, one level a day. From 30 minutes a day, no code.</p>
             </div>
             <a className={own.courseCta} href="/links/claude-7-days">
-              See the course <span>· $93</span>
+              See the course
             </a>
           </aside>
 
